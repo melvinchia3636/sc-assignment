@@ -73,9 +73,13 @@ sc-assignment/
         │   ├── controllers/
         │   │   ├── HealthController.java
         │   │   └── RootController.java
-        │   └── error/
-        │       ├── ApiError.java
-        │       └── GlobalExceptionHandler.java
+        │   ├── dto/
+        │   │   └── HealthResponse.java
+        │   ├── error/
+        │   │   ├── ApiError.java
+        │   │   └── GlobalExceptionHandler.java
+        │   └── service/
+        │       └── HealthService.java
         └── test/java/com/groupone/assignment/
 ```
 
