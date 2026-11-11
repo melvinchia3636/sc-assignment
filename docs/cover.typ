@@ -42,7 +42,7 @@
     #image("assets/taylors-logo.png", width: 8.4cm)
   ]
 
-  v(1.1em)
+  v(1.4em)
   align(center)[
     #text(font: sans, size: 12pt, tracking: 0.14em, fill: muted)[
       SCHOOL OF COMPUTER SCIENCE \
@@ -50,16 +50,16 @@
     ]
   ]
 
-  v(1.1em)
+  v(1.45em)
   align(center)[
     #text(font: sans, size: 21pt, weight: "bold", fill: ink)[GROUP ASSIGNMENT]
-    #v(0em)
+    #v(1em)
     #text(font: sans, size: 10.5pt, fill: slate)[
       CSC62604 / CSC61204 Software Construction
     ]
   ]
 
-  v(1.35em)
+  v(1.65em)
   align(center)[
     #text(font: sans, size: 16.5pt, weight: "bold", fill: ink)[
       SDG 11 — Sustainable Cities and Communities \
@@ -72,7 +72,7 @@
     #table(
       columns: (3.7cm, 9.2cm),
       stroke: none,
-      inset: (x: 0pt, y: 4.5pt),
+      inset: (x: 0pt, y: 5.5pt),
       align: (left + horizon, left + horizon),
       ..info-row("Module Name", [Software Construction]),
       ..info-row("Module Code", [CSC62604 / CSC61204]),
@@ -83,7 +83,7 @@
     )
   ]
 
-  v(1.9em)
+  v(2.3em)
   align(center)[
     #text(font: sans, size: 8pt, tracking: 0.16em, fill: muted)[GROUP MEMBERS]
   ]
@@ -93,7 +93,7 @@
     #table(
       columns: (0.9cm, 6.3cm, 3.0cm, 3.0cm),
       stroke: 0.4pt + rule,
-      inset: (x: 7pt, y: 10pt),
+      inset: (x: 7pt, y: 13pt),
       align: (left + top, left + top, center + top, center + horizon),
       fill: (col, row) => if row == 0 { ink.lighten(92%) } else { white },
       table.header(
@@ -109,12 +109,12 @@
     )
   ]
 
-  v(1em)
+  v(1.35em)
   align(center)[
     #table(
       columns: (5.3cm, 7.9cm),
       stroke: none,
-      inset: (x: 0pt, y: 5pt),
+      inset: (x: 0pt, y: 6pt),
       align: (left + horizon, left + horizon),
       ..cover-field("Group Name", [Group 01]),
       ..cover-field("Scenario Selected (1–5)", [5 — Urban Air Quality and Green Space Monitor]),
