@@ -1,4 +1,4 @@
-package com.groupone.assignment.health;
+package com.groupone.assignment.controllers;
 
 import java.time.Instant;
 
@@ -6,6 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Reports the service health as {@code {"status":"UP","timestamp":"..."}}.
+ */
 @RestController
 public class HealthController {
 
