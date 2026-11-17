@@ -21,7 +21,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.ActivityMainBinding;
-import com.groupone.assignment.location.LocationService;
+import com.groupone.assignment.services.LocationService;
+import com.groupone.assignment.services.TabService;
 import com.groupone.assignment.ui.common.BaseTab;
 
 import org.osmdroid.config.Configuration;

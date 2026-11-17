@@ -1,4 +1,4 @@
-package com.groupone.assignment.ui;
+package com.groupone.assignment.services;
 
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
