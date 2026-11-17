@@ -34,6 +34,10 @@ public class SettingsRowView extends LinearLayout {
         if (rowTitle != null) {
             title.setText(rowTitle);
         }
+        CharSequence rowValue = attributes.getText(R.styleable.SettingsRowView_rowValue);
+        if (rowValue != null) {
+            value.setText(rowValue);
+        }
         attributes.recycle();
     }
 

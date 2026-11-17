@@ -101,7 +101,8 @@
                     android:id="@+id/air_quality_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:rowTitle="@string/settings_air_quality" />
+                    app:rowTitle="@string/settings_air_quality"
+                    app:rowValue="@string/settings_air_quality_value" />
 
                 <View
                     android:layout_width="match_parent"
@@ -114,7 +115,8 @@
                     android:id="@+id/map_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:rowTitle="@string/settings_map" />
+                    app:rowTitle="@string/settings_map"
+                    app:rowValue="@string/settings_map_value" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
