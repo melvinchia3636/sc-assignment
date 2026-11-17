@@ -45,7 +45,7 @@ android {
 
     sourceSets {
         main {
-            res.srcDirs += 'src/main/locales'
+            res.srcDirs = [layout.buildDirectory.dir('generated/authoringRes').get().asFile]
         }
     }
 }
@@ -73,6 +73,46 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.4'
 }
+
+def generatedAuthoringRes = layout.buildDirectory.dir('generated/authoringRes')
+generatedAuthoringRes.get().asFile.mkdirs()
+
+tasks.register('syncAuthoringResources', Sync) {
+    from('src/main/res') {
+        exclude 'tabs/**'
+        exclude 'locales/**'
+    }
+    from('src/main/res/tabs') {
+        into 'layout'
+    }
+
+    def localesDir = file('src/main/res/locales')
+    def defaultLocale = 'en'
+    localesDir.listFiles()
+            ?.findAll { it.isFile() && it.name.endsWith('.xml') }
+            ?.each { localeFile ->
+                if (localeFile.name == 'locales_config.xml') {
+                    from(localeFile) { into 'xml' }
+                    return
+                }
+                def language = localeFile.name.substring(0, localeFile.name.length() - 4)
+                def folder = language == defaultLocale
+                        ? 'values'
+                        : "values-${language.replace('_', '-r')}"
+                from(localeFile) { into folder }
+            }
+
+    into generatedAuthoringRes
+}
+
+tasks.matching {
+    it.name != 'syncAuthoringResources'
+            && (it.name.endsWith('Resources')
+            || it.name.endsWith('SourceSetPaths')
+            || it.name.endsWith('DeepLinksDebug'))
+}.configureEach { dependsOn 'syncAuthoringResources' }
+
+tasks.named('preBuild').configure { dependsOn 'syncAuthoringResources' }
 
 tasks.register('jacocoTestReport', JacocoReport) {
     dependsOn 'testDebugUnitTest'
