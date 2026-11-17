@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         Configuration.getInstance().load(getApplicationContext(),
                 getSharedPreferences("osmdroid", MODE_PRIVATE));
         Configuration.getInstance().setUserAgentValue(getPackageName());
+        Configuration.getInstance().setAnimationSpeedShort(180);
+        Configuration.getInstance().setAnimationSpeedDefault(250);
         EdgeToEdge.enable(this,
                 SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
                 SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT));
