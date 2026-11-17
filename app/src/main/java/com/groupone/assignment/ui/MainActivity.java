@@ -17,8 +17,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.groupone.assignment.R;
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
     private LocationService locationService;
-    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,39 +86,7 @@ public class MainActivity extends AppCompatActivity {
         if (host == null) {
             return;
         }
-        navController = host.getNavController();
-
-        binding.bottomNavigation.setOnItemSelectedListener(item -> {
-            int current = navController.getCurrentDestination() == null
-                    ? R.id.tab_aqi : navController.getCurrentDestination().getId();
-            if (current != item.getItemId()) {
-                navigateTo(item.getItemId(),
-                        BaseTab.tabIndex(current),
-                        BaseTab.tabIndex(item.getItemId()));
-            }
-            return true;
-        });
-
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (binding.bottomNavigation.getSelectedItemId() != destination.getId()) {
-                binding.bottomNavigation.getMenu().findItem(destination.getId()).setChecked(true);
-            }
-            BaseTab.updateNavigationIcons(binding.bottomNavigation);
-        });
-    }
-
-    private void navigateTo(int destinationId, int fromTab, int toTab) {
-        boolean forward = toTab > fromTab;
-        NavOptions options = new NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .setRestoreState(true)
-                .setPopUpTo(navController.getGraph().getStartDestinationId(), false, true)
-                .setEnterAnim(forward ? R.anim.slide_in_right : R.anim.slide_in_left)
-                .setExitAnim(forward ? R.anim.slide_out_left : R.anim.slide_out_right)
-                .setPopEnterAnim(forward ? R.anim.slide_in_left : R.anim.slide_in_right)
-                .setPopExitAnim(forward ? R.anim.slide_out_right : R.anim.slide_out_left)
-                .build();
-        navController.navigate(destinationId, null, options);
+        new TabService(host.getNavController(), binding.bottomNavigation).attach();
     }
 
     private void onPermissionResult(Map<String, Boolean> result) {
