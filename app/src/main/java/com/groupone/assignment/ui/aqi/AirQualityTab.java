@@ -16,7 +16,7 @@ import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.TabAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.repositories.model.Audience;
-import com.groupone.assignment.settings.UserPreferences;
+import com.groupone.assignment.services.AudienceService;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.groupone.assignment.ui.common.SparklineChart;
@@ -129,7 +129,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void applyAudienceNote() {
-        Audience audience = UserPreferences.currentAudience(requireContext());
+        Audience audience = AudienceService.current(requireContext());
         int noteRes = audience.getNoteRes();
         if (noteRes == 0) {
             binding.audienceNote.setVisibility(View.GONE);
