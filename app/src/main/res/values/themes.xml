@@ -48,6 +48,13 @@
         <item name="colorOutlineVariant">@color/line</item>
     </style>
 
+    <style name="Widget.AirGreen.AqiHeroCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/air_good</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
     <style name="Widget.AirGreen.PollutantCard" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/card</item>
         <item name="cardCornerRadius">16dp</item>

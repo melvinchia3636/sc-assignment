@@ -1,6 +1,5 @@
 package com.groupone.assignment.ui.aqi;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,9 @@ import androidx.annotation.Nullable;
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.TabAqiBinding;
-import com.groupone.assignment.guidance.AqiLevel;
-import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.services.AudienceService;
 import com.groupone.assignment.ui.MainViewModel;
-import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
-import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 import java.time.Instant;
@@ -67,23 +62,8 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
     private void render(StationDetail station) {
         lastAqi = station.getAqi();
-        AqiLevelStrategy level = AqiLevel.classify(station.getAqi());
-        int background = Color.parseColor(level.colourHex());
-        int foreground = Color.parseColor(AqiScale.textColourFor(level.colourHex()));
+        binding.aqiHero.bind(station, viewModel.getLocationService().placeName());
 
-        binding.aqiCard.setCardBackgroundColor(background);
-        binding.stationName.setTextColor(foreground);
-        binding.aqiValue.setTextColor(foreground);
-        binding.aqiCategory.setTextColor(foreground);
-        binding.aqiAdvice.setTextColor(foreground);
-        binding.aqiFaceIcon.setImageDrawable(AppIcons.drawable(
-                requireContext(), level.icon(), foreground, 18));
-
-        binding.stationName.setText(station.getName().isEmpty()
-                ? viewModel.getLocationService().placeName() : station.getName());
-        binding.aqiValue.setText(AqiScale.format(station.getAqi()));
-        binding.aqiCategory.setText(level.labelRes());
-        binding.aqiAdvice.setText(level.adviceRes());
         binding.guidanceSection.bind(
                 AudienceService.INSTANCE.current(requireContext()), station.getAqi());
 
@@ -120,15 +100,9 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.errorCard.setVisibility(View.VISIBLE);
         binding.swipeRefresh.setRefreshing(false);
 
-        binding.aqiValue.setText(R.string.dash);
-        binding.aqiCategory.setText(R.string.unavailable);
-        binding.aqiFaceIcon.setImageDrawable(AppIcons.drawable(
-                requireContext(), FontAwesome.Icon.faw_meh, "#FFFFFF", 18));
-        binding.aqiAdvice.setText(R.string.connection_advice);
+        binding.aqiHero.showError();
         lastAqi = Double.NaN;
         binding.guidanceSection.clear();
-        binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
-        binding.stationName.setText("");
         binding.weatherSection.setVisibility(View.GONE);
         binding.trendSection.clear();
         binding.pm25Card.clear();
