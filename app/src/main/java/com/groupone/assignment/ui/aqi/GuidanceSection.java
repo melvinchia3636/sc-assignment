@@ -37,6 +37,7 @@ public class GuidanceSection extends LinearLayout {
         label.setText(audience.labelRes());
         bindNote(audience.noteRes(aqi));
         bindTime(audience.outdoorMinutes(aqi));
+
         setVisibility(View.VISIBLE);
     }
 
@@ -45,6 +46,7 @@ public class GuidanceSection extends LinearLayout {
             note.setVisibility(View.GONE);
             return;
         }
+
         note.setText(noteRes);
         note.setVisibility(View.VISIBLE);
     }
