@@ -67,7 +67,7 @@ public class AirnetParser {
 
                 @Override
                 public double read(CwopRepository.Reading reading) {
-                    return reading.h == null ? 0 : reading.h;
+                    return reading.humidity == null ? 0 : reading.humidity;
                 }
             },
             new WeatherField() {
@@ -78,7 +78,7 @@ public class AirnetParser {
 
                 @Override
                 public double read(CwopRepository.Reading reading) {
-                    return reading.p == null ? 0 : reading.p;
+                    return reading.pressure == null ? 0 : reading.pressure;
                 }
             },
             new WeatherField() {
@@ -89,7 +89,7 @@ public class AirnetParser {
 
                 @Override
                 public double read(CwopRepository.Reading reading) {
-                    return reading.t == null ? 0 : reading.t;
+                    return reading.temperature == null ? 0 : reading.temperature;
                 }
             },
             new WeatherField() {
@@ -100,7 +100,7 @@ public class AirnetParser {
 
                 @Override
                 public double read(CwopRepository.Reading reading) {
-                    return reading.ws == null ? 0 : reading.ws;
+                    return reading.windSpeed == null ? 0 : reading.windSpeed;
                 }
             },
     };
