@@ -107,6 +107,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiCategory.setText(level.getLabelRes());
         binding.aqiAdvice.setText(level.getAdviceRes());
         applyAudienceNote();
+        binding.audienceNote.setTextColor(foreground);
 
         long updatedAt = station.getUpdatedAt();
         binding.updatedText.setText(updatedAt > 0
