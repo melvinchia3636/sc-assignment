@@ -2,12 +2,13 @@ package com.groupone.assignment.ui.aqi;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.material.card.MaterialCardView;
 import com.groupone.assignment.R;
 import com.groupone.assignment.ui.common.SparklineChart;
 
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * One pollutant sub-index: value, label and a 24-hour mini trend.
  */
-public class PollutantCard extends LinearLayout {
+public class PollutantCard extends MaterialCardView {
 
     private final TextView value;
     private final TextView label;
@@ -35,11 +36,11 @@ public class PollutantCard extends LinearLayout {
 
     public PollutantCard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setOrientation(HORIZONTAL);
-        setGravity(Gravity.CENTER_VERTICAL);
-        setBackgroundResource(R.drawable.bg_stat);
-        int horizontal = dp(10);
-        setPadding(dp(12), horizontal, horizontal, horizontal);
+        setCardBackgroundColor(ContextCompat.getColor(context, R.color.card));
+        setCardElevation(0);
+        setRadius(dp(16));
+        setStrokeColor(ContextCompat.getColor(context, R.color.line));
+        setStrokeWidth(dp(1));
         LayoutInflater.from(context).inflate(R.layout.view_pollutant, this, true);
         value = findViewById(R.id.pollutant_value);
         label = findViewById(R.id.pollutant_label);
