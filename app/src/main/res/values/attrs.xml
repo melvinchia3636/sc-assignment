@@ -4,4 +4,8 @@
         <attr name="rowTitle" format="string|reference" />
         <attr name="rowValue" format="string|reference" />
     </declare-styleable>
+
+    <declare-styleable name="SectionView">
+        <attr name="sectionTitle" format="string|reference" />
+    </declare-styleable>
 </resources>
