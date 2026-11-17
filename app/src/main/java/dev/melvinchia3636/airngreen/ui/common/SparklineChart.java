@@ -30,8 +30,12 @@ public final class SparklineChart {
 
     /** WAQI caps the AQI scale at 500, so the trend axis never goes above it. */
     private static final float AQI_MAXIMUM = 500f;
-    /** Smallest trend window, so a flat low reading is not blown up. */
-    private static final float AQI_MINIMUM_SPAN = 50f;
+    /** Smallest vertical window, so a flat reading is not blown up. */
+    private static final float AQI_MINIMUM_SPAN = 20f;
+    /** Share of the data span added above and below the readings. */
+    private static final float AXIS_PADDING = 0.15f;
+    /** Rounds the axis bounds to readable steps of ten AQI points. */
+    private static final float AXIS_STEP = 10f;
 
     private SparklineChart() {
     }
@@ -107,8 +111,9 @@ public final class SparklineChart {
         left.setGridColor(GRID_COLOUR);
         left.setGridLineWidth(0.5f);
         left.setLabelCount(4);
-        left.setAxisMinimum(0f);
-        left.setAxisMaximum(trendMaximum(entries));
+        float[] bounds = trendBounds(entries);
+        left.setAxisMinimum(bounds[0]);
+        left.setAxisMaximum(bounds[1]);
         left.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -127,20 +132,37 @@ public final class SparklineChart {
     }
 
     /**
-     * Rounds the trend ceiling up to a readable step with a little headroom,
-     * keeping it within the AQI scale and never below {@link #AQI_MINIMUM_SPAN}.
+     * Padded Y-axis bounds around the trend data, clamped to the AQI scale and
+     * rounded to readable steps so the line never touches either edge.
      */
-    private static float trendMaximum(List<Entry> entries) {
-        float highest = 0f;
+    private static float[] trendBounds(List<Entry> entries) {
+        float lowest = Float.MAX_VALUE;
+        float highest = -Float.MAX_VALUE;
+
         for (Entry entry : entries) {
+            lowest = Math.min(lowest, entry.getY());
             highest = Math.max(highest, entry.getY());
         }
 
-        float padded = (float) Math.ceil(highest * 1.15f / 10f) * 10f;
-        return Math.min(AQI_MAXIMUM, Math.max(AQI_MINIMUM_SPAN, padded));
+        float padding = Math.max(AQI_MINIMUM_SPAN, highest - lowest) * AXIS_PADDING;
+        float minimum = Math.max(0f, floorToStep(lowest - padding));
+        float maximum = Math.min(AQI_MAXIMUM, ceilToStep(highest + padding));
+
+        // Keep a valid window when every reading sits at the top of the scale.
+        minimum = Math.min(minimum, Math.max(0f, maximum - AQI_MINIMUM_SPAN));
+        return new float[] {minimum, maximum};
     }
 
-    private static List<Entry> entries(List<Double> values) {        List<Entry> entries = new ArrayList<>();
+    private static float floorToStep(float value) {
+        return (float) Math.floor(value / AXIS_STEP) * AXIS_STEP;
+    }
+
+    private static float ceilToStep(float value) {
+        return (float) Math.ceil(value / AXIS_STEP) * AXIS_STEP;
+    }
+
+    private static List<Entry> entries(List<Double> values) {
+        List<Entry> entries = new ArrayList<>();
         int index = 0;
         if (values != null) {
             for (Double value : values) {
