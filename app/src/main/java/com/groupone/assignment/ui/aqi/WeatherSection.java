@@ -23,7 +23,7 @@ public class WeatherSection extends SectionView {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_weather_section, this, true);
 
-        items = new WeatherItem[]{
+        items = new WeatherItem[] {
                 new WeatherItem(context, "t", "%.1f °C",
                         FontAwesome.Icon.faw_thermometer_half, R.string.weather_temperature),
                 new WeatherItem(context, "h", "%.0f %%",
@@ -34,9 +34,12 @@ public class WeatherSection extends SectionView {
                         FontAwesome.Icon.faw_wind, R.string.weather_wind),
         };
 
-        placeItems(items,
+        LinearLayout[] rows = {
                 findViewById(R.id.weather_row_top),
-                findViewById(R.id.weather_row_bottom));
+                findViewById(R.id.weather_row_bottom),
+        };
+
+        placeItems(items, rows);
     }
 
     public void bind(StationDetail station) {
@@ -49,8 +52,7 @@ public class WeatherSection extends SectionView {
         setVisibility(hasValue ? View.VISIBLE : View.GONE);
     }
 
-    private void placeItems(WeatherItem[] items, LinearLayout top, LinearLayout bottom) {
-        LinearLayout[] rows = { top, bottom };
+    private void placeItems(WeatherItem[] items, LinearLayout[] rows) {
         for (int index = 0; index < items.length; index++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
