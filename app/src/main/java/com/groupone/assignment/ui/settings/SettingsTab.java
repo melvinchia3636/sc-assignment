@@ -59,7 +59,7 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
                 Audience::getLabelRes,
                 AudienceService.current(requireContext()).ordinal(),
                 audience -> {
-                    AudienceService.select(requireContext(), audience);
+                    AudienceService.apply(requireContext(), audience);
                     binding.audienceRow.setValue(audience.getLabelRes());
                 });
     }
