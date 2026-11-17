@@ -41,6 +41,7 @@
     <string name="audience_general">一般</string>
     <string name="audience_children">子ども</string>
     <string name="audience_elderly">高齢者</string>
+    <string name="guidance_for">%1$s向けのアドバイス</string>
     <string name="audience_note_children_good">屋外遊びに最適な条件です。</string>
     <string name="audience_note_children_fair">屋外遊びは可能ですが、こまめに休憩しましょう。</string>
     <string name="audience_note_children_poor">屋外遊びは短時間にし、激しい活動を避けましょう。</string>

@@ -1,7 +1,10 @@
 package com.groupone.assignment.ui.aqi;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +57,8 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
         binding.retryButton.setOnClickListener(clicked -> viewModel.refresh());
         SparklineChart.clear(binding.aqiSparkline);
+        binding.guidanceIcon.setImageDrawable(AppIcons.drawable(
+                requireContext(), GoogleMaterial.Icon.gmd_directions_walk, "#1B5E20", 16));
         setUpWeatherItems();
         observeViewModel();
     }
@@ -108,8 +113,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiValue.setText(AqiScale.format(station.getAqi()));
         binding.aqiCategory.setText(level.getLabelRes());
         binding.aqiAdvice.setText(level.getAdviceRes());
-        applyAudienceNote(station.getAqi());
-        binding.audienceNote.setTextColor(foreground);
+        applyGuidance(station.getAqi());
 
         long updatedAt = station.getUpdatedAt();
         binding.updatedText.setText(updatedAt > 0
@@ -130,29 +134,43 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.swipeRefresh.setRefreshing(false);
     }
 
-    private void applyAudienceNote(double aqi) {
+    private void applyGuidance(double aqi) {
         if (Double.isNaN(aqi)) {
-            binding.audienceNote.setVisibility(View.GONE);
+            binding.guidanceCard.setVisibility(View.GONE);
             return;
         }
 
         Audience audience = AudienceService.INSTANCE.current(requireContext());
-        int minutes = audience.outdoorMinutes(aqi);
-        String limit = minutes > 0
-                ? getString(R.string.audience_outdoor_limit, minutes)
-                : getString(R.string.audience_outdoor_avoid);
+        String audienceLabel = getString(audience.labelRes());
+        String label = getString(R.string.guidance_for, audienceLabel);
+        SpannableString styledLabel = new SpannableString(label);
+        int start = label.indexOf(audienceLabel);
+        if (start >= 0) {
+            styledLabel.setSpan(new StyleSpan(Typeface.BOLD), start,
+                    start + audienceLabel.length(), 0);
+        }
+        binding.guidanceLabel.setText(styledLabel);
 
         int noteRes = audience.noteRes(aqi);
-        String note = noteRes == 0 ? limit : getString(noteRes) + "\n" + limit;
-        binding.audienceNote.setText(note);
-        binding.audienceNote.setVisibility(View.VISIBLE);
+        if (noteRes == 0) {
+            binding.guidanceNote.setVisibility(View.GONE);
+        } else {
+            binding.guidanceNote.setText(noteRes);
+            binding.guidanceNote.setVisibility(View.VISIBLE);
+        }
+
+        int minutes = audience.outdoorMinutes(aqi);
+        binding.guidanceTime.setText(minutes > 0
+                ? getString(R.string.audience_outdoor_limit, minutes)
+                : getString(R.string.audience_outdoor_avoid));
+        binding.guidanceCard.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (binding != null && !Double.isNaN(lastAqi)) {
-            applyAudienceNote(lastAqi);
+            applyGuidance(lastAqi);
         }
     }
 
@@ -219,7 +237,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
                 requireContext(), FontAwesome.Icon.faw_meh, "#FFFFFF", 18));
         binding.aqiAdvice.setText(R.string.connection_advice);
         lastAqi = Double.NaN;
-        binding.audienceNote.setVisibility(View.GONE);
+        binding.guidanceCard.setVisibility(View.GONE);
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");
         binding.weatherCard.setVisibility(View.GONE);
