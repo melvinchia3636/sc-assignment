@@ -11,7 +11,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.ActivityMainBinding;
@@ -67,22 +66,13 @@ public class MainActivity extends AppCompatActivity {
         locationService = new LocationService(this);
 
         applySystemBarInsets();
-        setUpTabs();
+        TabService.attach(this, binding.bottomNavigation);
         BaseTab.styleNavigation(binding.bottomNavigation);
 
         if (savedInstanceState == null) {
             viewModel.startLocationLookup();
             locationService.locate(locationListener);
         }
-    }
-
-    private void setUpTabs() {
-        NavHostFragment host = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);
-        if (host == null) {
-            return;
-        }
-        new TabService(host.getNavController(), binding.bottomNavigation).attach();
     }
 
     private void applySystemBarInsets() {
