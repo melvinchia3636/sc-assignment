@@ -1,0 +1,82 @@
+package com.groupone.assignment.ui.aqi;
+
+import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.groupone.assignment.R;
+import com.groupone.assignment.guidance.Audience;
+import com.groupone.assignment.ui.common.AppIcons;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
+
+/**
+ * Audience-specific guidance card: note plus outdoor-time recommendation.
+ */
+public class GuidanceSection extends LinearLayout {
+
+    private final TextView label;
+    private final TextView note;
+    private final TextView time;
+
+    public GuidanceSection(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        LayoutInflater.from(context).inflate(R.layout.view_guidance_section, this, true);
+
+        label = findViewById(R.id.guidance_label);
+        note = findViewById(R.id.guidance_note);
+        time = findViewById(R.id.guidance_time);
+
+        ImageView icon = findViewById(R.id.guidance_icon);
+        icon.setImageDrawable(AppIcons.drawable(
+                context, GoogleMaterial.Icon.gmd_directions_walk, "#1B5E20", 16));
+    }
+
+    public void bind(Audience audience, double aqi) {
+        if (Double.isNaN(aqi)) {
+            clear();
+            return;
+        }
+        label.setText(titleFor(audience));
+        bindNote(audience.noteRes(aqi));
+        bindTime(audience.outdoorMinutes(aqi));
+        setVisibility(View.VISIBLE);
+    }
+
+    private CharSequence titleFor(Audience audience) {
+        String audienceLabel = getContext().getString(audience.labelRes());
+        String title = getContext().getString(R.string.guidance_for, audienceLabel);
+        SpannableString styledTitle = new SpannableString(title);
+        int start = title.indexOf(audienceLabel);
+        if (start >= 0) {
+            styledTitle.setSpan(new StyleSpan(Typeface.BOLD), start,
+                    start + audienceLabel.length(), 0);
+        }
+        return styledTitle;
+    }
+
+    private void bindNote(int noteRes) {
+        if (noteRes == 0) {
+            note.setVisibility(View.GONE);
+            return;
+        }
+        note.setText(noteRes);
+        note.setVisibility(View.VISIBLE);
+    }
+
+    private void bindTime(int minutes) {
+        time.setText(minutes > 0
+                ? getContext().getString(R.string.audience_outdoor_limit, minutes)
+                : getContext().getString(R.string.audience_outdoor_avoid));
+    }
+
+    public void clear() {
+        setVisibility(View.GONE);
+    }
+}
