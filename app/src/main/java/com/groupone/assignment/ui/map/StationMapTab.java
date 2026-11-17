@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.TabStationMapBinding;
 import com.groupone.assignment.guidance.AqiLevel;
+import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.aqi.AqiScale;
@@ -85,7 +86,7 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
     }
 
     private Marker markerFor(Station station) {
-        AqiLevel level = AqiLevel.classify(station.getAqi());
+        AqiLevelStrategy level = AqiLevel.classify(station.getAqi());
         Marker marker = new Marker(map);
         marker.setPosition(new GeoPoint(station.getLatitude(), station.getLongitude()));
         marker.setTitle(station.getName().isEmpty() ? station.getIdx() : station.getName());

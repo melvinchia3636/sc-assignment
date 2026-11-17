@@ -1,24 +1,55 @@
 package com.groupone.assignment.guidance;
 
+import androidx.annotation.StringRes;
+
 import com.mikepenz.iconics.typeface.IIcon;
 
 /**
- * One AQI band and its guidance.
+ * Strategy for one AQI band: its guidance, colour and face icon.
  */
-public interface AqiLevelStrategy {
+public abstract class AqiLevelStrategy {
 
-    int labelRes();
+    @StringRes
+    private final int labelRes;
+    @StringRes
+    private final int adviceRes;
+    private final String colourHex;
+    private final IIcon icon;
+    private final double maxAqi;
 
-    int adviceRes();
+    protected AqiLevelStrategy(@StringRes int labelRes, @StringRes int adviceRes,
+                               String colourHex, IIcon icon, double maxAqi) {
+        this.labelRes = labelRes;
+        this.adviceRes = adviceRes;
+        this.colourHex = colourHex;
+        this.icon = icon;
+        this.maxAqi = maxAqi;
+    }
 
-    String colourHex();
+    @StringRes
+    public final int labelRes() {
+        return labelRes;
+    }
 
-    IIcon icon();
+    @StringRes
+    public final int adviceRes() {
+        return adviceRes;
+    }
+
+    public final String colourHex() {
+        return colourHex;
+    }
+
+    public final IIcon icon() {
+        return icon;
+    }
 
     /** Inclusive upper bound of this band. */
-    double maxAqi();
+    public final double maxAqi() {
+        return maxAqi;
+    }
 
-    default boolean matches(double aqi) {
-        return !Double.isNaN(aqi) && aqi <= maxAqi();
+    public final boolean matches(double aqi) {
+        return !Double.isNaN(aqi) && aqi <= maxAqi;
     }
 }
