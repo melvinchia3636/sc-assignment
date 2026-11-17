@@ -1,5 +1,7 @@
 package com.groupone.assignment.repositories.remote;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 import java.util.Map;
 
@@ -38,18 +40,24 @@ public final class Api2Repository {
 
     public static final class Time {
         public String iso;
-        public String s;
-        public String tz;
+        @SerializedName("s")
+        public String timestamp;
+        @SerializedName("tz")
+        public String timezone;
     }
 
     public static final class Reading {
-        public Double v;
+        @SerializedName("v")
+        public Double value;
     }
 
     public static final class Series {
-        public String s;
-        public Double m;
-        public List<Object> v;
+        @SerializedName("s")
+        public String start;
+        @SerializedName("m")
+        public Double scale;
+        @SerializedName("v")
+        public List<Object> values;
     }
 
     public static final class TokenResponse {

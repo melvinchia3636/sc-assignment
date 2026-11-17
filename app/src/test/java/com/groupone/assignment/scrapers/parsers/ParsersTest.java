@@ -86,9 +86,9 @@ class ParsersTest {
     @Test
     void api2_expandsDeltasAndReversesTheSeries() {
         Api2Repository.Series series = new Api2Repository.Series();
-        series.s = "2026-11-17 10:00:00";
-        series.m = 1.0;
-        series.v = List.of(33.0, List.of(9.0, -3600.0), List.of(-13.0, -3600.0));
+        series.start = "2026-11-17 10:00:00";
+        series.scale = 1.0;
+        series.values = List.of(33.0, List.of(9.0, -3600.0), List.of(-13.0, -3600.0));
 
         List<Point> points = api2Parser.decodeSeries(series, "+08:00");
 
@@ -102,9 +102,9 @@ class ParsersTest {
     @Test
     void api2_readsCurrentSeriesAndAqi() {
         Api2Repository.Series pm25 = new Api2Repository.Series();
-        pm25.s = "2026-11-17 10:00:00";
-        pm25.m = 1.0;
-        pm25.v = List.of(33.0, List.of(9.0, -3600.0));
+        pm25.start = "2026-11-17 10:00:00";
+        pm25.scale = 1.0;
+        pm25.values = List.of(33.0, List.of(9.0, -3600.0));
 
         Api2Repository.Message message = new Api2Repository.Message();
         message.aqi = 33.0;
@@ -112,7 +112,7 @@ class ParsersTest {
         message.city.name = "Kapit, Sarawak, Malaysia";
         message.time = new Api2Repository.Time();
         message.time.iso = "2026-11-17T10:00:00+08:00";
-        message.time.tz = "+08:00";
+        message.time.timezone = "+08:00";
         message.iaqi = Map.of("pm25", reading(33), "pm10", reading(21));
         message.obs = Map.of("pm25", pm25);
 
@@ -193,7 +193,7 @@ class ParsersTest {
 
     private static Api2Repository.Reading reading(double value) {
         Api2Repository.Reading reading = new Api2Repository.Reading();
-        reading.v = value;
+        reading.value = value;
         return reading;
     }
 
