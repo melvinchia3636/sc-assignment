@@ -7,14 +7,11 @@ import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.guidance.Audience;
-import com.groupone.assignment.ui.common.AppIcons;
-import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 /**
  * Audience-specific guidance card: note plus outdoor-time recommendation.
@@ -32,10 +29,6 @@ public class GuidanceSection extends LinearLayout {
         label = findViewById(R.id.guidance_label);
         note = findViewById(R.id.guidance_note);
         time = findViewById(R.id.guidance_time);
-
-        ImageView icon = findViewById(R.id.guidance_icon);
-        icon.setImageDrawable(AppIcons.drawable(
-                context, GoogleMaterial.Icon.gmd_directions_walk, "#1B5E20", 16));
     }
 
     public void bind(Audience audience, double aqi) {
