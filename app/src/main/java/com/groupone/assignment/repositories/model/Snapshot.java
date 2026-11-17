@@ -1,6 +1,6 @@
-package com.groupone.assignment.repositories;
+package com.groupone.assignment.repositories.model;
 
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 
 /**
  * A complete screen's worth of data: the nearest WAQI station reading, with

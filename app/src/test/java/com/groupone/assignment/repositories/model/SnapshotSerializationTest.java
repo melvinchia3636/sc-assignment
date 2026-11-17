@@ -1,12 +1,12 @@
-package com.groupone.assignment.repositories;
+package com.groupone.assignment.repositories.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.groupone.assignment.repositories.StationRepository.SeriesPoint;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.SeriesPoint;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 
 import org.junit.jupiter.api.Test;
 

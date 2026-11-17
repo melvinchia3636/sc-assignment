@@ -1,8 +1,8 @@
 package com.groupone.assignment.lib;
 
-import com.groupone.assignment.repositories.StationRepository.ObservationSeries;
-import com.groupone.assignment.repositories.StationRepository.Point;
-import com.groupone.assignment.repositories.StationRepository.SeriesPoint;
+import com.groupone.assignment.repositories.model.StationRepository.ObservationSeries;
+import com.groupone.assignment.repositories.model.StationRepository.Point;
+import com.groupone.assignment.repositories.model.StationRepository.SeriesPoint;
 
 import java.util.ArrayList;
 import java.util.Collections;

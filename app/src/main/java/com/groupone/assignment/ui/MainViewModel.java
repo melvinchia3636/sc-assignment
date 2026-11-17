@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.groupone.assignment.repositories.ApiException;
-import com.groupone.assignment.repositories.Snapshot;
+import com.groupone.assignment.repositories.model.Snapshot;
 import com.groupone.assignment.repositories.AirQualityRepository;
 
 import java.util.concurrent.ExecutorService;

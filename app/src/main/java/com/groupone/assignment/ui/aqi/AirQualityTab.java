@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.groupone.assignment.R;
-import com.groupone.assignment.repositories.StationRepository.SeriesPoint;
-import com.groupone.assignment.repositories.Snapshot;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.SeriesPoint;
+import com.groupone.assignment.repositories.model.Snapshot;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 import com.groupone.assignment.databinding.FragmentAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.AppIcons;

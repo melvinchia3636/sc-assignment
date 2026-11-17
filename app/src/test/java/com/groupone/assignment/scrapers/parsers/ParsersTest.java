@@ -5,14 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.groupone.assignment.repositories.StationRepository.Coordinates;
-import com.groupone.assignment.repositories.StationRepository.Point;
-import com.groupone.assignment.repositories.StationRepository.Station;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
-import com.groupone.assignment.repositories.AirnetRepository;
-import com.groupone.assignment.repositories.Api2Repository;
-import com.groupone.assignment.repositories.BoundsRepository;
-import com.groupone.assignment.repositories.CwopRepository;
+import com.groupone.assignment.repositories.model.StationRepository.Coordinates;
+import com.groupone.assignment.repositories.model.StationRepository.Point;
+import com.groupone.assignment.repositories.model.StationRepository.Station;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.remote.AirnetRepository;
+import com.groupone.assignment.repositories.remote.Api2Repository;
+import com.groupone.assignment.repositories.remote.BoundsRepository;
+import com.groupone.assignment.repositories.remote.CwopRepository;
 
 import org.junit.jupiter.api.Test;
 

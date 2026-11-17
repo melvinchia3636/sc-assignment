@@ -1,4 +1,4 @@
-package com.groupone.assignment.repositories;
+package com.groupone.assignment.repositories.remote;
 
 import java.util.List;
 

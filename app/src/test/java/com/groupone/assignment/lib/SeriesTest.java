@@ -3,9 +3,9 @@ package com.groupone.assignment.lib;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.groupone.assignment.repositories.StationRepository.ObservationSeries;
-import com.groupone.assignment.repositories.StationRepository.Point;
-import com.groupone.assignment.repositories.StationRepository.SeriesPoint;
+import com.groupone.assignment.repositories.model.StationRepository.ObservationSeries;
+import com.groupone.assignment.repositories.model.StationRepository.Point;
+import com.groupone.assignment.repositories.model.StationRepository.SeriesPoint;
 
 import org.junit.jupiter.api.Test;
 

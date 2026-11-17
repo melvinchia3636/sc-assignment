@@ -2,12 +2,12 @@ package com.groupone.assignment.scrapers.sources;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.ApiException;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 import com.groupone.assignment.lib.TtlCache;
 import com.groupone.assignment.lib.http.Upstream;
 import com.groupone.assignment.scrapers.parsers.AirnetParser;
-import com.groupone.assignment.repositories.AirnetRepository;
-import com.groupone.assignment.repositories.CwopRepository;
+import com.groupone.assignment.repositories.remote.AirnetRepository;
+import com.groupone.assignment.repositories.remote.CwopRepository;
 
 import okhttp3.HttpUrl;
 
