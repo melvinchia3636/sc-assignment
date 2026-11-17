@@ -44,7 +44,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         viewModel = sharedViewModel();
 
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
-        binding.retryButton.setOnClickListener(clicked -> viewModel.refresh());
+        binding.errorCard.setOnRetryListener(viewModel::refresh);
         observeViewModel();
     }
 
@@ -78,7 +78,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
                 binding.weatherSection.bind(station) ? View.VISIBLE : View.GONE);
         binding.trendSection.bind(station);
 
-        binding.errorCard.setVisibility(View.GONE);
+        binding.errorCard.hide();
         binding.swipeRefresh.setRefreshing(false);
     }
 
@@ -92,8 +92,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void showError(String message) {
-        binding.errorText.setText(message);
-        binding.errorCard.setVisibility(View.VISIBLE);
+        binding.errorCard.show(message);
         binding.swipeRefresh.setRefreshing(false);
 
         binding.aqiHero.showError();
