@@ -1,4 +1,4 @@
-package com.groupone.assignment.ui.aqi;
+package com.groupone.assignment.ui.common;
 
 import android.annotation.SuppressLint;
 

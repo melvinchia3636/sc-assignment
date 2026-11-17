@@ -8,7 +8,7 @@ import com.groupone.assignment.R;
 import com.groupone.assignment.guidance.AqiLevel;
 import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.repositories.model.Station;
-import com.groupone.assignment.ui.aqi.AqiScale;
+import com.groupone.assignment.ui.common.AqiScale;
 
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;

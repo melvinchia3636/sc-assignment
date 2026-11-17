@@ -1,4 +1,4 @@
-package com.groupone.assignment.ui.aqi;
+package com.groupone.assignment.ui.common;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
