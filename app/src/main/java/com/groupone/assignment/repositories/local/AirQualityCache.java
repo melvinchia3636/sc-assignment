@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import com.groupone.assignment.repositories.Snapshot;
+import com.groupone.assignment.repositories.model.StationDetail;
 
 /**
  * Stores the last successful station reading so the app can keep showing data
@@ -15,7 +15,7 @@ import com.groupone.assignment.repositories.Snapshot;
 public class AirQualityCache {
 
     private static final String PREFS_NAME = "air_quality_cache";
-    private static final String KEY_SNAPSHOT = "last_snapshot";
+    private static final String KEY_STATION = "last_station";
 
     private static final Gson GSON = new GsonBuilder()
             .serializeSpecialFloatingPointValues()
@@ -28,24 +28,23 @@ public class AirQualityCache {
                 .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
-    public void save(Snapshot snapshot) {
-        preferences.edit().putString(KEY_SNAPSHOT, GSON.toJson(snapshot)).apply();
+    public void save(StationDetail station) {
+        preferences.edit().putString(KEY_STATION, GSON.toJson(station)).apply();
     }
 
-    public Snapshot load() {
-        String raw = preferences.getString(KEY_SNAPSHOT, null);
+    public StationDetail load() {
+        String raw = preferences.getString(KEY_STATION, null);
         if (raw == null) {
             return null;
         }
         try {
-            Snapshot snapshot = GSON.fromJson(raw, Snapshot.class);
-            if (snapshot == null || snapshot.getStationDetail() == null) {
-                preferences.edit().remove(KEY_SNAPSHOT).apply();
-                return null;
+            StationDetail station = GSON.fromJson(raw, StationDetail.class);
+            if (station == null) {
+                preferences.edit().remove(KEY_STATION).apply();
             }
-            return snapshot;
+            return station;
         } catch (JsonParseException invalidCache) {
-            preferences.edit().remove(KEY_SNAPSHOT).apply();
+            preferences.edit().remove(KEY_STATION).apply();
             return null;
         }
     }

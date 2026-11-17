@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.groupone.assignment.R;
-import com.groupone.assignment.repositories.model.StationRepository.SeriesPoint;
-import com.groupone.assignment.repositories.Snapshot;
-import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.SeriesPoint;
+import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.FragmentAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.AppIcons;
@@ -74,7 +73,7 @@ public class AirQualityTab extends BaseTab<FragmentAqiBinding> {
     }
 
     private void observeViewModel() {
-        observeSnapshot(this::render);
+        observeStation(this::render);
         observeError(message -> {
             if (message != null) {
                 showError(message);
@@ -85,8 +84,7 @@ public class AirQualityTab extends BaseTab<FragmentAqiBinding> {
         observeLoading(binding.swipeRefresh);
     }
 
-    private void render(Snapshot snapshot) {
-        StationDetail station = snapshot.getStationDetail();
+    private void render(StationDetail station) {
         AqiScale.Level level = AqiScale.classify(station.getAqi());
         int background = Color.parseColor(level.getColourHex());
         int foreground = Color.parseColor(level.getTextColourHex());
@@ -105,9 +103,10 @@ public class AirQualityTab extends BaseTab<FragmentAqiBinding> {
         binding.aqiCategory.setText(level.getLabelRes());
         binding.aqiAdvice.setText(level.getAdviceRes());
 
-        long updatedAt = station.getUpdatedAt() > 0
-                ? station.getUpdatedAt() : snapshot.getSavedAtMillis() / 1000;
-        binding.updatedText.setText(getString(R.string.updated_at, formatEpoch(updatedAt)));
+        long updatedAt = station.getUpdatedAt();
+        binding.updatedText.setText(updatedAt > 0
+                ? getString(R.string.updated_at, formatEpoch(updatedAt))
+                : getString(R.string.not_updated));
 
         binding.pm25Card.bind("PM2.5", station.current("pm25"), station.values("pm25"));
         binding.pm10Card.bind("PM10", station.current("pm10"), station.values("pm10"));

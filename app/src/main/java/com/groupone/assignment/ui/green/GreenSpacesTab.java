@@ -35,7 +35,7 @@ public class GreenSpacesTab extends BaseTab<FragmentGreenSpaceBinding> {
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
         binding.greenPlaceholder.setText(R.string.empty_green_spaces);
 
-        observeSnapshot(snapshot -> binding.swipeRefresh.setRefreshing(false));
+        observeStation(snapshot -> binding.swipeRefresh.setRefreshing(false));
         observeError(message -> {
             if (message != null) {
                 binding.greenPlaceholder.setText(message);

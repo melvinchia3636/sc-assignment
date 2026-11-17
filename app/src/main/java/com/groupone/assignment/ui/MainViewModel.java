@@ -8,21 +8,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.groupone.assignment.repositories.ApiException;
-import com.groupone.assignment.repositories.Snapshot;
 import com.groupone.assignment.repositories.AirQualityRepository;
+import com.groupone.assignment.repositories.model.StationDetail;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Owns the snapshot, loading state and place name so they survive rotation.
+ * Owns the station reading, loading state and place name so they survive
+ * rotation.
  */
 public class MainViewModel extends AndroidViewModel {
 
     private final AirQualityRepository repository;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private final MutableLiveData<Snapshot> snapshot = new MutableLiveData<>();
+    private final MutableLiveData<StationDetail> station = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<String> placeName = new MutableLiveData<>("Kuala Lumpur");
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
@@ -33,14 +34,14 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         repository = new AirQualityRepository(application);
-        Snapshot cached = repository.loadCached();
+        StationDetail cached = repository.loadCached();
         if (cached != null) {
-            snapshot.setValue(cached);
+            station.setValue(cached);
         }
     }
 
-    public LiveData<Snapshot> getSnapshot() {
-        return snapshot;
+    public LiveData<StationDetail> getStation() {
+        return station;
     }
 
     public LiveData<String> getError() {
@@ -86,10 +87,10 @@ public class MainViewModel extends AndroidViewModel {
         error.setValue(null);
         executor.execute(() -> {
             try {
-                Snapshot refreshed = repository.refresh(latitude, longitude);
-                snapshot.postValue(refreshed);
+                StationDetail refreshed = repository.refresh(latitude, longitude);
+                station.postValue(refreshed);
             } catch (ApiException failure) {
-                if (snapshot.getValue() == null) {
+                if (station.getValue() == null) {
                     error.postValue(failure.message(getApplication()));
                 }
             } finally {
