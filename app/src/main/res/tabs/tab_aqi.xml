@@ -53,42 +53,12 @@
                 android:layout_marginTop="12dp"
                 android:visibility="gone" />
 
-            <com.google.android.material.card.MaterialCardView
+            <com.groupone.assignment.ui.aqi.sections.ErrorCard
                 android:id="@+id/error_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="@color/card"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/line"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/error_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/ink"
-                        android:textSize="13sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/retry_button"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="@string/retry"
-                        android:textColor="@color/green_700"
-                        app:rippleColor="@color/ripple_green" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                android:visibility="gone" />
 
             <com.groupone.assignment.ui.common.SectionView
                 android:layout_width="match_parent"
