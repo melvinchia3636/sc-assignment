@@ -33,14 +33,25 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.languageRow.setTitle(R.string.settings_language);
+        binding.audienceRow.setTitle(R.string.settings_audience);
+        binding.airQualityRow
+                .setTitle(R.string.settings_air_quality)
+                .setValue(R.string.settings_air_quality_value)
+                .setChevronVisible(false);
+        binding.mapRow
+                .setTitle(R.string.settings_map)
+                .setValue(R.string.settings_map_value)
+                .setChevronVisible(false);
+
         syncSelection();
         binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
         binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
     }
 
     private void syncSelection() {
-        binding.languageValue.setText(LocalizationService.current().getLabelRes());
-        binding.audienceValue.setText(
+        binding.languageRow.setValue(LocalizationService.current().getLabelRes());
+        binding.audienceRow.setValue(
                 UserPreferences.currentAudience(requireContext()).getLabelRes());
     }
 
