@@ -59,27 +59,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         SparklineChart.clear(binding.aqiSparkline);
         binding.guidanceIcon.setImageDrawable(AppIcons.drawable(
                 requireContext(), GoogleMaterial.Icon.gmd_directions_walk, "#1B5E20", 16));
-        setUpWeatherItems();
         observeViewModel();
-    }
-
-    private void setUpWeatherItems() {
-        binding.weatherTempItem.setUp(
-                AppIcons.drawable(requireContext(), FontAwesome.Icon.faw_thermometer_half,
-                        "#1B5E20", 18),
-                getString(R.string.weather_temperature));
-        binding.weatherHumidityItem.setUp(
-                AppIcons.drawable(requireContext(), GoogleMaterial.Icon.gmd_opacity,
-                        "#1B5E20", 18),
-                getString(R.string.weather_humidity));
-        binding.weatherPressureItem.setUp(
-                AppIcons.drawable(requireContext(), GoogleMaterial.Icon.gmd_speed,
-                        "#1B5E20", 18),
-                getString(R.string.weather_pressure));
-        binding.weatherWindItem.setUp(
-                AppIcons.drawable(requireContext(), FontAwesome.Icon.faw_wind,
-                        "#1B5E20", 18),
-                getString(R.string.weather_wind));
     }
 
     private void observeViewModel() {
@@ -127,7 +107,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.so2Card.bind("SO₂", station.current("so2"), station.values("so2"));
         binding.coCard.bind("CO", station.current("co"), station.values("co"));
 
-        renderWeather(station);
+        binding.weatherSection.bind(station);
         renderTrend(station);
 
         binding.errorCard.setVisibility(View.GONE);
@@ -174,29 +154,6 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         }
     }
 
-    private void renderWeather(StationDetail station) {
-        double temperature = station.current("t");
-        double humidity = station.current("h");
-        double pressure = station.current("p");
-        double wind = station.current("w");
-
-        if (Double.isNaN(temperature) && Double.isNaN(humidity)
-                && Double.isNaN(pressure) && Double.isNaN(wind)) {
-            binding.weatherSection.setVisibility(View.GONE);
-            return;
-        }
-        binding.weatherTempItem.setValue(formatWeather(temperature, "%.1f °C"));
-        binding.weatherHumidityItem.setValue(formatWeather(humidity, "%.0f %%"));
-        binding.weatherPressureItem.setValue(formatWeather(pressure, "%.0f hPa"));
-        binding.weatherWindItem.setValue(formatWeather(wind, "%.1f km/h"));
-        binding.weatherSection.setVisibility(View.VISIBLE);
-    }
-
-    private String formatWeather(double value, String format) {
-        return Double.isNaN(value) ? "--"
-                : String.format(Locale.getDefault(), format, value);
-    }
-
     private void renderTrend(StationDetail station) {
         List<SeriesPoint> points = station.series("aqi");
         int from = Math.max(0, points.size() - 24);
@@ -240,11 +197,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.guidanceCard.setVisibility(View.GONE);
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");
-        binding.weatherSection.setVisibility(View.GONE);
-        binding.weatherTempItem.clear();
-        binding.weatherHumidityItem.clear();
-        binding.weatherPressureItem.clear();
-        binding.weatherWindItem.clear();
+        binding.weatherSection.clear();
         SparklineChart.clear(binding.aqiSparkline);
         binding.pm25Card.clear();
         binding.pm10Card.clear();

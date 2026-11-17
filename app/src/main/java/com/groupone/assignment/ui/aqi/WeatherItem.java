@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.groupone.assignment.R;
 
+import java.util.Locale;
+
 /**
  * One weather metric: icon, value and label.
  */
@@ -45,6 +47,12 @@ public class WeatherItem extends LinearLayout {
 
     public void setValue(CharSequence text) {
         value.setText(text);
+    }
+
+    public void setValue(double reading, String format) {
+        value.setText(Double.isNaN(reading)
+                ? getContext().getString(R.string.dash)
+                : String.format(Locale.getDefault(), format, reading));
     }
 
     public void clear() {
