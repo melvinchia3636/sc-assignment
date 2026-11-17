@@ -77,13 +77,13 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void observeViewModel() {
-        viewModel.getStation().observe(getViewLifecycleOwner(), this::render);
+        viewModel.airQuality().getStation().observe(getViewLifecycleOwner(), this::render);
         observeError(message -> {
             if (message != null) {
                 showError(message);
             }
         });
-        viewModel.getPlaceName().observe(getViewLifecycleOwner(),
+        viewModel.getLocationService().getPlaceName().observe(getViewLifecycleOwner(),
                 name -> binding.cityTitle.setText(name));
         observeLoading(binding.swipeRefresh);
     }
@@ -102,7 +102,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
                 requireContext(), level.getIcon(), foreground, 18));
 
         binding.stationName.setText(station.getName().isEmpty()
-                ? viewModel.placeName() : station.getName());
+                ? viewModel.getLocationService().placeName() : station.getName());
         binding.aqiValue.setText(AqiScale.format(station.getAqi()));
         binding.aqiCategory.setText(level.getLabelRes());
         binding.aqiAdvice.setText(level.getAdviceRes());

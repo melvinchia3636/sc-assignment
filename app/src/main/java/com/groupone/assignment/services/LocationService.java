@@ -13,6 +13,8 @@ import androidx.activity.ComponentActivity;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.location.CurrentLocationRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -53,28 +55,54 @@ public class LocationService {
     }
 
     private final Context context;
-    private final ActivityResultLauncher<String[]> permissionLauncher;
     private final FusedLocationProviderClient locationClient;
     private final ExecutorService geocoderExecutor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
+    private final MutableLiveData<String> placeName = new MutableLiveData<>(FALLBACK_PLACE);
+    private double latitude = FALLBACK_LATITUDE;
+    private double longitude = FALLBACK_LONGITUDE;
+
+    private ActivityResultLauncher<String[]> permissionLauncher;
     private CancellationTokenSource cancellation;
     private Listener listener;
 
-    public LocationService(ComponentActivity activity) {
-        this.context = activity.getApplicationContext();
-        this.locationClient = LocationServices.getFusedLocationProviderClient(activity);
-        this.permissionLauncher = activity.registerForActivityResult(
+    public LocationService(Context context) {
+        this.context = context.getApplicationContext();
+        this.locationClient = LocationServices.getFusedLocationProviderClient(this.context);
+    }
+
+    public void attach(ComponentActivity activity) {
+        permissionLauncher = activity.registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 this::onPermissionResult);
+    }
+
+    public LiveData<String> getPlaceName() {
+        return placeName;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String placeName() {
+        String value = placeName.getValue();
+        return value == null ? FALLBACK_PLACE : value;
     }
 
     public void locate(Listener listener) {
         this.listener = listener;
         if (hasPermission()) {
             requestLocation();
-        } else {
+        } else if (permissionLauncher != null) {
             permissionLauncher.launch(LOCATION_PERMISSIONS);
+        } else {
+            fallback(R.string.location_permission_denied);
         }
     }
 
@@ -136,6 +164,7 @@ public class LocationService {
         geocoderExecutor.execute(() -> {
             String place = resolvePlaceName(latitude, longitude);
             mainHandler.post(() -> {
+                setPlace(place, latitude, longitude);
                 if (listener != null) {
                     listener.onLocated(place, latitude, longitude);
                 }
@@ -145,11 +174,18 @@ public class LocationService {
 
     private void fallback(int messageRes) {
         mainHandler.post(() -> {
+            setPlace(FALLBACK_PLACE, FALLBACK_LATITUDE, FALLBACK_LONGITUDE);
             if (listener != null) {
                 listener.onFallback(FALLBACK_PLACE, FALLBACK_LATITUDE, FALLBACK_LONGITUDE,
                         messageRes);
             }
         });
+    }
+
+    private void setPlace(String place, double latitude, double longitude) {
+        placeName.setValue(place);
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     private boolean hasPermission() {
