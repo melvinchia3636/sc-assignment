@@ -3,8 +3,8 @@ package com.groupone.assignment.repositories;
 import android.content.Context;
 
 import com.groupone.assignment.repositories.local.AirQualityCache;
-import com.groupone.assignment.repositories.model.StationRepository.Coordinates;
-import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.Coordinates;
+import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.scrapers.WaqiClient;
 
 /**
@@ -24,16 +24,13 @@ public class AirQualityRepository {
         this.cache = cache;
     }
 
-    public Snapshot refresh(double latitude, double longitude) throws ApiException {
-        StationDetail stationDetail = waqiClient.findNearest(
-                new Coordinates(latitude, longitude));
-
-        Snapshot snapshot = new Snapshot(stationDetail, System.currentTimeMillis());
-        cache.save(snapshot);
-        return snapshot;
+    public StationDetail refresh(double latitude, double longitude) throws ApiException {
+        StationDetail station = waqiClient.findNearest(new Coordinates(latitude, longitude));
+        cache.save(station);
+        return station;
     }
 
-    public Snapshot loadCached() {
+    public StationDetail loadCached() {
         return cache.load();
     }
 }

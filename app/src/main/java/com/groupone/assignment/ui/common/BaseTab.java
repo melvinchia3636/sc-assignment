@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewbinding.ViewBinding;
 
-import com.groupone.assignment.repositories.Snapshot;
+import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.ui.MainViewModel;
 
 /**
@@ -44,8 +44,8 @@ public abstract class BaseTab<VB extends ViewBinding> extends Fragment {
         return viewModel;
     }
 
-    protected void observeSnapshot(Observer<Snapshot> observer) {
-        sharedViewModel().getSnapshot().observe(getViewLifecycleOwner(), observer);
+    protected void observeStation(Observer<StationDetail> observer) {
+        sharedViewModel().getStation().observe(getViewLifecycleOwner(), observer);
     }
 
     protected void observeError(Observer<String> observer) {

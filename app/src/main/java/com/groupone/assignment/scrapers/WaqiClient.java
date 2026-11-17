@@ -2,10 +2,10 @@ package com.groupone.assignment.scrapers;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.ApiException;
-import com.groupone.assignment.repositories.model.StationRepository.Bounds;
-import com.groupone.assignment.repositories.model.StationRepository.Coordinates;
-import com.groupone.assignment.repositories.model.StationRepository.Station;
-import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.Bounds;
+import com.groupone.assignment.repositories.model.Coordinates;
+import com.groupone.assignment.repositories.model.Station;
+import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.lib.TtlCache;
 import com.groupone.assignment.lib.http.Upstream;
 import com.groupone.assignment.scrapers.parsers.StationsParser;

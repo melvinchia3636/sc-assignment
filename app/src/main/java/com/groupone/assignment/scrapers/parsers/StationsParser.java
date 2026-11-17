@@ -1,7 +1,7 @@
 package com.groupone.assignment.scrapers.parsers;
 
-import com.groupone.assignment.repositories.model.StationRepository.Coordinates;
-import com.groupone.assignment.repositories.model.StationRepository.Station;
+import com.groupone.assignment.repositories.model.Coordinates;
+import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.repositories.remote.BoundsRepository;
 
 import net.sf.geographiclib.Geodesic;
