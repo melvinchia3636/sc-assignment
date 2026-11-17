@@ -1,4 +1,4 @@
-package com.groupone.assignment.lib;
+package com.groupone.assignment.scrapers.lib;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;

@@ -4,8 +4,8 @@ import com.groupone.assignment.repositories.model.ObservationSeries;
 import com.groupone.assignment.repositories.model.Point;
 import com.groupone.assignment.repositories.model.SeriesPoint;
 import com.groupone.assignment.repositories.model.StationDetail;
-import com.groupone.assignment.lib.Series;
-import com.groupone.assignment.lib.Time;
+import com.groupone.assignment.scrapers.lib.Series;
+import com.groupone.assignment.scrapers.lib.Time;
 import com.groupone.assignment.repositories.remote.Api2Repository;
 
 import java.util.ArrayList;

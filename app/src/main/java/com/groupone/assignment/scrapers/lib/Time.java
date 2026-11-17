@@ -1,4 +1,4 @@
-package com.groupone.assignment.lib;
+package com.groupone.assignment.scrapers.lib;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;

@@ -1,4 +1,4 @@
-package com.groupone.assignment.lib;
+package com.groupone.assignment.scrapers.lib;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
