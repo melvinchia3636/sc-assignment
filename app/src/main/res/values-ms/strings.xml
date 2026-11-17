@@ -4,8 +4,17 @@
     <string name="city_name">Kuala Lumpur</string>
 
     <string name="tab_aqi">Kualiti udara</string>
+    <string name="tab_map">Peta</string>
     <string name="tab_green">Ruang hijau</string>
     <string name="tab_settings">Tetapan</string>
+
+    <string name="map_title">Peta stesen</string>
+    <string name="map_subtitle">Stesen pemantauan WAQI berdekatan</string>
+    <string name="map_station_count">%1$d stesen</string>
+    <string name="map_empty">Tiada stesen dimuatkan lagi.</string>
+    <string name="map_station_snippet">AQI %1$s · idx %2$s</string>
+    <string name="map_zoom_in">Zum masuk</string>
+    <string name="map_zoom_out">Zum keluar</string>
 
     <string name="dash">--</string>
     <string name="pollutants_label">SUB-INDEKS PENCEMAR (AQI)</string>

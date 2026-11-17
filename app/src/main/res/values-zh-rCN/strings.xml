@@ -4,8 +4,17 @@
     <string name="city_name">吉隆坡</string>
 
     <string name="tab_aqi">空气质量</string>
+    <string name="tab_map">地图</string>
     <string name="tab_green">绿地</string>
     <string name="tab_settings">设置</string>
+
+    <string name="map_title">监测站地图</string>
+    <string name="map_subtitle">附近的 WAQI 监测站</string>
+    <string name="map_station_count">%1$d 个监测站</string>
+    <string name="map_empty">尚未加载监测站。</string>
+    <string name="map_station_snippet">AQI %1$s · 编号 %2$s</string>
+    <string name="map_zoom_in">放大</string>
+    <string name="map_zoom_out">缩小</string>
 
     <string name="dash">--</string>
     <string name="pollutants_label">污染物分指数（AQI）</string>

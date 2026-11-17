@@ -4,6 +4,9 @@
         android:id="@+id/tab_aqi"
         android:title="@string/tab_aqi" />
     <item
+        android:id="@+id/tab_map"
+        android:title="@string/tab_map" />
+    <item
         android:id="@+id/tab_green"
         android:title="@string/tab_green" />
     <item

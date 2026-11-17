@@ -1,4 +1,4 @@
-package com.groupone.assignment.lib.http;
+package com.groupone.assignment.lib;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;

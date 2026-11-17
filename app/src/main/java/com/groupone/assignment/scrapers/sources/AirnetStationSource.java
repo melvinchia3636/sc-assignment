@@ -4,7 +4,7 @@ import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.ApiException;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.lib.TtlCache;
-import com.groupone.assignment.lib.http.Upstream;
+import com.groupone.assignment.lib.Upstream;
 import com.groupone.assignment.scrapers.parsers.AirnetParser;
 import com.groupone.assignment.repositories.remote.AirnetRepository;
 import com.groupone.assignment.repositories.remote.CwopRepository;
