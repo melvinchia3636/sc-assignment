@@ -104,11 +104,11 @@ public abstract class BaseTab<VB extends ViewBinding> extends Fragment {
     }
 
     protected void observeError(Observer<String> observer) {
-        sharedViewModel().getError().observe(getViewLifecycleOwner(), observer);
+        sharedViewModel().airQuality().getError().observe(getViewLifecycleOwner(), observer);
     }
 
     protected void observeLoading(SwipeRefreshLayout swipeRefresh) {
-        sharedViewModel().getLoading().observe(getViewLifecycleOwner(),
+        sharedViewModel().airQuality().getLoading().observe(getViewLifecycleOwner(),
                 loading -> swipeRefresh.setRefreshing(Boolean.TRUE.equals(loading)));
     }
 

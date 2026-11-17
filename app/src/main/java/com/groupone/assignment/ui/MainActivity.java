@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
             if (isFinishing() || isDestroyed()) {
                 return;
             }
-            viewModel.setLocation(place, latitude, longitude);
+            viewModel.onLocationChanged();
         }
 
         @Override
@@ -30,13 +30,12 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             Toast.makeText(MainActivity.this, messageRes, Toast.LENGTH_LONG).show();
-            viewModel.setLocation(place, latitude, longitude);
+            viewModel.onLocationChanged();
         }
     };
 
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
-    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +46,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        locationService = new LocationService(this);
+        viewModel.getLocationService().attach(this);
 
         bootstrap.attach(binding);
 
         if (savedInstanceState == null) {
             viewModel.startLocationLookup();
-            locationService.locate(locationListener);
+            viewModel.getLocationService().locate(locationListener);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        locationService.shutdown();
-        super.onDestroy();
     }
 }

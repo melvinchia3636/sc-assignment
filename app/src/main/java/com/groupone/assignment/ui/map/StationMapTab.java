@@ -52,7 +52,8 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         map.setBuiltInZoomControls(false);
         map.getController().setZoom(11.0);
         map.getController().setCenter(
-                new GeoPoint(viewModel.getLatitude(), viewModel.getLongitude()));
+                new GeoPoint(viewModel.getLocationService().getLatitude(),
+                        viewModel.getLocationService().getLongitude()));
 
         binding.mapZoomIn.setImageDrawable(AppIcons.drawable(
                 requireContext(), GoogleMaterial.Icon.gmd_add, "#1A1C19", 18));
@@ -61,8 +62,8 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         binding.mapZoomIn.setOnClickListener(click -> map.getController().zoomIn());
         binding.mapZoomOut.setOnClickListener(click -> map.getController().zoomOut());
 
-        viewModel.getStations().observe(getViewLifecycleOwner(), this::render);
-        viewModel.getStationsLoading().observe(getViewLifecycleOwner(),
+        viewModel.stations().getStations().observe(getViewLifecycleOwner(), this::render);
+        viewModel.stations().getLoading().observe(getViewLifecycleOwner(),
                 loading -> binding.mapLoading.setVisibility(
                         Boolean.TRUE.equals(loading) ? android.view.View.VISIBLE : android.view.View.GONE));
     }

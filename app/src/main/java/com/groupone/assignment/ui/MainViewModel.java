@@ -4,97 +4,47 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.groupone.assignment.repositories.ApiException;
 import com.groupone.assignment.repositories.AirQualityRepository;
-import com.groupone.assignment.repositories.model.Station;
-import com.groupone.assignment.repositories.model.StationDetail;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.groupone.assignment.services.AirQualityService;
+import com.groupone.assignment.services.LocationService;
+import com.groupone.assignment.services.StationsService;
 
 /**
- * Owns the station reading, loading state and place name so they survive
- * rotation.
+ * Coordinates the activity-scoped services and exposes their state to tabs.
  */
 public class MainViewModel extends AndroidViewModel {
 
-    private final AirQualityRepository repository;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final ExecutorService stationExecutor = Executors.newSingleThreadExecutor();
-
-    private final MutableLiveData<StationDetail> station = new MutableLiveData<>();
-    private final MutableLiveData<List<Station>> stations =
-            new MutableLiveData<>(Collections.emptyList());
-    private final MutableLiveData<Boolean> stationsLoading = new MutableLiveData<>(false);
-    private final MutableLiveData<String> error = new MutableLiveData<>();
-    private final MutableLiveData<String> placeName = new MutableLiveData<>("Kuala Lumpur");
-    private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
-
-    private double latitude = 3.1390;
-    private double longitude = 101.6869;
+    private final AirQualityService airQuality;
+    private final StationsService stations;
+    private final LocationService location;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        repository = new AirQualityRepository(application);
-        StationDetail cached = repository.loadCached();
-        if (cached != null) {
-            station.setValue(cached);
-        }
+        AirQualityRepository repository = new AirQualityRepository(application);
+        airQuality = new AirQualityService(application, repository);
+        stations = new StationsService(repository);
+        location = new LocationService(application);
     }
 
-    public LiveData<StationDetail> getStation() {
-        return station;
+    public LocationService getLocationService() {
+        return location;
     }
 
-    public LiveData<List<Station>> getStations() {
+    public AirQualityService airQuality() {
+        return airQuality;
+    }
+
+    public StationsService stations() {
         return stations;
     }
 
-    public LiveData<Boolean> getStationsLoading() {
-        return stationsLoading;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public LiveData<String> getError() {
-        return error;
-    }
-
-    public LiveData<String> getPlaceName() {
-        return placeName;
-    }
-
-    public LiveData<Boolean> getLoading() {
-        return loading;
-    }
-
-    public String placeName() {
-        String value = placeName.getValue();
-        return value == null ? "Kuala Lumpur" : value;
-    }
-
-    private boolean running;
-
-    public void setLocation(String place, double latitude, double longitude) {
-        this.placeName.setValue(place);
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public void onLocationChanged() {
         startLoad();
     }
 
     public void startLocationLookup() {
-        loading.setValue(true);
+        airQuality.beginLoading();
     }
 
     public void refresh() {
@@ -102,45 +52,15 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     private void startLoad() {
-        startStationsLoad();
-        if (running) {
-            return;
-        }
-        running = true;
-        loading.setValue(true);
-        error.setValue(null);
-        executor.execute(() -> {
-            try {
-                StationDetail refreshed = repository.refresh(latitude, longitude);
-                station.postValue(refreshed);
-            } catch (ApiException failure) {
-                if (station.getValue() == null) {
-                    error.postValue(failure.message(getApplication()));
-                }
-            } finally {
-                running = false;
-                loading.postValue(false);
-            }
-        });
-    }
-
-    private void startStationsLoad() {
-        stationsLoading.setValue(true);
-        stationExecutor.execute(() -> {
-            try {
-                stations.postValue(repository.nearbyStations(latitude, longitude));
-            } catch (ApiException ignored) {
-                // The map keeps the last station list.
-            } finally {
-                stationsLoading.postValue(false);
-            }
-        });
+        airQuality.refresh(location.getLatitude(), location.getLongitude());
+        stations.load(location.getLatitude(), location.getLongitude());
     }
 
     @Override
     protected void onCleared() {
-        executor.shutdownNow();
-        stationExecutor.shutdownNow();
+        airQuality.shutdown();
+        stations.shutdown();
+        location.shutdown();
         super.onCleared();
     }
 }
