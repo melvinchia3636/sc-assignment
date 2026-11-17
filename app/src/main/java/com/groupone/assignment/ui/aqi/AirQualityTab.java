@@ -129,7 +129,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void applyAudienceNote() {
-        Audience audience = AudienceService.current(requireContext());
+        Audience audience = AudienceService.INSTANCE.current(requireContext());
         int noteRes = audience.getNoteRes();
         if (noteRes == 0) {
             binding.audienceNote.setVisibility(View.GONE);
