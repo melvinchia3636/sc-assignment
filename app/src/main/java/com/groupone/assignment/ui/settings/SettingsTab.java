@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.TabSettingsBinding;
 import com.groupone.assignment.repositories.model.Audience;
 import com.groupone.assignment.services.LocalizationService;
 import com.groupone.assignment.settings.UserPreferences;
 import com.groupone.assignment.ui.common.BaseTab;
+import com.groupone.assignment.ui.common.SingleChoiceDialog;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 /**
@@ -51,14 +51,9 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
             labels[i] = getString(languages[i].getLabelRes());
         }
 
-        new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_AirGreen_Dialog)
-                .setTitle(R.string.settings_language)
-                .setSingleChoiceItems(labels, LocalizationService.current().ordinal(),
-                        (dialog, which) -> {
-                            dialog.dismiss();
-                            LocalizationService.apply(languages[which]);
-                        })
-                .show();
+        SingleChoiceDialog.show(requireContext(), R.string.settings_language, labels,
+                LocalizationService.current().ordinal(),
+                which -> LocalizationService.apply(languages[which]));
     }
 
     private void showAudienceDialog() {
@@ -68,15 +63,11 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
             labels[i] = getString(audiences[i].getLabelRes());
         }
 
-        new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_AirGreen_Dialog)
-                .setTitle(R.string.settings_audience)
-                .setSingleChoiceItems(labels,
-                        UserPreferences.currentAudience(requireContext()).ordinal(),
-                        (dialog, which) -> {
-                            dialog.dismiss();
-                            UserPreferences.setAudience(requireContext(), audiences[which]);
-                            syncSelection();
-                        })
-                .show();
+        SingleChoiceDialog.show(requireContext(), R.string.settings_audience, labels,
+                UserPreferences.currentAudience(requireContext()).ordinal(),
+                which -> {
+                    UserPreferences.setAudience(requireContext(), audiences[which]);
+                    syncSelection();
+                });
     }
 }
