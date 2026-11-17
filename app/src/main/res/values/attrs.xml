@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="SettingsRowView">
         <attr name="rowTitle" format="string|reference" />
+        <attr name="rowValue" format="string|reference" />
     </declare-styleable>
 </resources>
