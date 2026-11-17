@@ -34,6 +34,8 @@
     <string name="settings_personalization_label">个性化</string>
     <string name="settings_air_quality">空气质量</string>
     <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_map">地图</string>
+    <string name="settings_map_value">OpenStreetMap</string>
     <string name="settings_language">语言</string>
     <string name="language_system">跟随系统</string>
     <string name="language_english">English</string>
