@@ -22,8 +22,23 @@ public class WeatherSection extends SectionView {
     public WeatherSection(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_weather_section, this, true);
+        items = addItems(context,
+                findViewById(R.id.weather_row_top),
+                findViewById(R.id.weather_row_bottom));
+    }
 
-        items = new WeatherItem[] {
+    public void bind(StationDetail station) {
+        boolean hasValue = false;
+
+        for (WeatherItem item : items) {
+            hasValue |= item.bind(station);
+        }
+
+        setVisibility(hasValue ? View.VISIBLE : View.GONE);
+    }
+
+    private WeatherItem[] addItems(Context context, LinearLayout top, LinearLayout bottom) {
+        WeatherItem[] created = {
                 new WeatherItem(context, "t", "%.1f °C",
                         FontAwesome.Icon.faw_thermometer_half,
                         R.string.weather_temperature),
@@ -38,32 +53,15 @@ public class WeatherSection extends SectionView {
                         R.string.weather_wind),
         };
 
-        LinearLayout top = findViewById(R.id.weather_row_top);
-        LinearLayout bottom = findViewById(R.id.weather_row_bottom);
         LinearLayout[] rows = {top, bottom};
-        for (int index = 0; index < items.length; index++) {
-            addItem(rows[index / 2], items[index], index % 2 == 0);
+        for (int index = 0; index < created.length; index++) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            if (index % 2 == 0) {
+                params.setMarginEnd(Math.round(8 * getResources().getDisplayMetrics().density));
+            }
+            rows[index / 2].addView(created[index], params);
         }
-    }
-
-    public void bind(StationDetail station) {
-        boolean hasValue = false;
-
-        for (WeatherItem item : items) {
-            hasValue |= item.bind(station);
-        }
-
-        setVisibility(hasValue ? View.VISIBLE : View.GONE);
-    }
-
-    private void addItem(LinearLayout row, WeatherItem item, boolean spaced) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-
-        if (spaced) {
-            params.setMarginEnd(Math.round(8 * getResources().getDisplayMetrics().density));
-        }
-
-        row.addView(item, params);
+        return created;
     }
 }
