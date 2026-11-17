@@ -52,9 +52,9 @@ public class StationMapTab extends BaseTab<FragmentStationMapBinding> {
                 new GeoPoint(viewModel.getLatitude(), viewModel.getLongitude()));
 
         binding.mapZoomIn.setImageDrawable(AppIcons.drawable(
-                requireContext(), GoogleMaterial.Icon.gmd_add, "#1A1C19", 22));
+                requireContext(), GoogleMaterial.Icon.gmd_add, "#1A1C19", 18));
         binding.mapZoomOut.setImageDrawable(AppIcons.drawable(
-                requireContext(), GoogleMaterial.Icon.gmd_remove, "#1A1C19", 22));
+                requireContext(), GoogleMaterial.Icon.gmd_remove, "#1A1C19", 18));
         binding.mapZoomIn.setOnClickListener(click -> map.getController().zoomIn());
         binding.mapZoomOut.setOnClickListener(click -> map.getController().zoomOut());
 
