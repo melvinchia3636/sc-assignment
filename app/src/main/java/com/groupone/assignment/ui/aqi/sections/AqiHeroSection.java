@@ -1,4 +1,4 @@
-package com.groupone.assignment.ui.aqi;
+package com.groupone.assignment.ui.aqi.sections;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,6 +12,7 @@ import com.groupone.assignment.R;
 import com.groupone.assignment.guidance.AqiLevel;
 import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.repositories.model.StationDetail;
+import com.groupone.assignment.ui.aqi.AqiScale;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 

@@ -1,4 +1,4 @@
-package com.groupone.assignment.ui.aqi;
+package com.groupone.assignment.ui.aqi.sections;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.model.StationDetail;
+import com.groupone.assignment.ui.aqi.WeatherItem;
 import com.groupone.assignment.ui.common.SectionView;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;

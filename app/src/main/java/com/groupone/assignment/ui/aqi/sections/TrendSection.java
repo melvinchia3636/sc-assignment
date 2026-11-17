@@ -1,4 +1,4 @@
-package com.groupone.assignment.ui.aqi;
+package com.groupone.assignment.ui.aqi.sections;
 
 import android.content.Context;
 import android.util.AttributeSet;
