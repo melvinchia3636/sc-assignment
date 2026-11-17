@@ -1,4 +1,4 @@
-package com.groupone.assignment.location;
+package com.groupone.assignment.services;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
