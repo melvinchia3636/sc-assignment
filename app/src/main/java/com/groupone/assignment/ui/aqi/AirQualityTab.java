@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.groupone.assignment.R;
-import com.groupone.assignment.repositories.model.SeriesPoint;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.TabAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
@@ -22,15 +21,12 @@ import com.groupone.assignment.guidance.Audience;
 import com.groupone.assignment.services.AudienceService;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
-import com.groupone.assignment.ui.common.SparklineChart;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -56,7 +52,6 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
         binding.retryButton.setOnClickListener(clicked -> viewModel.refresh());
-        SparklineChart.clear(binding.aqiSparkline);
         binding.guidanceIcon.setImageDrawable(AppIcons.drawable(
                 requireContext(), GoogleMaterial.Icon.gmd_directions_walk, "#1B5E20", 16));
         observeViewModel();
@@ -108,7 +103,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.coCard.bind("CO", station.current("co"), station.values("co"));
 
         binding.weatherSection.bind(station);
-        renderTrend(station);
+        binding.trendSection.bind(station);
 
         binding.errorCard.setVisibility(View.GONE);
         binding.swipeRefresh.setRefreshing(false);
@@ -154,35 +149,6 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         }
     }
 
-    private void renderTrend(StationDetail station) {
-        List<SeriesPoint> points = station.series("aqi");
-        int from = Math.max(0, points.size() - 24);
-        List<Double> recent = new ArrayList<>(station.values("aqi").subList(from, points.size()));
-        long startEpoch = from < points.size() ? points.get(from).getT() : 0;
-        int step = points.size() > 1
-                ? (int) (points.get(1).getT() - points.get(0).getT())
-                : 3600;
-        SparklineChart.showTrend(binding.aqiSparkline, recent, startEpoch, step);
-
-        double min = Double.MAX_VALUE;
-        double max = -Double.MAX_VALUE;
-        int valid = 0;
-        for (double value : recent) {
-            if (Double.isNaN(value)) {
-                continue;
-            }
-            min = Math.min(min, value);
-            max = Math.max(max, value);
-            valid++;
-        }
-        if (valid < 2) {
-            binding.trendRange.setText(R.string.not_enough_history);
-            return;
-        }
-        binding.trendRange.setText(getString(R.string.aqi_range,
-                Math.round(min), Math.round(max), recent.size()));
-    }
-
     private void showError(String message) {
         binding.errorText.setText(message);
         binding.errorCard.setVisibility(View.VISIBLE);
@@ -198,14 +164,13 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");
         binding.weatherSection.setVisibility(View.GONE);
-        SparklineChart.clear(binding.aqiSparkline);
+        binding.trendSection.clear();
         binding.pm25Card.clear();
         binding.pm10Card.clear();
         binding.no2Card.clear();
         binding.o3Card.clear();
         binding.so2Card.clear();
         binding.coCard.clear();
-        binding.trendRange.setText("");
         binding.updatedText.setText(R.string.not_updated);
     }
 
