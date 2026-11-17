@@ -4,6 +4,8 @@ import com.groupone.assignment.R;
 import com.groupone.assignment.data.ApiException;
 import com.groupone.assignment.data.GreenSpace;
 
+import net.sf.geographiclib.Geodesic;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,7 +97,7 @@ public class GreenSpaceApi {
             double spaceLat = center.optDouble("lat", latitude);
             double spaceLon = center.optDouble("lon", longitude);
             spaces.add(new GreenSpace(name, capitalise(type),
-                    distanceMeters(latitude, longitude, spaceLat, spaceLon),
+                    Geodesic.WGS84.Inverse(latitude, longitude, spaceLat, spaceLon).s12,
                     spaceLat, spaceLon));
         }
         spaces.sort(Comparator.comparingDouble(GreenSpace::getDistanceMeters));
@@ -109,16 +111,5 @@ public class GreenSpaceApi {
             return value;
         }
         return value.substring(0, 1).toUpperCase(Locale.US) + value.substring(1);
-    }
-
-    static double distanceMeters(double lat1, double lon1, double lat2, double lon2) {
-        double earthRadius = 6_371_000;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return earthRadius * c;
     }
 }

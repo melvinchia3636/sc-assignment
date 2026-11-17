@@ -67,11 +67,4 @@ class GreenSpaceApiTest {
     void parse_nonArrayElements_returnsEmptyList() throws JSONException {
         assertTrue(GreenSpaceApi.parse(new JSONObject("{\"elements\": 5}"), 0, 0).isEmpty());
     }
-
-    @Test
-    void distanceMeters_oneDegreeOfLongitude_isAbout111km() {
-        double distance = GreenSpaceApi.distanceMeters(0, 0, 0, 1);
-
-        assertTrue(distance > 110_000 && distance < 112_000);
-    }
 }

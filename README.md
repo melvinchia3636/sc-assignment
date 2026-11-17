@@ -86,8 +86,11 @@ open app/build/reports/tests/testDebugUnitTest/index.html
 
 ## Data sources
 
-- **Air quality** -- WAQI / [aqicn.org](https://aqicn.org) station scraper, a Java
-  port of the LifeForge air-quality module:
+- **Air quality** -- the app calls the companion `aqi-api` service
+  ([source](https://github.com/melvinchia/aqi-api),
+  `https://aqi-api-melvin.fly.dev`), which scrapes WAQI /
+  [aqicn.org](https://aqicn.org) and returns the nearest reporting station
+  with its current sub-indices and 72-hour series. Upstream endpoints:
   - `https://mapq.waqi.info/mapq2/bounds` for nearby stations
   - `https://api2.waqi.info/api/token/{idx}` and `/api/feed/@{idx}/aqi.json` for
     numeric station ids
@@ -108,7 +111,7 @@ sc-assignment/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/groupone/assignment/
 │       │   │   ├── data/        # StationDetail, repository, cache, ApiException
-│       │   │   ├── net/         # WaqiApi, GreenSpaceApi, OkHttp client
+│       │   │   ├── net/         # AirQualityApi, GreenSpaceApi, OkHttp client
 │       │   │   ├── ui/
 │       │   │   │   ├── MainActivity.java
 │       │   │   │   ├── MainViewModel.java

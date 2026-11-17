@@ -2,33 +2,33 @@ package com.groupone.assignment.data;
 
 import android.content.Context;
 
+import com.groupone.assignment.net.AirQualityApi;
 import com.groupone.assignment.net.GreenSpaceApi;
-import com.groupone.assignment.net.WaqiApi;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Coordinates the WAQI station scraper, the green space service and the
- * offline cache.
+ * Fetches the station snapshot from the aqi-api service, fetches nearby green
+ * spaces from OpenStreetMap and keeps the last successful result on disk.
  */
 public class AirQualityRepository {
 
     private static final int GREEN_SPACE_RADIUS_METERS = 3_000;
 
-    private final WaqiApi waqiApi;
+    private final AirQualityApi airQualityApi;
     private final GreenSpaceApi greenSpaceApi;
     private final SnapshotCache cache;
 
     public AirQualityRepository(Context context) {
-        this(new WaqiApi(), new GreenSpaceApi(), new SnapshotCache(context));
+        this(new AirQualityApi(), new GreenSpaceApi(), new SnapshotCache(context));
     }
 
     public AirQualityRepository(
-            WaqiApi waqiApi,
+            AirQualityApi airQualityApi,
             GreenSpaceApi greenSpaceApi,
             SnapshotCache cache) {
-        this.waqiApi = waqiApi;
+        this.airQualityApi = airQualityApi;
         this.greenSpaceApi = greenSpaceApi;
         this.cache = cache;
     }
@@ -38,7 +38,7 @@ public class AirQualityRepository {
      * tolerated so the air quality reading can still be shown.
      */
     public Snapshot refresh(double latitude, double longitude) throws ApiException {
-        StationDetail stationDetail = waqiApi.findNearest(latitude, longitude);
+        StationDetail stationDetail = airQualityApi.fetch(latitude, longitude);
 
         List<GreenSpace> greenSpaces = new ArrayList<>();
         boolean greenSpacesUnavailable = false;
