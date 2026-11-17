@@ -1,18 +1,12 @@
 package com.groupone.assignment.services;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Handler;
 import android.os.Looper;
 
-import androidx.activity.ComponentActivity;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -43,11 +37,6 @@ public class LocationService {
     private static final double FALLBACK_LONGITUDE = 101.6869;
     private static final String FALLBACK_PLACE = "Kuala Lumpur";
 
-    private static final String[] LOCATION_PERMISSIONS = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-    };
-
     public interface Listener {
         void onLocated(String place, double latitude, double longitude);
 
@@ -63,19 +52,12 @@ public class LocationService {
     private double latitude = FALLBACK_LATITUDE;
     private double longitude = FALLBACK_LONGITUDE;
 
-    private ActivityResultLauncher<String[]> permissionLauncher;
     private CancellationTokenSource cancellation;
     private Listener listener;
 
     public LocationService(Context context) {
         this.context = context.getApplicationContext();
         this.locationClient = LocationServices.getFusedLocationProviderClient(this.context);
-    }
-
-    public void attach(ComponentActivity activity) {
-        permissionLauncher = activity.registerForActivityResult(
-                new ActivityResultContracts.RequestMultiplePermissions(),
-                this::onPermissionResult);
     }
 
     public LiveData<String> getPlaceName() {
@@ -97,13 +79,12 @@ public class LocationService {
 
     public void locate(Listener listener) {
         this.listener = listener;
-        if (hasPermission()) {
-            requestLocation();
-        } else if (permissionLauncher != null) {
-            permissionLauncher.launch(LOCATION_PERMISSIONS);
-        } else {
-            fallback(R.string.location_permission_denied);
-        }
+        requestLocation();
+    }
+
+    /** Applies the default location when permission is unavailable. */
+    public void applyFallback() {
+        setPlace(FALLBACK_PLACE, FALLBACK_LATITUDE, FALLBACK_LONGITUDE);
     }
 
     public void cancel() {
@@ -117,16 +98,6 @@ public class LocationService {
     public void shutdown() {
         cancel();
         geocoderExecutor.shutdownNow();
-    }
-
-    private void onPermissionResult(Map<String, Boolean> result) {
-        boolean granted = Boolean.TRUE.equals(result.get(Manifest.permission.ACCESS_COARSE_LOCATION))
-                || Boolean.TRUE.equals(result.get(Manifest.permission.ACCESS_FINE_LOCATION));
-        if (granted) {
-            requestLocation();
-        } else {
-            fallback(R.string.location_permission_denied);
-        }
     }
 
     @SuppressLint("MissingPermission")
@@ -186,11 +157,6 @@ public class LocationService {
         placeName.setValue(place);
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    private boolean hasPermission() {
-        return ContextCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     private String resolvePlaceName(double latitude, double longitude) {

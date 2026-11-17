@@ -15,11 +15,11 @@ import com.groupone.assignment.repositories.model.SeriesPoint;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.TabAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
+import com.groupone.assignment.repositories.model.Audience;
+import com.groupone.assignment.settings.UserPreferences;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.groupone.assignment.ui.common.SparklineChart;
-import com.groupone.assignment.ui.settings.Audience;
-import com.groupone.assignment.ui.settings.AudienceSettings;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
@@ -129,12 +129,13 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void applyAudienceNote() {
-        Audience audience = AudienceSettings.current(requireContext());
-        if (audience == Audience.GENERAL) {
+        Audience audience = UserPreferences.currentAudience(requireContext());
+        int noteRes = audience.getNoteRes();
+        if (noteRes == 0) {
             binding.audienceNote.setVisibility(View.GONE);
             return;
         }
-        binding.audienceNote.setText(audience.getNoteRes());
+        binding.audienceNote.setText(noteRes);
         binding.audienceNote.setVisibility(View.VISIBLE);
     }
 
