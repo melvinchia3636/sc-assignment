@@ -22,18 +22,14 @@ public class SettingsRowView extends LinearLayout {
     private final ImageView chevron;
 
     public SettingsRowView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public SettingsRowView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_settings_row, this, true);
         title = findViewById(R.id.settings_row_title);
         value = findViewById(R.id.settings_row_value);
         chevron = findViewById(R.id.settings_row_chevron);
 
         TypedArray attributes = context.obtainStyledAttributes(
-                attrs, R.styleable.SettingsRowView, defStyleAttr, 0);
+                attrs, R.styleable.SettingsRowView);
         CharSequence rowTitle = attributes.getText(R.styleable.SettingsRowView_rowTitle);
         if (rowTitle != null) {
             title.setText(rowTitle);
