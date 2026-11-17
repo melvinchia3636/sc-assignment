@@ -182,14 +182,14 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         if (Double.isNaN(temperature) && Double.isNaN(humidity)
                 && Double.isNaN(pressure) && Double.isNaN(wind)) {
-            binding.weatherCard.setVisibility(View.GONE);
+            binding.weatherSection.setVisibility(View.GONE);
             return;
         }
         binding.weatherTempItem.setValue(formatWeather(temperature, "%.1f °C"));
         binding.weatherHumidityItem.setValue(formatWeather(humidity, "%.0f %%"));
         binding.weatherPressureItem.setValue(formatWeather(pressure, "%.0f hPa"));
         binding.weatherWindItem.setValue(formatWeather(wind, "%.1f km/h"));
-        binding.weatherCard.setVisibility(View.VISIBLE);
+        binding.weatherSection.setVisibility(View.VISIBLE);
     }
 
     private String formatWeather(double value, String format) {
@@ -240,7 +240,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.guidanceCard.setVisibility(View.GONE);
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");
-        binding.weatherCard.setVisibility(View.GONE);
+        binding.weatherSection.setVisibility(View.GONE);
         binding.weatherTempItem.clear();
         binding.weatherHumidityItem.clear();
         binding.weatherPressureItem.clear();
