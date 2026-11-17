@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.os.LocaleListCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.TabSettingsBinding;
 import com.groupone.assignment.repositories.model.Audience;
+import com.groupone.assignment.services.LocalizationService;
 import com.groupone.assignment.settings.UserPreferences;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
@@ -40,13 +39,13 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
     }
 
     private void syncSelection() {
-        binding.languageValue.setText(AppLanguage.current().getLabelRes());
+        binding.languageValue.setText(LocalizationService.current().getLabelRes());
         binding.audienceValue.setText(
                 UserPreferences.currentAudience(requireContext()).getLabelRes());
     }
 
     private void showLanguageDialog() {
-        AppLanguage[] languages = AppLanguage.values();
+        LocalizationService.Language[] languages = LocalizationService.Language.values();
         String[] labels = new String[languages.length];
         for (int i = 0; i < languages.length; i++) {
             labels[i] = getString(languages[i].getLabelRes());
@@ -54,10 +53,10 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
 
         new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_AirGreen_Dialog)
                 .setTitle(R.string.settings_language)
-                .setSingleChoiceItems(labels, AppLanguage.current().ordinal(),
+                .setSingleChoiceItems(labels, LocalizationService.current().ordinal(),
                         (dialog, which) -> {
                             dialog.dismiss();
-                            applyLanguage(languages[which].locales());
+                            LocalizationService.apply(languages[which]);
                         })
                 .show();
     }
@@ -79,13 +78,5 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
                             syncSelection();
                         })
                 .show();
-    }
-
-    private void applyLanguage(LocaleListCompat locales) {
-        LocaleListCompat current = AppCompatDelegate.getApplicationLocales();
-        if (locales.toLanguageTags().equals(current.toLanguageTags())) {
-            return;
-        }
-        AppCompatDelegate.setApplicationLocales(locales);
     }
 }

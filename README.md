@@ -106,7 +106,7 @@ sc-assignment/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/groupone/assignment/
-│       │   │   ├── services/     # location resolution + tab navigation
+│       │   │   ├── services/     # bootstrap, location, localization, navigation
 │       │   │   ├── repositories/# models, SnapshotCache, AirQualityRepository
 │       │   │   ├── scrapers/    # WaqiClient, parsers, sources and lib helpers
 │       │   │   ├── ui/
