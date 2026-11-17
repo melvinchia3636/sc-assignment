@@ -72,12 +72,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
                 ? getString(R.string.updated_at, formatEpoch(updatedAt))
                 : getString(R.string.not_updated));
 
-        binding.pm25Card.bind("PM2.5", station.current("pm25"), station.values("pm25"));
-        binding.pm10Card.bind("PM10", station.current("pm10"), station.values("pm10"));
-        binding.no2Card.bind("NO₂", station.current("no2"), station.values("no2"));
-        binding.o3Card.bind("O₃", station.current("o3"), station.values("o3"));
-        binding.so2Card.bind("SO₂", station.current("so2"), station.values("so2"));
-        binding.coCard.bind("CO", station.current("co"), station.values("co"));
+        binding.subIndicesSection.bind(station);
 
         binding.weatherSection.bind(station);
         binding.trendSection.bind(station);
@@ -105,12 +100,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.guidanceSection.clear();
         binding.weatherSection.setVisibility(View.GONE);
         binding.trendSection.clear();
-        binding.pm25Card.clear();
-        binding.pm10Card.clear();
-        binding.no2Card.clear();
-        binding.o3Card.clear();
-        binding.so2Card.clear();
-        binding.coCard.clear();
+        binding.subIndicesSection.clear();
         binding.updatedText.setText(R.string.not_updated);
     }
 

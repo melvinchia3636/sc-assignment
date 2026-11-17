@@ -38,14 +38,14 @@
                 android:textColor="@color/muted"
                 android:textSize="12sp" />
 
-            <com.groupone.assignment.ui.aqi.AqiHeroSection
+            <com.groupone.assignment.ui.aqi.sections.AqiHeroSection
                 android:id="@+id/aqi_hero"
                 style="@style/Widget.AirGreen.AqiHeroCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
 
-            <com.groupone.assignment.ui.aqi.GuidanceSection
+            <com.groupone.assignment.ui.aqi.sections.GuidanceSection
                 android:id="@+id/guidance_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,85 +89,14 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.groupone.assignment.ui.common.SectionView
-                android:id="@+id/pollutants_section"
+            <com.groupone.assignment.ui.aqi.sections.SubIndicesSection
+                android:id="@+id/sub_indices_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                app:sectionTitle="@string/pollutants_label">
+                app:sectionTitle="@string/pollutants_label" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <com.groupone.assignment.ui.aqi.PollutantCard
-                    style="@style/Widget.AirGreen.PollutantCard"
-                    android:id="@+id/pm25_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1" />
-
-                <com.groupone.assignment.ui.aqi.PollutantCard
-                    style="@style/Widget.AirGreen.PollutantCard"
-                    android:id="@+id/pm10_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <com.groupone.assignment.ui.aqi.PollutantCard
-                    style="@style/Widget.AirGreen.PollutantCard"
-                    android:id="@+id/no2_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1" />
-
-                <com.groupone.assignment.ui.aqi.PollutantCard
-                    style="@style/Widget.AirGreen.PollutantCard"
-                    android:id="@+id/o3_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <com.groupone.assignment.ui.aqi.PollutantCard
-                    style="@style/Widget.AirGreen.PollutantCard"
-                    android:id="@+id/so2_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1" />
-
-                <com.groupone.assignment.ui.aqi.PollutantCard
-                    style="@style/Widget.AirGreen.PollutantCard"
-                    android:id="@+id/co_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-            </com.groupone.assignment.ui.common.SectionView>
-
-            <com.groupone.assignment.ui.aqi.WeatherSection
+            <com.groupone.assignment.ui.aqi.sections.WeatherSection
                 android:id="@+id/weather_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -175,7 +104,7 @@
                 android:visibility="gone"
                 app:sectionTitle="@string/weather_label" />
 
-            <com.groupone.assignment.ui.aqi.TrendSection
+            <com.groupone.assignment.ui.aqi.sections.TrendSection
                 android:id="@+id/trend_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
