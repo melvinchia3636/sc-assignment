@@ -39,9 +39,9 @@ public class StationInfoWindow extends InfoWindow {
 
         name.setText(station.getName().isEmpty() ? station.getIdx() : station.getName());
         aqi.setText(AqiScale.format(station.getAqi()));
-        aqi.setTextColor(Color.parseColor(AqiScale.textColourFor(level.getColourHex())));
-        aqi.setBackground(pill(Color.parseColor(level.getColourHex())));
-        category.setText(level.getLabelRes());
+        aqi.setTextColor(Color.parseColor(AqiScale.textColourFor(level.colourHex())));
+        aqi.setBackground(pill(Color.parseColor(level.colourHex())));
+        category.setText(level.labelRes());
     }
 
     private GradientDrawable pill(int color) {

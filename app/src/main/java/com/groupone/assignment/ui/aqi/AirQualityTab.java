@@ -73,8 +73,8 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     private void render(StationDetail station) {
         lastAqi = station.getAqi();
         AqiLevel level = AqiLevel.classify(station.getAqi());
-        int background = Color.parseColor(level.getColourHex());
-        int foreground = Color.parseColor(AqiScale.textColourFor(level.getColourHex()));
+        int background = Color.parseColor(level.colourHex());
+        int foreground = Color.parseColor(AqiScale.textColourFor(level.colourHex()));
 
         binding.aqiCard.setCardBackgroundColor(background);
         binding.stationName.setTextColor(foreground);
@@ -82,13 +82,13 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiCategory.setTextColor(foreground);
         binding.aqiAdvice.setTextColor(foreground);
         binding.aqiFaceIcon.setImageDrawable(AppIcons.drawable(
-                requireContext(), level.getIcon(), foreground, 18));
+                requireContext(), level.icon(), foreground, 18));
 
         binding.stationName.setText(station.getName().isEmpty()
                 ? viewModel.getLocationService().placeName() : station.getName());
         binding.aqiValue.setText(AqiScale.format(station.getAqi()));
-        binding.aqiCategory.setText(level.getLabelRes());
-        binding.aqiAdvice.setText(level.getAdviceRes());
+        binding.aqiCategory.setText(level.labelRes());
+        binding.aqiAdvice.setText(level.adviceRes());
         applyGuidance(station.getAqi());
 
         long updatedAt = station.getUpdatedAt();
