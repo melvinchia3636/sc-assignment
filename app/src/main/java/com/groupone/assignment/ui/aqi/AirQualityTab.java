@@ -4,23 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.TabAqiBinding;
 import com.groupone.assignment.services.AudienceService;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
-
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Air-quality screen: reading, pollutants, weather and trends.
@@ -57,7 +50,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         });
 
         viewModel.getLocationService().getPlaceName().observe(getViewLifecycleOwner(),
-                name -> binding.cityTitle.setText(name));
+                name -> binding.headerSection.bindPlaceName(name));
         observeLoading(binding.swipeRefresh);
     }
 
@@ -68,10 +61,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.guidanceSection.bind(
                 AudienceService.INSTANCE.current(requireContext()), station.getAqi());
 
-        long updatedAt = station.getUpdatedAt();
-        binding.updatedText.setText(updatedAt > 0
-                ? getString(R.string.updated_at, formatEpoch(updatedAt))
-                : getString(R.string.not_updated));
+        binding.headerSection.bindStation(station);
 
         binding.subIndicesSection.bind(station);
 
@@ -102,15 +92,6 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.weatherWrapper.setVisibility(View.GONE);
         binding.trendSection.clear();
         binding.subIndicesSection.clear();
-        binding.updatedText.setText(R.string.not_updated);
-    }
-
-    private String formatEpoch(long epochSeconds) {
-        if (epochSeconds <= 0) {
-            return "just now";
-        }
-        return DateTimeFormatter.ofPattern("d MMM, HH:mm", Locale.getDefault())
-                .withZone(ZoneId.systemDefault())
-                .format(Instant.ofEpochSecond(epochSeconds));
+        binding.headerSection.markUnavailable();
     }
 }
