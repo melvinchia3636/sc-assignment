@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.groupone.assignment'
+    namespace 'dev.melvinchia3636.airngreen'
     compileSdk 36
 
     defaultConfig {
-        applicationId 'com.groupone.assignment'
+        applicationId 'dev.melvinchia3636.airngreen'
         minSdk 24
         targetSdk 36
         versionCode 1

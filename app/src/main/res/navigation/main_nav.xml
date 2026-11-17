@@ -6,21 +6,21 @@
 
     <fragment
         android:id="@+id/tab_aqi"
-        android:name="com.groupone.assignment.ui.aqi.AirQualityTab"
+        android:name="dev.melvinchia3636.airngreen.ui.aqi.AirQualityTab"
         android:label="@string/tab_aqi" />
 
     <fragment
         android:id="@+id/tab_map"
-        android:name="com.groupone.assignment.ui.map.StationMapTab"
+        android:name="dev.melvinchia3636.airngreen.ui.map.StationMapTab"
         android:label="@string/tab_map" />
 
     <fragment
         android:id="@+id/tab_green"
-        android:name="com.groupone.assignment.ui.green.GreenSpacesTab"
+        android:name="dev.melvinchia3636.airngreen.ui.green.GreenSpacesTab"
         android:label="@string/tab_green" />
 
     <fragment
         android:id="@+id/tab_settings"
-        android:name="com.groupone.assignment.ui.settings.SettingsTab"
+        android:name="dev.melvinchia3636.airngreen.ui.settings.SettingsTab"
         android:label="@string/tab_settings" />
 </navigation>

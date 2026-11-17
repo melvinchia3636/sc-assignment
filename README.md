@@ -105,7 +105,7 @@ sc-assignment/
 │   └── src/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
-│       │   ├── java/com/groupone/assignment/
+│       │   ├── java/dev/melvinchia3636/airngreen/
 │       │   │   ├── guidance/     # audience strategies and air-quality guidance
 │       │   │   ├── services/     # bootstrap, location, localization, audience, navigation
 │       │   │   ├── repositories/# models, SnapshotCache, AirQualityRepository
@@ -117,7 +117,7 @@ sc-assignment/
 │       │   │   │   ├── green/   # green space placeholder screen
 │       │   │   │   └── common/  # Base fragments, icon helpers, chart setup
 │       │   └── res/             # layouts, colours, theme, strings
-│       └── test/java/com/groupone/assignment/
+│       └── test/java/dev/melvinchia3636/airngreen/
 ├── docs/                        # Typst report, cover, TOC
 ├── build.gradle
 ├── settings.gradle
