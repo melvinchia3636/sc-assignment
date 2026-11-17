@@ -5,8 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -24,28 +22,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.gms.location.CurrentLocationRequest;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
-import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.ActivityMainBinding;
+import com.groupone.assignment.location.LocationService;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 import org.osmdroid.config.Configuration;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
- * Hosts the tabs and owns permission and location resolution.
+ * Hosts the tabs, permission handling and navigation.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -62,12 +51,9 @@ public class MainActivity extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
                     this::onPermissionResult);
 
-    private final ExecutorService geocoderExecutor = Executors.newSingleThreadExecutor();
-
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
-    private FusedLocationProviderClient fusedLocationClient;
-    private CancellationTokenSource locationCancellation;
+    private LocationService locationService;
     private NavController navController;
 
     @Override
@@ -85,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationService = new LocationService(this);
 
         applySystemBarInsets();
         setUpTabs();
@@ -171,51 +157,25 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         viewModel.startLocationLookup();
-        CurrentLocationRequest request = new CurrentLocationRequest.Builder()
-                .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
-                .setDurationMillis(12_000)
-                .build();
-        locationCancellation = new CancellationTokenSource();
-        fusedLocationClient.getCurrentLocation(request, locationCancellation.getToken())
-                .addOnSuccessListener(this, location -> {
-                    if (location != null) {
-                        onLocated(location.getLatitude(), location.getLongitude());
-                    } else {
-                        loadLastKnownLocation();
-                    }
-                })
-                .addOnFailureListener(this, failure -> loadLastKnownLocation());
-    }
+        locationService.request(new LocationService.Listener() {
+            @Override
+            public void onLocated(String place, double latitude, double longitude) {
+                if (isFinishing() || isDestroyed()) {
+                    return;
+                }
+                viewModel.setLocation(place, latitude, longitude);
+            }
 
-    @SuppressLint("MissingPermission")
-    private void loadLastKnownLocation() {
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, location -> {
-                    if (location != null) {
-                        onLocated(location.getLatitude(), location.getLongitude());
-                    } else {
-                        onLocationUnavailable();
-                    }
-                })
-                .addOnFailureListener(this, failure -> onLocationUnavailable());
-    }
-
-    private void onLocated(double latitude, double longitude) {
-        if (isFinishing() || isDestroyed()) {
-            return;
-        }
-        geocoderExecutor.execute(() -> {
-            String name = resolvePlaceName(latitude, longitude);
-            runOnUiThread(() -> viewModel.setLocation(name, latitude, longitude));
+            @Override
+            public void onUnavailable() {
+                if (isFinishing() || isDestroyed()) {
+                    return;
+                }
+                Toast.makeText(MainActivity.this, R.string.location_unavailable,
+                        Toast.LENGTH_LONG).show();
+                useFallbackLocation();
+            }
         });
-    }
-
-    private void onLocationUnavailable() {
-        if (isFinishing() || isDestroyed()) {
-            return;
-        }
-        Toast.makeText(this, R.string.location_unavailable, Toast.LENGTH_LONG).show();
-        useFallbackLocation();
     }
 
     private boolean hasLocationPermission() {
@@ -225,29 +185,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void useFallbackLocation() {
         viewModel.setLocation(DEFAULT_PLACE, DEFAULT_LATITUDE, DEFAULT_LONGITUDE);
-    }
-
-    private String resolvePlaceName(double latitude, double longitude) {
-        try {
-            List<Address> addresses = new Geocoder(this, Locale.getDefault())
-                    .getFromLocation(latitude, longitude, 1);
-            if (addresses != null && !addresses.isEmpty()) {
-                Address address = addresses.get(0);
-                String locality = address.getLocality();
-                if (locality == null || locality.trim().isEmpty()) {
-                    locality = address.getSubAdminArea();
-                }
-                if (locality == null || locality.trim().isEmpty()) {
-                    locality = address.getAdminArea();
-                }
-                if (locality != null && !locality.trim().isEmpty()) {
-                    return locality;
-                }
-            }
-        } catch (IOException | IllegalArgumentException unavailable) {
-            // Fall through to a generic label.
-        }
-        return getString(R.string.your_location);
     }
 
     private void applySystemBarInsets() {
@@ -289,10 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (locationCancellation != null) {
-            locationCancellation.cancel();
-        }
-        geocoderExecutor.shutdownNow();
+        locationService.shutdown();
         super.onDestroy();
     }
 }
