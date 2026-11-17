@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.widget.TextView;
 
 import com.groupone.assignment.R;
+import com.groupone.assignment.guidance.AqiLevel;
 import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.ui.aqi.AqiScale;
 
@@ -31,14 +32,14 @@ public class StationInfoWindow extends InfoWindow {
             return;
         }
 
-        AqiScale.Level level = AqiScale.classify(station.getAqi());
+        AqiLevel level = AqiLevel.classify(station.getAqi());
         TextView name = mView.findViewById(R.id.info_name);
         TextView aqi = mView.findViewById(R.id.info_aqi);
         TextView category = mView.findViewById(R.id.info_category);
 
         name.setText(station.getName().isEmpty() ? station.getIdx() : station.getName());
         aqi.setText(AqiScale.format(station.getAqi()));
-        aqi.setTextColor(Color.parseColor(level.getTextColourHex()));
+        aqi.setTextColor(Color.parseColor(AqiScale.textColourFor(level.getColourHex())));
         aqi.setBackground(pill(Color.parseColor(level.getColourHex())));
         category.setText(level.getLabelRes());
     }
