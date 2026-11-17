@@ -7,7 +7,7 @@ import com.groupone.assignment.repositories.model.Coordinates;
 import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.lib.TtlCache;
-import com.groupone.assignment.lib.http.Upstream;
+import com.groupone.assignment.lib.Upstream;
 import com.groupone.assignment.scrapers.parsers.StationsParser;
 import com.groupone.assignment.repositories.remote.BoundsRepository;
 import com.groupone.assignment.scrapers.sources.AirnetStationSource;

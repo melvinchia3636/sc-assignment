@@ -13,8 +13,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewbinding.ViewBinding;
 
+import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.ui.MainViewModel;
+
+import java.util.List;
 
 /**
  * Base for bottom-bar tabs: owns the ViewBinding lifecycle and exposes the
@@ -46,6 +49,14 @@ public abstract class BaseTab<VB extends ViewBinding> extends Fragment {
 
     protected void observeStation(Observer<StationDetail> observer) {
         sharedViewModel().getStation().observe(getViewLifecycleOwner(), observer);
+    }
+
+    protected void observeStations(Observer<List<Station>> observer) {
+        sharedViewModel().getStations().observe(getViewLifecycleOwner(), observer);
+    }
+
+    protected void observeStationsLoading(Observer<Boolean> observer) {
+        sharedViewModel().getStationsLoading().observe(getViewLifecycleOwner(), observer);
     }
 
     protected void observeError(Observer<String> observer) {

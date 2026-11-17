@@ -4,8 +4,17 @@
     <string name="city_name">Kuala Lumpur</string>
 
     <string name="tab_aqi">Air quality</string>
+    <string name="tab_map">Map</string>
     <string name="tab_green">Green space</string>
     <string name="tab_settings">Settings</string>
+
+    <string name="map_title">Station map</string>
+    <string name="map_subtitle">Nearby WAQI monitoring stations</string>
+    <string name="map_station_count">%1$d stations</string>
+    <string name="map_empty">No stations loaded yet.</string>
+    <string name="map_station_snippet">AQI %1$s · idx %2$s</string>
+    <string name="map_zoom_in">Zoom in</string>
+    <string name="map_zoom_out">Zoom out</string>
 
     <string name="dash">--</string>
     <string name="pollutants_label">POLLUTANT SUB-INDICES (AQI)</string>

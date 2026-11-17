@@ -9,8 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.groupone.assignment.repositories.ApiException;
 import com.groupone.assignment.repositories.AirQualityRepository;
+import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.repositories.model.StationDetail;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,8 +25,12 @@ public class MainViewModel extends AndroidViewModel {
 
     private final AirQualityRepository repository;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService stationExecutor = Executors.newSingleThreadExecutor();
 
     private final MutableLiveData<StationDetail> station = new MutableLiveData<>();
+    private final MutableLiveData<List<Station>> stations =
+            new MutableLiveData<>(Collections.emptyList());
+    private final MutableLiveData<Boolean> stationsLoading = new MutableLiveData<>(false);
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<String> placeName = new MutableLiveData<>("Kuala Lumpur");
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
@@ -42,6 +49,22 @@ public class MainViewModel extends AndroidViewModel {
 
     public LiveData<StationDetail> getStation() {
         return station;
+    }
+
+    public LiveData<List<Station>> getStations() {
+        return stations;
+    }
+
+    public LiveData<Boolean> getStationsLoading() {
+        return stationsLoading;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     public LiveData<String> getError() {
@@ -79,6 +102,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     private void startLoad() {
+        startStationsLoad();
         if (running) {
             return;
         }
@@ -100,9 +124,23 @@ public class MainViewModel extends AndroidViewModel {
         });
     }
 
+    private void startStationsLoad() {
+        stationsLoading.setValue(true);
+        stationExecutor.execute(() -> {
+            try {
+                stations.postValue(repository.nearbyStations(latitude, longitude));
+            } catch (ApiException ignored) {
+                // The map keeps the last station list.
+            } finally {
+                stationsLoading.postValue(false);
+            }
+        });
+    }
+
     @Override
     protected void onCleared() {
         executor.shutdownNow();
+        stationExecutor.shutdownNow();
         super.onCleared();
     }
 }

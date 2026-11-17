@@ -33,8 +33,11 @@ import com.groupone.assignment.databinding.ActivityMainBinding;
 import com.groupone.assignment.ui.aqi.AirQualityTab;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.green.GreenSpacesTab;
+import com.groupone.assignment.ui.map.StationMapTab;
 import com.groupone.assignment.ui.settings.SettingsTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
+
+import org.osmdroid.config.Configuration;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +52,7 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG_AIR_QUALITY = "air_quality";
+    private static final String TAG_MAP = "station_map";
     private static final String TAG_GREEN_SPACES = "green_spaces";
     private static final String TAG_SETTINGS = "settings";
 
@@ -76,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Configuration.getInstance().load(getApplicationContext(),
+                getSharedPreferences("osmdroid", MODE_PRIVATE));
+        Configuration.getInstance().setUserAgentValue(getPackageName());
         EdgeToEdge.enable(this,
                 SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
                 SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT));
@@ -136,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String tagFor(int itemId) {
+        if (itemId == R.id.tab_map) {
+            return TAG_MAP;
+        }
         if (itemId == R.id.tab_green) {
             return TAG_GREEN_SPACES;
         }
@@ -146,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Fragment createTab(int itemId) {
+        if (itemId == R.id.tab_map) {
+            return new StationMapTab();
+        }
         if (itemId == R.id.tab_green) {
             return new GreenSpacesTab();
         }
@@ -156,11 +169,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int tabIndex(int itemId) {
-        if (itemId == R.id.tab_green) {
+        if (itemId == R.id.tab_map) {
             return 1;
         }
-        if (itemId == R.id.tab_settings) {
+        if (itemId == R.id.tab_green) {
             return 2;
+        }
+        if (itemId == R.id.tab_settings) {
+            return 3;
         }
         return 0;
     }
@@ -279,6 +295,9 @@ public class MainActivity extends AppCompatActivity {
         navigation.getMenu().findItem(R.id.tab_aqi).setIcon(
                 AppIcons.drawable(this, GoogleMaterial.Icon.gmd_cloud,
                         selected == R.id.tab_aqi ? active : inactive, 24));
+        navigation.getMenu().findItem(R.id.tab_map).setIcon(
+                AppIcons.drawable(this, GoogleMaterial.Icon.gmd_map,
+                        selected == R.id.tab_map ? active : inactive, 24));
         navigation.getMenu().findItem(R.id.tab_green).setIcon(
                 AppIcons.drawable(this, GoogleMaterial.Icon.gmd_park,
                         selected == R.id.tab_green ? active : inactive, 24));
