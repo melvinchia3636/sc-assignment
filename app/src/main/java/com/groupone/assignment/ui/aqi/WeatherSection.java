@@ -22,6 +22,7 @@ public class WeatherSection extends SectionView {
     public WeatherSection(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_weather_section, this, true);
+
         items = addItems(context,
                 findViewById(R.id.weather_row_top),
                 findViewById(R.id.weather_row_bottom));
@@ -53,7 +54,8 @@ public class WeatherSection extends SectionView {
                         R.string.weather_wind),
         };
 
-        LinearLayout[] rows = {top, bottom};
+        LinearLayout[] rows = { top, bottom };
+
         for (int index = 0; index < created.length; index++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -62,6 +64,7 @@ public class WeatherSection extends SectionView {
             }
             rows[index / 2].addView(created[index], params);
         }
+
         return created;
     }
 }
