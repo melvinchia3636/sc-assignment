@@ -15,7 +15,7 @@ import com.groupone.assignment.guidance.AqiLevel;
 import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.ui.MainViewModel;
-import com.groupone.assignment.ui.aqi.AqiScale;
+import com.groupone.assignment.ui.common.AqiScale;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;

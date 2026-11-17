@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.material.card.MaterialCardView;
 import com.groupone.assignment.R;
+import com.groupone.assignment.ui.common.AqiScale;
 import com.groupone.assignment.ui.common.SparklineChart;
 
 import java.util.ArrayList;
