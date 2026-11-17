@@ -12,18 +12,18 @@ import androidx.core.os.LocaleListCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.groupone.assignment.R;
-import com.groupone.assignment.databinding.FragmentSettingsBinding;
+import com.groupone.assignment.databinding.TabSettingsBinding;
 import com.groupone.assignment.ui.common.BaseTab;
 
 /**
  * Settings screen: data-source attribution and the in-app language switcher.
  */
-public class SettingsTab extends BaseTab<FragmentSettingsBinding> {
+public class SettingsTab extends BaseTab<TabSettingsBinding> {
 
     @Override
-    protected FragmentSettingsBinding createBinding(LayoutInflater inflater,
+    protected TabSettingsBinding createBinding(LayoutInflater inflater,
                                                     @Nullable ViewGroup container) {
-        return FragmentSettingsBinding.inflate(inflater, container, false);
+        return TabSettingsBinding.inflate(inflater, container, false);
     }
 
     @Override

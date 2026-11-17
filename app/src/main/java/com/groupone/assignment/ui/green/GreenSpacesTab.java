@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.groupone.assignment.R;
-import com.groupone.assignment.databinding.FragmentGreenSpaceBinding;
+import com.groupone.assignment.databinding.TabGreenSpaceBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.BaseTab;
 
@@ -17,14 +17,14 @@ import com.groupone.assignment.ui.common.BaseTab;
  * Green-space screen placeholder. Live green space data is not part of the
  * scraper API yet.
  */
-public class GreenSpacesTab extends BaseTab<FragmentGreenSpaceBinding> {
+public class GreenSpacesTab extends BaseTab<TabGreenSpaceBinding> {
 
     private MainViewModel viewModel;
 
     @Override
-    protected FragmentGreenSpaceBinding createBinding(LayoutInflater inflater,
+    protected TabGreenSpaceBinding createBinding(LayoutInflater inflater,
                                                       ViewGroup container) {
-        return FragmentGreenSpaceBinding.inflate(inflater, container, false);
+        return TabGreenSpaceBinding.inflate(inflater, container, false);
     }
 
     @Override

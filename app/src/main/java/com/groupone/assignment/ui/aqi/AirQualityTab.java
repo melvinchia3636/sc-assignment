@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.model.SeriesPoint;
 import com.groupone.assignment.repositories.model.StationDetail;
-import com.groupone.assignment.databinding.FragmentAqiBinding;
+import com.groupone.assignment.databinding.TabAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
@@ -31,14 +31,14 @@ import java.util.Locale;
 /**
  * Air-quality screen: reading, pollutants, weather and trends.
  */
-public class AirQualityTab extends BaseTab<FragmentAqiBinding> {
+public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
     private MainViewModel viewModel;
 
     @Override
-    protected FragmentAqiBinding createBinding(LayoutInflater inflater,
+    protected TabAqiBinding createBinding(LayoutInflater inflater,
                                                ViewGroup container) {
-        return FragmentAqiBinding.inflate(inflater, container, false);
+        return TabAqiBinding.inflate(inflater, container, false);
     }
 
     @Override

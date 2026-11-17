@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.groupone.assignment.R;import com.groupone.assignment.databinding.FragmentStationMapBinding;
+import com.groupone.assignment.R;
+import com.groupone.assignment.databinding.TabStationMapBinding;
 import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.aqi.AqiScale;
@@ -27,15 +28,15 @@ import java.util.List;
 /**
  * OpenStreetMap view of every nearby WAQI station, labelled with its AQI.
  */
-public class StationMapTab extends BaseTab<FragmentStationMapBinding> {
+public class StationMapTab extends BaseTab<TabStationMapBinding> {
 
     private MainViewModel viewModel;
     private MapView map;
 
     @Override
-    protected FragmentStationMapBinding createBinding(LayoutInflater inflater,
+    protected TabStationMapBinding createBinding(LayoutInflater inflater,
                                                       ViewGroup container) {
-        return FragmentStationMapBinding.inflate(inflater, container, false);
+        return TabStationMapBinding.inflate(inflater, container, false);
     }
 
     @Override
