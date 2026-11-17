@@ -10,8 +10,6 @@ import com.google.android.material.color.utilities.Hct;
  */
 public final class AqiScale {
 
-    private static final String DASH = "--";
-
     private AqiScale() {
     }
 
@@ -19,7 +17,7 @@ public final class AqiScale {
      * Formats a measurement for display, using a dash for missing values.
      */
     public static String format(double value) {
-        return Double.isNaN(value) ? DASH : String.valueOf(Math.round(value));
+        return Double.isNaN(value) ? "--" : String.valueOf(Math.round(value));
     }
 
     /**
