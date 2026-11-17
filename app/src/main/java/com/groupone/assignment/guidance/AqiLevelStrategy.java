@@ -1,7 +1,5 @@
 package com.groupone.assignment.guidance;
 
-import androidx.annotation.StringRes;
-
 import com.mikepenz.iconics.typeface.IIcon;
 
 /**
@@ -9,10 +7,8 @@ import com.mikepenz.iconics.typeface.IIcon;
  */
 public interface AqiLevelStrategy {
 
-    @StringRes
     int labelRes();
 
-    @StringRes
     int adviceRes();
 
     String colourHex();
