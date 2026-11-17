@@ -37,6 +37,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
         binding.content.setOnRetryListener(viewModel::refresh);
+
         observeAirQuality();
     }
 
