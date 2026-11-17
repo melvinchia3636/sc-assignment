@@ -19,9 +19,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.location.CurrentLocationRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,11 +32,7 @@ import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.ActivityMainBinding;
-import com.groupone.assignment.ui.aqi.AirQualityTab;
 import com.groupone.assignment.ui.common.AppIcons;
-import com.groupone.assignment.ui.green.GreenSpacesTab;
-import com.groupone.assignment.ui.map.StationMapTab;
-import com.groupone.assignment.ui.settings.SettingsTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 import org.osmdroid.config.Configuration;
@@ -48,14 +45,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Hosts the three tabs and owns permission and location resolution.
+ * Hosts the tabs and owns permission and location resolution.
  */
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG_AIR_QUALITY = "air_quality";
-    private static final String TAG_MAP = "station_map";
-    private static final String TAG_GREEN_SPACES = "green_spaces";
-    private static final String TAG_SETTINGS = "settings";
 
     private static final double DEFAULT_LATITUDE = 3.1390;
     private static final double DEFAULT_LONGITUDE = 101.6869;
@@ -76,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     private FusedLocationProviderClient fusedLocationClient;
     private CancellationTokenSource locationCancellation;
-    private int currentTab = -1;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,66 +102,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpTabs() {
-        binding.bottomNavigation.setOnItemSelectedListener(item -> {
-            showScreen(item.getItemId(), true);
-            updateNavigationIcons();
-            return true;
-        });
-        showScreen(binding.bottomNavigation.getSelectedItemId(), false);
-    }
-
-    private void showScreen(int itemId, boolean animate) {
-        String tag = tagFor(itemId);
-        Fragment target = getSupportFragmentManager().findFragmentByTag(tag);
-        if (target == null) {
-            target = createTab(itemId);
-        }
-        int tab = tabIndex(itemId);
-        if (!animate && target.isAdded()) {
-            currentTab = tab;
+        NavHostFragment host = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        if (host == null) {
             return;
         }
+        navController = host.getNavController();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true);
-        if (animate && currentTab >= 0 && tab != currentTab) {
-            if (tab > currentTab) {
-                transaction.setCustomAnimations(
-                        R.anim.slide_in_right, R.anim.slide_out_left);
-            } else {
-                transaction.setCustomAnimations(
-                        R.anim.slide_in_left, R.anim.slide_out_right);
+        binding.bottomNavigation.setOnItemSelectedListener(item -> {
+            int current = navController.getCurrentDestination() == null
+                    ? R.id.tab_aqi : navController.getCurrentDestination().getId();
+            if (current != item.getItemId()) {
+                navigateTo(item.getItemId(), tabIndex(current), tabIndex(item.getItemId()));
             }
-        }
-        transaction.replace(R.id.fragment_container, target, tag);
-        transaction.commit();
-        currentTab = tab;
+            return true;
+        });
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (binding.bottomNavigation.getSelectedItemId() != destination.getId()) {
+                binding.bottomNavigation.getMenu().findItem(destination.getId()).setChecked(true);
+            }
+            updateNavigationIcons();
+        });
     }
 
-    private String tagFor(int itemId) {
-        if (itemId == R.id.tab_map) {
-            return TAG_MAP;
-        }
-        if (itemId == R.id.tab_green) {
-            return TAG_GREEN_SPACES;
-        }
-        if (itemId == R.id.tab_settings) {
-            return TAG_SETTINGS;
-        }
-        return TAG_AIR_QUALITY;
-    }
-
-    private Fragment createTab(int itemId) {
-        if (itemId == R.id.tab_map) {
-            return new StationMapTab();
-        }
-        if (itemId == R.id.tab_green) {
-            return new GreenSpacesTab();
-        }
-        if (itemId == R.id.tab_settings) {
-            return new SettingsTab();
-        }
-        return new AirQualityTab();
+    private void navigateTo(int destinationId, int fromTab, int toTab) {
+        boolean forward = toTab > fromTab;
+        NavOptions options = new NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setRestoreState(true)
+                .setPopUpTo(navController.getGraph().getStartDestinationId(), false, true)
+                .setEnterAnim(forward ? R.anim.slide_in_right : R.anim.slide_in_left)
+                .setExitAnim(forward ? R.anim.slide_out_left : R.anim.slide_out_right)
+                .setPopEnterAnim(forward ? R.anim.slide_in_left : R.anim.slide_in_right)
+                .setPopExitAnim(forward ? R.anim.slide_out_right : R.anim.slide_out_left)
+                .build();
+        navController.navigate(destinationId, null, options);
     }
 
     private int tabIndex(int itemId) {
