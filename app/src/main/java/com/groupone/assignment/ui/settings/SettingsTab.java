@@ -16,7 +16,7 @@ import com.groupone.assignment.databinding.TabSettingsBinding;
 import com.groupone.assignment.ui.common.BaseTab;
 
 /**
- * Settings screen: data-source attribution and the in-app language switcher.
+ * Settings screen: personalization and data-source attribution.
  */
 public class SettingsTab extends BaseTab<TabSettingsBinding> {
 
@@ -31,10 +31,12 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         super.onViewCreated(view, savedInstanceState);
         syncSelection();
         binding.languageCard.setOnClickListener(clicked -> showLanguageDialog());
+        binding.audienceCard.setOnClickListener(clicked -> showAudienceDialog());
     }
 
     private void syncSelection() {
         binding.languageValue.setText(AppLanguage.current().getLabelRes());
+        binding.audienceValue.setText(AudienceSettings.current(requireContext()).getLabelRes());
     }
 
     private void showLanguageDialog() {
@@ -50,6 +52,25 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
                         (dialog, which) -> {
                             dialog.dismiss();
                             applyLanguage(languages[which].locales());
+                        })
+                .show();
+    }
+
+    private void showAudienceDialog() {
+        Audience[] audiences = Audience.values();
+        String[] labels = new String[audiences.length];
+        for (int i = 0; i < audiences.length; i++) {
+            labels[i] = getString(audiences[i].getLabelRes());
+        }
+
+        new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_AirGreen_Dialog)
+                .setTitle(R.string.settings_audience)
+                .setSingleChoiceItems(labels,
+                        AudienceSettings.current(requireContext()).ordinal(),
+                        (dialog, which) -> {
+                            dialog.dismiss();
+                            AudienceSettings.set(requireContext(), audiences[which]);
+                            syncSelection();
                         })
                 .show();
     }

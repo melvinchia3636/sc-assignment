@@ -37,6 +37,12 @@
     <string name="settings_map">地图</string>
     <string name="settings_map_value">OpenStreetMap</string>
     <string name="settings_language">语言</string>
+    <string name="settings_audience">健康人群</string>
+    <string name="audience_general">一般公众</string>
+    <string name="audience_children">儿童</string>
+    <string name="audience_elderly">老年人</string>
+    <string name="audience_note_children">儿童对空气污染更敏感。AQI 升高时应减少户外活动。</string>
+    <string name="audience_note_elderly">老年人应格外注意，避免长时间户外活动。</string>
     <string name="language_system">跟随系统</string>
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
