@@ -2,8 +2,10 @@ package com.groupone.assignment.repositories;
 
 import android.content.Context;
 
-import com.groupone.assignment.repositories.StationRepository.Coordinates;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.local.SnapshotCache;
+import com.groupone.assignment.repositories.model.Snapshot;
+import com.groupone.assignment.repositories.model.StationRepository.Coordinates;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 import com.groupone.assignment.scrapers.WaqiClient;
 
 /**

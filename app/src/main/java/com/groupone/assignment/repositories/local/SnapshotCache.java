@@ -1,4 +1,4 @@
-package com.groupone.assignment.repositories;
+package com.groupone.assignment.repositories.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import com.groupone.assignment.repositories.model.Snapshot;
 
 /**
  * Stores the last successful snapshot so the app can keep showing data when

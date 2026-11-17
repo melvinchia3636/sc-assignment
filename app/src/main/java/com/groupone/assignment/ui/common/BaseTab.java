@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewbinding.ViewBinding;
 
-import com.groupone.assignment.repositories.Snapshot;
+import com.groupone.assignment.repositories.model.Snapshot;
 import com.groupone.assignment.ui.MainViewModel;
 
 /**

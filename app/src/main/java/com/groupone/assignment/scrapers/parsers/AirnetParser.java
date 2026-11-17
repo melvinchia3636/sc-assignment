@@ -1,13 +1,13 @@
 package com.groupone.assignment.scrapers.parsers;
 
-import com.groupone.assignment.repositories.StationRepository.ObservationSeries;
-import com.groupone.assignment.repositories.StationRepository.Point;
-import com.groupone.assignment.repositories.StationRepository.SeriesPoint;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.ObservationSeries;
+import com.groupone.assignment.repositories.model.StationRepository.Point;
+import com.groupone.assignment.repositories.model.StationRepository.SeriesPoint;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 import com.groupone.assignment.lib.Series;
 import com.groupone.assignment.lib.Time;
-import com.groupone.assignment.repositories.AirnetRepository;
-import com.groupone.assignment.repositories.CwopRepository;
+import com.groupone.assignment.repositories.remote.AirnetRepository;
+import com.groupone.assignment.repositories.remote.CwopRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;

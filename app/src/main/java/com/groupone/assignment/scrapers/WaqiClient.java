@@ -2,14 +2,14 @@ package com.groupone.assignment.scrapers;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.ApiException;
-import com.groupone.assignment.repositories.StationRepository.Bounds;
-import com.groupone.assignment.repositories.StationRepository.Coordinates;
-import com.groupone.assignment.repositories.StationRepository.Station;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.Bounds;
+import com.groupone.assignment.repositories.model.StationRepository.Coordinates;
+import com.groupone.assignment.repositories.model.StationRepository.Station;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 import com.groupone.assignment.lib.TtlCache;
 import com.groupone.assignment.lib.http.Upstream;
 import com.groupone.assignment.scrapers.parsers.StationsParser;
-import com.groupone.assignment.repositories.BoundsRepository;
+import com.groupone.assignment.repositories.remote.BoundsRepository;
 import com.groupone.assignment.scrapers.sources.AirnetStationSource;
 import com.groupone.assignment.scrapers.sources.Api2StationSource;
 import com.groupone.assignment.scrapers.sources.StationSource;
@@ -29,7 +29,7 @@ public class WaqiClient {
 
     private static final String STATIONS_URL = "https://mapq.waqi.info/mapq2/bounds";
     private static final Bounds WORLD_BOUNDS = new Bounds(-90, -180, 90, 180);
-    private static final double[] SEARCH_RADII = {0.35, 1.0, 3.0};
+    private static final double[] SEARCH_RADII = { 0.35, 1.0, 3.0 };
     private static final int MAX_STATION_ATTEMPTS = 3;
     private static final long STATION_TTL_MS = 5 * 60 * 1000;
 
@@ -49,9 +49,7 @@ public class WaqiClient {
         for (double radius : SEARCH_RADII) {
             List<Station> stations = fetchStations(boundsAround(origin, radius), origin);
 
-            for (int index = 0;
-                 index < Math.min(MAX_STATION_ATTEMPTS, stations.size());
-                 index++) {
+            for (int index = 0; index < Math.min(MAX_STATION_ATTEMPTS, stations.size()); index++) {
                 StationDetail detail;
                 try {
                     detail = fetchDetail(stations.get(index).getIdx());
@@ -68,7 +66,9 @@ public class WaqiClient {
         throw new ApiException(404, R.string.error_no_station);
     }
 
-    /** Fetches stations inside the given bounds, by name when no origin is given. */
+    /**
+     * Fetches stations inside the given bounds, by name when no origin is given.
+     */
     public List<Station> fetchStations(Bounds bounds, Coordinates origin) throws ApiException {
         String url = stationsUrl(bounds);
         String cacheKey = origin == null
@@ -99,6 +99,7 @@ public class WaqiClient {
      */
     public StationDetail fetchDetail(String idx) throws ApiException {
         StationSource source = idx.startsWith("A") ? airnet : api2;
+
         return stationDetails.getOrLoad(idx, STATION_TTL_MS, () -> source.fetch(idx));
     }
 

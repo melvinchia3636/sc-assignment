@@ -2,11 +2,11 @@ package com.groupone.assignment.scrapers.sources;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.ApiException;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 import com.groupone.assignment.lib.TtlCache;
 import com.groupone.assignment.lib.http.Upstream;
 import com.groupone.assignment.scrapers.parsers.Api2Parser;
-import com.groupone.assignment.repositories.Api2Repository;
+import com.groupone.assignment.repositories.remote.Api2Repository;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

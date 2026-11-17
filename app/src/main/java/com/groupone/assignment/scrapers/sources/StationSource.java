@@ -1,7 +1,7 @@
 package com.groupone.assignment.scrapers.sources;
 
 import com.groupone.assignment.repositories.ApiException;
-import com.groupone.assignment.repositories.StationRepository.StationDetail;
+import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 
 /**
  * A remote provider of station details.

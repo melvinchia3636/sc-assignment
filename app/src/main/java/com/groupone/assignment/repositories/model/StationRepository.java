@@ -1,4 +1,4 @@
-package com.groupone.assignment.repositories;
+package com.groupone.assignment.repositories.model;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
