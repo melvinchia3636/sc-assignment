@@ -155,10 +155,10 @@ class ParsersTest {
                 airnetEntry("2026-11-17T03:00:00Z", 24.15));
 
         CwopRepository.Reading weather = new CwopRepository.Reading();
-        weather.h = 70.5;
-        weather.p = 1010.5;
-        weather.t = 31.6;
-        weather.ws = 7.0;
+        weather.humidity = 70.5;
+        weather.pressure = 1010.5;
+        weather.temperature = 31.6;
+        weather.windSpeed = 7.0;
         CwopRepository.Data weatherData = new CwopRepository.Data();
         weatherData.data = Map.of("2026-11-17T03:00:00Z", weather);
         CwopRepository.Response cwop = new CwopRepository.Response();

@@ -1,5 +1,7 @@
 package com.groupone.assignment.repositories.remote;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Map;
 
 /**
@@ -21,12 +23,16 @@ public final class CwopRepository {
     /** One CWOP weather observation. */
     public static final class Reading {
         /** Relative humidity, in percent. */
-        public Double h;
+        @SerializedName("h")
+        public Double humidity;
         /** Barometric pressure, in hPa. */
-        public Double p;
+        @SerializedName("p")
+        public Double pressure;
         /** Air temperature, in degrees Celsius. */
-        public Double t;
+        @SerializedName("t")
+        public Double temperature;
         /** Wind speed, in the provider's reported unit. */
-        public Double ws;
+        @SerializedName("ws")
+        public Double windSpeed;
     }
 }
