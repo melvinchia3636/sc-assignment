@@ -26,48 +26,41 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
 
     @Override
     protected TabSettingsBinding createBinding(LayoutInflater inflater,
-                                                    @Nullable ViewGroup container) {
+            @Nullable ViewGroup container) {
         return TabSettingsBinding.inflate(inflater, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        syncSelection();
+        binding.languageRow.setValue(LocalizationService.current().getLabelRes());
+        binding.audienceRow.setValue(
+                UserPreferences.currentAudience(requireContext()).getLabelRes());
+
         binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
         binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
     }
 
-    private void syncSelection() {
-        binding.languageRow.setValue(LocalizationService.current().getLabelRes());
-        binding.audienceRow.setValue(
-                UserPreferences.currentAudience(requireContext()).getLabelRes());
-    }
-
     private void showLanguageDialog() {
-        LocalizationService.Language[] languages = LocalizationService.Language.values();
-        String[] labels = new String[languages.length];
-        for (int i = 0; i < languages.length; i++) {
-            labels[i] = getString(languages[i].getLabelRes());
-        }
-
-        SingleChoiceDialog.show(requireContext(), R.string.settings_language, labels,
+        SingleChoiceDialog.show(
+                requireContext(),
+                R.string.settings_language,
+                LocalizationService.Language.values(),
+                LocalizationService.Language::getLabelRes,
                 LocalizationService.current().ordinal(),
-                which -> LocalizationService.apply(languages[which]));
+                LocalizationService::apply);
     }
 
     private void showAudienceDialog() {
-        Audience[] audiences = Audience.values();
-        String[] labels = new String[audiences.length];
-        for (int i = 0; i < audiences.length; i++) {
-            labels[i] = getString(audiences[i].getLabelRes());
-        }
-
-        SingleChoiceDialog.show(requireContext(), R.string.settings_audience, labels,
+        SingleChoiceDialog.show(
+                requireContext(),
+                R.string.settings_audience,
+                Audience.values(),
+                Audience::getLabelRes,
                 UserPreferences.currentAudience(requireContext()).ordinal(),
-                which -> {
-                    UserPreferences.setAudience(requireContext(), audiences[which]);
-                    syncSelection();
+                audience -> {
+                    UserPreferences.setAudience(requireContext(), audience);
+                    binding.audienceRow.setValue(audience.getLabelRes());
                 });
     }
 }
