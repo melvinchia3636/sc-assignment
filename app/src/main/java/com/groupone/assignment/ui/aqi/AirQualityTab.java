@@ -36,7 +36,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         viewModel = sharedViewModel();
 
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
-        binding.errorCard.setOnRetryListener(viewModel::refresh);
+        binding.content.setOnRetryListener(viewModel::refresh);
         observeAirQuality();
     }
 
@@ -49,20 +49,12 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         });
 
         viewModel.getLocationService().getPlaceName().observe(getViewLifecycleOwner(),
-                name -> binding.headerSection.setPlaceName(name));
+                name -> binding.content.setPlaceName(name));
         observeLoading(binding.swipeRefresh);
     }
 
     private void renderStation(StationDetail station) {
-        binding.aqiHero.bind(station, viewModel.getLocationService().placeName());
-        binding.guidanceSection.bind(
-                AudienceService.INSTANCE.current(requireContext()), station.getAqi());
-        binding.headerSection.bind(station);
-        binding.subIndicesSection.bind(station);
-        binding.weatherSection.bind(station);
-        binding.trendSection.bind(station);
-
-        binding.errorCard.hide();
+        binding.content.bind(station, AudienceService.INSTANCE.current(requireContext()));
         binding.swipeRefresh.setRefreshing(false);
     }
 
@@ -70,19 +62,12 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     public void onResume() {
         super.onResume();
         if (binding != null) {
-            binding.guidanceSection.bindAudience(
-                    AudienceService.INSTANCE.current(requireContext()));
+            binding.content.bindAudience(AudienceService.INSTANCE.current(requireContext()));
         }
     }
 
     private void renderError(String message) {
-        binding.errorCard.show(message);
+        binding.content.showError(message);
         binding.swipeRefresh.setRefreshing(false);
-        binding.aqiHero.showError();
-        binding.guidanceSection.clear();
-        binding.weatherSection.clear();
-        binding.trendSection.clear();
-        binding.subIndicesSection.clear();
-        binding.headerSection.setUnavailable();
     }
 }
