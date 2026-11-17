@@ -35,6 +35,8 @@ import java.util.Locale;
  */
 public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
+    public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_cloud;
+
     private MainViewModel viewModel;
 
     @Override

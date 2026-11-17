@@ -30,6 +30,8 @@ import java.util.List;
  */
 public class StationMapTab extends BaseTab<TabStationMapBinding> {
 
+    public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_map;
+
     private MainViewModel viewModel;
     private MapView map;
 
