@@ -24,7 +24,6 @@
         android:layout_height="wrap_content"
         android:background="@color/card"
         app:itemRippleColor="@color/ripple_green"
-        app:itemTextColor="@color/nav_item"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav" />
 </LinearLayout>

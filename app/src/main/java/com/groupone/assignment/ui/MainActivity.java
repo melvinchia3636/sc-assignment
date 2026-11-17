@@ -3,6 +3,7 @@ package com.groupone.assignment.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         applySystemBarInsets();
         setUpTabs();
+        styleNavigation();
         updateNavigationIcons();
 
         if (savedInstanceState == null) {
@@ -287,6 +289,15 @@ public class MainActivity extends AppCompatActivity {
             return windowInsets;
         });
         ViewCompat.requestApplyInsets(binding.root);
+    }
+
+    private void styleNavigation() {
+        binding.bottomNavigation.setItemTextColor(new ColorStateList(
+                new int[][]{new int[]{android.R.attr.state_checked}, new int[]{}},
+                new int[]{
+                        ContextCompat.getColor(this, R.color.green_700),
+                        ContextCompat.getColor(this, R.color.muted),
+                }));
     }
 
     private void updateNavigationIcons() {
