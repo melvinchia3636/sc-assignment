@@ -12,7 +12,6 @@
     <string name="map_subtitle">Nearby WAQI monitoring stations</string>
     <string name="map_station_count">%1$d stations</string>
     <string name="map_empty">No stations loaded yet.</string>
-    <string name="map_station_snippet">AQI %1$s · idx %2$s</string>
     <string name="map_zoom_in">Zoom in</string>
     <string name="map_zoom_out">Zoom out</string>
 
