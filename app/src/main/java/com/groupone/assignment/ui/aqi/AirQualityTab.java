@@ -18,6 +18,8 @@ import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.groupone.assignment.ui.common.SparklineChart;
+import com.groupone.assignment.ui.settings.Audience;
+import com.groupone.assignment.ui.settings.AudienceSettings;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
@@ -102,6 +104,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiValue.setText(AqiScale.format(station.getAqi()));
         binding.aqiCategory.setText(level.getLabelRes());
         binding.aqiAdvice.setText(level.getAdviceRes());
+        applyAudienceNote();
 
         long updatedAt = station.getUpdatedAt();
         binding.updatedText.setText(updatedAt > 0
@@ -120,6 +123,24 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         binding.errorCard.setVisibility(View.GONE);
         binding.swipeRefresh.setRefreshing(false);
+    }
+
+    private void applyAudienceNote() {
+        Audience audience = AudienceSettings.current(requireContext());
+        if (audience == Audience.GENERAL) {
+            binding.audienceNote.setVisibility(View.GONE);
+            return;
+        }
+        binding.audienceNote.setText(audience.getNoteRes());
+        binding.audienceNote.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (binding != null) {
+            applyAudienceNote();
+        }
     }
 
     private void renderWeather(StationDetail station) {
@@ -184,6 +205,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiFaceIcon.setImageDrawable(AppIcons.drawable(
                 requireContext(), FontAwesome.Icon.faw_meh, "#FFFFFF", 18));
         binding.aqiAdvice.setText(R.string.connection_advice);
+        binding.audienceNote.setVisibility(View.GONE);
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");
         binding.weatherCard.setVisibility(View.GONE);

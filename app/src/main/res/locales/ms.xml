@@ -37,6 +37,12 @@
     <string name="settings_map">Peta</string>
     <string name="settings_map_value">OpenStreetMap</string>
     <string name="settings_language">Bahasa</string>
+    <string name="settings_audience">Kumpulan kesihatan</string>
+    <string name="audience_general">Orang awam</string>
+    <string name="audience_children">Kanak-kanak</string>
+    <string name="audience_elderly">Warga emas</string>
+    <string name="audience_note_children">Kanak-kanak lebih sensitif terhadap pencemaran udara. Hadkan permainan di luar apabila AQI tinggi.</string>
+    <string name="audience_note_elderly">Warga emas harus lebih berhati-hati dan elakkan aktiviti luar yang berpanjangan.</string>
     <string name="language_system">Lalai sistem</string>
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>

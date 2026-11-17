@@ -37,6 +37,12 @@
     <string name="settings_map">Map</string>
     <string name="settings_map_value">OpenStreetMap</string>
     <string name="settings_language">Language</string>
+    <string name="settings_audience">Health group</string>
+    <string name="audience_general">General public</string>
+    <string name="audience_children">Children</string>
+    <string name="audience_elderly">Elderly</string>
+    <string name="audience_note_children">Children are more sensitive to air pollution. Limit outdoor play when the AQI is elevated.</string>
+    <string name="audience_note_elderly">Older adults should take extra care and avoid prolonged exertion outdoors.</string>
     <string name="language_system">System default</string>
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
