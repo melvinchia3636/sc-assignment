@@ -47,6 +47,7 @@
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">Chinese (Simplified)</string>
+    <string name="language_japanese">Japanese</string>
 
     <string name="weather_label">WEATHER</string>
     <string name="weather_temperature">TEMPERATURE</string>
