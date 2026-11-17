@@ -16,26 +16,29 @@ import com.groupone.assignment.R;
  */
 public class SettingsRowView extends LinearLayout {
 
-    private final TextView title;
     private final TextView value;
 
     public SettingsRowView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_settings_row, this, true);
-        title = findViewById(R.id.settings_row_title);
+        TextView title = findViewById(R.id.settings_row_title);
         value = findViewById(R.id.settings_row_value);
 
         TypedArray attributes = context.obtainStyledAttributes(
                 attrs, R.styleable.SettingsRowView);
-        CharSequence rowTitle = attributes.getText(R.styleable.SettingsRowView_rowTitle);
-        if (rowTitle != null) {
-            title.setText(rowTitle);
+        try {
+            applyText(title, attributes, R.styleable.SettingsRowView_rowTitle);
+            applyText(value, attributes, R.styleable.SettingsRowView_rowValue);
+        } finally {
+            attributes.recycle();
         }
-        CharSequence rowValue = attributes.getText(R.styleable.SettingsRowView_rowValue);
-        if (rowValue != null) {
-            value.setText(rowValue);
+    }
+
+    private static void applyText(TextView view, TypedArray attributes, int index) {
+        CharSequence text = attributes.getText(index);
+        if (text != null) {
+            view.setText(text);
         }
-        attributes.recycle();
     }
 
     public SettingsRowView setValue(@StringRes int valueRes) {
