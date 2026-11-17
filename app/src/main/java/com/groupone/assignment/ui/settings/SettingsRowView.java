@@ -21,11 +21,13 @@ public class SettingsRowView extends LinearLayout {
     public SettingsRowView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_settings_row, this, true);
+
         TextView title = findViewById(R.id.settings_row_title);
         value = findViewById(R.id.settings_row_value);
 
         TypedArray attributes = context.obtainStyledAttributes(
                 attrs, R.styleable.SettingsRowView);
+
         try {
             applyText(title, attributes, R.styleable.SettingsRowView_rowTitle);
             applyText(value, attributes, R.styleable.SettingsRowView_rowValue);
@@ -36,6 +38,7 @@ public class SettingsRowView extends LinearLayout {
 
     private static void applyText(TextView view, TypedArray attributes, int index) {
         CharSequence text = attributes.getText(index);
+
         if (text != null) {
             view.setText(text);
         }
