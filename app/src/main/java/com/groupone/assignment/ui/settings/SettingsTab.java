@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.TabSettingsBinding;
 import com.groupone.assignment.repositories.model.Audience;
+import com.groupone.assignment.services.AudienceService;
 import com.groupone.assignment.services.LocalizationService;
-import com.groupone.assignment.settings.UserPreferences;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.groupone.assignment.ui.common.SingleChoiceDialog;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
@@ -35,7 +35,7 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         super.onViewCreated(view, savedInstanceState);
         binding.languageRow.setValue(LocalizationService.current().getLabelRes());
         binding.audienceRow.setValue(
-                UserPreferences.currentAudience(requireContext()).getLabelRes());
+                AudienceService.current(requireContext()).getLabelRes());
 
         binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
         binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
@@ -57,9 +57,9 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
                 R.string.settings_audience,
                 Audience.values(),
                 Audience::getLabelRes,
-                UserPreferences.currentAudience(requireContext()).ordinal(),
+                AudienceService.current(requireContext()).ordinal(),
                 audience -> {
-                    UserPreferences.setAudience(requireContext(), audience);
+                    AudienceService.select(requireContext(), audience);
                     binding.audienceRow.setValue(audience.getLabelRes());
                 });
     }
