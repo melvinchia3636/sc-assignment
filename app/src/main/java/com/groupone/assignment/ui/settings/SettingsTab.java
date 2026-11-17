@@ -33,18 +33,12 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.languageRow.setTitle(R.string.settings_language);
-        binding.audienceRow.setTitle(R.string.settings_audience);
-        binding.airQualityRow
-                .setTitle(R.string.settings_air_quality)
-                .setValue(R.string.settings_air_quality_value);
-        binding.mapRow
-                .setTitle(R.string.settings_map)
-                .setValue(R.string.settings_map_value);
+        binding.airQualityRow.setValue(R.string.settings_air_quality_value);
+        binding.mapRow.setValue(R.string.settings_map_value);
 
         syncSelection();
-        binding.languageRow.setOnRowClickListener(this::showLanguageDialog);
-        binding.audienceRow.setOnRowClickListener(this::showAudienceDialog);
+        binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
+        binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
     }
 
     private void syncSelection() {

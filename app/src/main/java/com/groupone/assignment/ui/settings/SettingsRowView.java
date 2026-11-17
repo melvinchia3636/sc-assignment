@@ -1,6 +1,7 @@
 package com.groupone.assignment.ui.settings;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,11 +40,14 @@ public class SettingsRowView extends LinearLayout {
         title = findViewById(R.id.settings_row_title);
         value = findViewById(R.id.settings_row_value);
         chevron = findViewById(R.id.settings_row_chevron);
-    }
 
-    public SettingsRowView setTitle(@StringRes int titleRes) {
-        title.setText(titleRes);
-        return this;
+        TypedArray attributes = context.obtainStyledAttributes(
+                attrs, R.styleable.SettingsRowView, defStyleAttr, 0);
+        CharSequence rowTitle = attributes.getText(R.styleable.SettingsRowView_rowTitle);
+        if (rowTitle != null) {
+            title.setText(rowTitle);
+        }
+        attributes.recycle();
     }
 
     public SettingsRowView setValue(@StringRes int valueRes) {
@@ -53,11 +57,6 @@ public class SettingsRowView extends LinearLayout {
 
     public SettingsRowView setValue(CharSequence text) {
         value.setText(text);
-        return this;
-    }
-
-    public SettingsRowView setOnRowClickListener(Runnable action) {
-        setOnClickListener(clicked -> action.run());
         return this;
     }
 

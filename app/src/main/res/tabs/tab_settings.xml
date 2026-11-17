@@ -52,7 +52,8 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:focusable="true" />
+                    android:focusable="true"
+                    app:rowTitle="@string/settings_language" />
 
                 <View
                     android:layout_width="match_parent"
@@ -67,7 +68,8 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:focusable="true" />
+                    android:focusable="true"
+                    app:rowTitle="@string/settings_audience" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -98,7 +100,8 @@
                 <com.groupone.assignment.ui.settings.SettingsRowView
                     android:id="@+id/air_quality_row"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:rowTitle="@string/settings_air_quality" />
 
                 <View
                     android:layout_width="match_parent"
@@ -110,7 +113,8 @@
                 <com.groupone.assignment.ui.settings.SettingsRowView
                     android:id="@+id/map_row"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:rowTitle="@string/settings_map" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
