@@ -48,17 +48,12 @@ public class WeatherSection extends SectionView {
 
     public void bind(StationDetail station) {
         boolean hasValue = false;
+
         for (WeatherItem item : items) {
             hasValue |= item.bind(station);
         }
-        setVisibility(hasValue ? View.VISIBLE : View.GONE);
-    }
 
-    public void clear() {
-        setVisibility(View.GONE);
-        for (WeatherItem item : items) {
-            item.clear();
-        }
+        setVisibility(hasValue ? View.VISIBLE : View.GONE);
     }
 
     private void addItem(LinearLayout row, WeatherItem item, boolean spaced) {

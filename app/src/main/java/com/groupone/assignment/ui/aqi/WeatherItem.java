@@ -52,8 +52,4 @@ public class WeatherItem extends LinearLayout {
                 : String.format(Locale.getDefault(), format, reading));
         return !Double.isNaN(reading);
     }
-
-    public void clear() {
-        value.setText(R.string.dash);
-    }
 }
