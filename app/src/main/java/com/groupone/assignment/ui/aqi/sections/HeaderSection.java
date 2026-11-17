@@ -37,6 +37,10 @@ public class HeaderSection extends LinearLayout {
                 : getContext().getString(R.string.not_updated));
     }
 
+    public void setPlaceName(String placeName) {
+        cityTitle.setText(placeName);
+    }
+
     public void setUnavailable() {
         updatedText.setText(R.string.not_updated);
     }
