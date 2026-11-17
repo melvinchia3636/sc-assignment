@@ -285,27 +285,12 @@
                 android:visibility="gone"
                 app:sectionTitle="@string/weather_label" />
 
-            <com.groupone.assignment.ui.common.SectionView
+            <com.groupone.assignment.ui.aqi.TrendSection
+                android:id="@+id/trend_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                app:sectionTitle="@string/trend_label">
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/aqi_sparkline"
-                android:layout_width="match_parent"
-                android:layout_height="116dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/trend_range"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/muted"
-                android:textSize="11sp" />
-            </com.groupone.assignment.ui.common.SectionView>
+                app:sectionTitle="@string/trend_label" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
