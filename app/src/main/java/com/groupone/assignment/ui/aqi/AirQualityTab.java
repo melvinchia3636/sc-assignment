@@ -1,10 +1,7 @@
 package com.groupone.assignment.ui.aqi;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +13,10 @@ import androidx.annotation.Nullable;
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.TabAqiBinding;
-import com.groupone.assignment.ui.MainViewModel;
-import com.groupone.assignment.guidance.Audience;
 import com.groupone.assignment.guidance.AqiLevel;
 import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.services.AudienceService;
+import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
@@ -54,8 +50,6 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
         binding.retryButton.setOnClickListener(clicked -> viewModel.refresh());
-        binding.guidanceIcon.setImageDrawable(AppIcons.drawable(
-                requireContext(), GoogleMaterial.Icon.gmd_directions_walk, "#1B5E20", 16));
         observeViewModel();
     }
 
@@ -90,7 +84,8 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiValue.setText(AqiScale.format(station.getAqi()));
         binding.aqiCategory.setText(level.labelRes());
         binding.aqiAdvice.setText(level.adviceRes());
-        applyGuidance(station.getAqi());
+        binding.guidanceSection.bind(
+                AudienceService.INSTANCE.current(requireContext()), station.getAqi());
 
         long updatedAt = station.getUpdatedAt();
         binding.updatedText.setText(updatedAt > 0
@@ -111,43 +106,12 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.swipeRefresh.setRefreshing(false);
     }
 
-    private void applyGuidance(double aqi) {
-        if (Double.isNaN(aqi)) {
-            binding.guidanceCard.setVisibility(View.GONE);
-            return;
-        }
-
-        Audience audience = AudienceService.INSTANCE.current(requireContext());
-        String audienceLabel = getString(audience.labelRes());
-        String label = getString(R.string.guidance_for, audienceLabel);
-        SpannableString styledLabel = new SpannableString(label);
-        int start = label.indexOf(audienceLabel);
-        if (start >= 0) {
-            styledLabel.setSpan(new StyleSpan(Typeface.BOLD), start,
-                    start + audienceLabel.length(), 0);
-        }
-        binding.guidanceLabel.setText(styledLabel);
-
-        int noteRes = audience.noteRes(aqi);
-        if (noteRes == 0) {
-            binding.guidanceNote.setVisibility(View.GONE);
-        } else {
-            binding.guidanceNote.setText(noteRes);
-            binding.guidanceNote.setVisibility(View.VISIBLE);
-        }
-
-        int minutes = audience.outdoorMinutes(aqi);
-        binding.guidanceTime.setText(minutes > 0
-                ? getString(R.string.audience_outdoor_limit, minutes)
-                : getString(R.string.audience_outdoor_avoid));
-        binding.guidanceCard.setVisibility(View.VISIBLE);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         if (binding != null && !Double.isNaN(lastAqi)) {
-            applyGuidance(lastAqi);
+            binding.guidanceSection.bind(
+                    AudienceService.INSTANCE.current(requireContext()), lastAqi);
         }
     }
 
@@ -162,7 +126,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
                 requireContext(), FontAwesome.Icon.faw_meh, "#FFFFFF", 18));
         binding.aqiAdvice.setText(R.string.connection_advice);
         lastAqi = Double.NaN;
-        binding.guidanceCard.setVisibility(View.GONE);
+        binding.guidanceSection.clear();
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");
         binding.weatherSection.setVisibility(View.GONE);
