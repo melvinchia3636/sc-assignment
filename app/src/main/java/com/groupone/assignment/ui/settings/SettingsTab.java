@@ -37,16 +37,14 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         binding.audienceRow.setTitle(R.string.settings_audience);
         binding.airQualityRow
                 .setTitle(R.string.settings_air_quality)
-                .setValue(R.string.settings_air_quality_value)
-                .setChevronVisible(false);
+                .setValue(R.string.settings_air_quality_value);
         binding.mapRow
                 .setTitle(R.string.settings_map)
-                .setValue(R.string.settings_map_value)
-                .setChevronVisible(false);
+                .setValue(R.string.settings_map_value);
 
         syncSelection();
-        binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
-        binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
+        binding.languageRow.setOnRowClickListener(this::showLanguageDialog);
+        binding.audienceRow.setOnRowClickListener(this::showAudienceDialog);
     }
 
     private void syncSelection() {

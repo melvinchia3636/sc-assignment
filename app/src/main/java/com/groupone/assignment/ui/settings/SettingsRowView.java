@@ -56,9 +56,21 @@ public class SettingsRowView extends LinearLayout {
         return this;
     }
 
-    public SettingsRowView setChevronVisible(boolean visible) {
-        chevron.setVisibility(visible ? VISIBLE : GONE);
+    public SettingsRowView setOnRowClickListener(Runnable action) {
+        setOnClickListener(clicked -> action.run());
         return this;
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        updateChevron();
+    }
+
+    private void updateChevron() {
+        if (chevron != null) {
+            chevron.setVisibility(isClickable() ? VISIBLE : GONE);
+        }
     }
 
     private int dp(int value) {
