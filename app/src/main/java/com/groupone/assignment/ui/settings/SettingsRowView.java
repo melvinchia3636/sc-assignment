@@ -21,10 +21,6 @@ public class SettingsRowView extends LinearLayout {
     private final TextView value;
     private final ImageView chevron;
 
-    public SettingsRowView(Context context) {
-        this(context, null);
-    }
-
     public SettingsRowView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
