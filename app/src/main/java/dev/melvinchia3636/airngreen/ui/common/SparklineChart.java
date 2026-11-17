@@ -30,12 +30,8 @@ public final class SparklineChart {
 
     /** WAQI caps the AQI scale at 500, so the trend axis never goes above it. */
     private static final float AQI_MAXIMUM = 500f;
-    /** Smallest vertical window, so a flat reading is not blown up. */
-    private static final float AQI_MINIMUM_SPAN = 20f;
-    /** Share of the data span added above and below the readings. */
-    private static final float AXIS_PADDING = 0.15f;
-    /** Rounds the axis bounds to readable steps of ten AQI points. */
-    private static final float AXIS_STEP = 10f;
+    /** Breathing room added above and below the lowest and highest readings. */
+    private static final float AXIS_PADDING = 5f;
 
     private SparklineChart() {
     }
@@ -132,8 +128,8 @@ public final class SparklineChart {
     }
 
     /**
-     * Padded Y-axis bounds around the trend data, clamped to the AQI scale and
-     * rounded to readable steps so the line never touches either edge.
+     * Y-axis bounds fixed five points beyond the trend data, clamped to the
+     * AQI scale.
      */
     private static float[] trendBounds(List<Entry> entries) {
         float lowest = Float.MAX_VALUE;
@@ -144,21 +140,9 @@ public final class SparklineChart {
             highest = Math.max(highest, entry.getY());
         }
 
-        float padding = Math.max(AQI_MINIMUM_SPAN, highest - lowest) * AXIS_PADDING;
-        float minimum = Math.max(0f, floorToStep(lowest - padding));
-        float maximum = Math.min(AQI_MAXIMUM, ceilToStep(highest + padding));
-
-        // Keep a valid window when every reading sits at the top of the scale.
-        minimum = Math.min(minimum, Math.max(0f, maximum - AQI_MINIMUM_SPAN));
+        float minimum = Math.max(0f, lowest - AXIS_PADDING);
+        float maximum = Math.min(AQI_MAXIMUM, highest + AXIS_PADDING);
         return new float[] {minimum, maximum};
-    }
-
-    private static float floorToStep(float value) {
-        return (float) Math.floor(value / AXIS_STEP) * AXIS_STEP;
-    }
-
-    private static float ceilToStep(float value) {
-        return (float) Math.ceil(value / AXIS_STEP) * AXIS_STEP;
     }
 
     private static List<Entry> entries(List<Double> values) {
