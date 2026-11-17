@@ -1,4 +1,4 @@
-package com.groupone.assignment.ui.settings;
+package com.groupone.assignment.repositories.model;
 
 import androidx.annotation.StringRes;
 
@@ -26,6 +26,7 @@ public enum Audience {
         return labelRes;
     }
 
+    /** Returns 0 when the audience needs no extra guidance. */
     @StringRes
     public int getNoteRes() {
         return noteRes;

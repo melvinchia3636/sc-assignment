@@ -10,7 +10,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.groupone.assignment.databinding.ActivityMainBinding;
-import com.groupone.assignment.ui.common.BaseTab;
 
 import org.osmdroid.config.Configuration;
 
@@ -48,6 +47,5 @@ public class BootstrapService {
         ViewCompat.requestApplyInsets(binding.root);
 
         TabService.attach(activity, binding.bottomNavigation);
-        BaseTab.styleNavigation(binding.bottomNavigation);
     }
 }

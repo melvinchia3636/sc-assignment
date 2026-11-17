@@ -13,6 +13,8 @@ import androidx.core.os.LocaleListCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.TabSettingsBinding;
+import com.groupone.assignment.repositories.model.Audience;
+import com.groupone.assignment.settings.UserPreferences;
 import com.groupone.assignment.ui.common.BaseTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
@@ -39,7 +41,8 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
 
     private void syncSelection() {
         binding.languageValue.setText(AppLanguage.current().getLabelRes());
-        binding.audienceValue.setText(AudienceSettings.current(requireContext()).getLabelRes());
+        binding.audienceValue.setText(
+                UserPreferences.currentAudience(requireContext()).getLabelRes());
     }
 
     private void showLanguageDialog() {
@@ -69,10 +72,10 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_AirGreen_Dialog)
                 .setTitle(R.string.settings_audience)
                 .setSingleChoiceItems(labels,
-                        AudienceSettings.current(requireContext()).ordinal(),
+                        UserPreferences.currentAudience(requireContext()).ordinal(),
                         (dialog, which) -> {
                             dialog.dismiss();
-                            AudienceSettings.set(requireContext(), audiences[which]);
+                            UserPreferences.setAudience(requireContext(), audiences[which]);
                             syncSelection();
                         })
                 .show();
