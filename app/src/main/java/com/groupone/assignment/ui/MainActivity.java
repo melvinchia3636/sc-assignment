@@ -3,7 +3,6 @@ package com.groupone.assignment.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -22,12 +21,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.ActivityMainBinding;
 import com.groupone.assignment.location.LocationService;
-import com.groupone.assignment.ui.common.AppIcons;
-import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 import org.osmdroid.config.Configuration;
 
@@ -75,8 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         applySystemBarInsets();
         setUpTabs();
-        styleNavigation();
-        updateNavigationIcons();
+        TabNavigation.style(binding.bottomNavigation);
 
         if (savedInstanceState == null) {
             if (hasLocationPermission()) {
@@ -99,7 +94,9 @@ public class MainActivity extends AppCompatActivity {
             int current = navController.getCurrentDestination() == null
                     ? R.id.tab_aqi : navController.getCurrentDestination().getId();
             if (current != item.getItemId()) {
-                navigateTo(item.getItemId(), tabIndex(current), tabIndex(item.getItemId()));
+                navigateTo(item.getItemId(),
+                        TabNavigation.indexOf(current),
+                        TabNavigation.indexOf(item.getItemId()));
             }
             return true;
         });
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             if (binding.bottomNavigation.getSelectedItemId() != destination.getId()) {
                 binding.bottomNavigation.getMenu().findItem(destination.getId()).setChecked(true);
             }
-            updateNavigationIcons();
+            TabNavigation.updateIcons(binding.bottomNavigation);
         });
     }
 
@@ -124,19 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPopExitAnim(forward ? R.anim.slide_out_right : R.anim.slide_out_left)
                 .build();
         navController.navigate(destinationId, null, options);
-    }
-
-    private int tabIndex(int itemId) {
-        if (itemId == R.id.tab_map) {
-            return 1;
-        }
-        if (itemId == R.id.tab_green) {
-            return 2;
-        }
-        if (itemId == R.id.tab_settings) {
-            return 3;
-        }
-        return 0;
     }
 
     private void onPermissionResult(Map<String, Boolean> result) {
@@ -194,34 +178,6 @@ public class MainActivity extends AppCompatActivity {
             return windowInsets;
         });
         ViewCompat.requestApplyInsets(binding.root);
-    }
-
-    private void styleNavigation() {
-        binding.bottomNavigation.setItemTextColor(new ColorStateList(
-                new int[][]{new int[]{android.R.attr.state_checked}, new int[]{}},
-                new int[]{
-                        ContextCompat.getColor(this, R.color.green_700),
-                        ContextCompat.getColor(this, R.color.muted),
-                }));
-    }
-
-    private void updateNavigationIcons() {
-        BottomNavigationView navigation = binding.bottomNavigation;
-        int selected = navigation.getSelectedItemId();
-        int active = Color.parseColor("#1B5E20");
-        int inactive = Color.parseColor("#5F665F");
-        navigation.getMenu().findItem(R.id.tab_aqi).setIcon(
-                AppIcons.drawable(this, GoogleMaterial.Icon.gmd_cloud,
-                        selected == R.id.tab_aqi ? active : inactive, 24));
-        navigation.getMenu().findItem(R.id.tab_map).setIcon(
-                AppIcons.drawable(this, GoogleMaterial.Icon.gmd_map,
-                        selected == R.id.tab_map ? active : inactive, 24));
-        navigation.getMenu().findItem(R.id.tab_green).setIcon(
-                AppIcons.drawable(this, GoogleMaterial.Icon.gmd_park,
-                        selected == R.id.tab_green ? active : inactive, 24));
-        navigation.getMenu().findItem(R.id.tab_settings).setIcon(
-                AppIcons.drawable(this, GoogleMaterial.Icon.gmd_settings,
-                        selected == R.id.tab_settings ? active : inactive, 24));
     }
 
     @Override

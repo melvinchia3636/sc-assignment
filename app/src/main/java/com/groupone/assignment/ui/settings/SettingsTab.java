@@ -14,11 +14,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.TabSettingsBinding;
 import com.groupone.assignment.ui.common.BaseTab;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 /**
  * Settings screen: personalization and data-source attribution.
  */
 public class SettingsTab extends BaseTab<TabSettingsBinding> {
+
+    public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_settings;
 
     @Override
     protected TabSettingsBinding createBinding(LayoutInflater inflater,

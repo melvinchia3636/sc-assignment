@@ -12,12 +12,15 @@ import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.TabGreenSpaceBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.BaseTab;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 /**
  * Green-space screen placeholder. Live green space data is not part of the
  * scraper API yet.
  */
 public class GreenSpacesTab extends BaseTab<TabGreenSpaceBinding> {
+
+    public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_park;
 
     private MainViewModel viewModel;
 
