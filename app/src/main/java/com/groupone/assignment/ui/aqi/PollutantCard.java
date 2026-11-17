@@ -24,16 +24,8 @@ public class PollutantCard extends MaterialCardView {
     private final TextView minimum;
     private final LineChart chart;
 
-    public PollutantCard(Context context) {
-        this(context, null);
-    }
-
     public PollutantCard(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public PollutantCard(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_pollutant, this, true);
         value = findViewById(R.id.pollutant_value);
         label = findViewById(R.id.pollutant_label);
