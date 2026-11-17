@@ -20,6 +20,7 @@ public class GuidanceSection extends LinearLayout {
     private final TextView suffix;
     private final TextView note;
     private final TextView time;
+    private double aqi = Double.NaN;
 
     public GuidanceSection(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -41,10 +42,16 @@ public class GuidanceSection extends LinearLayout {
             return;
         }
 
+        this.aqi = aqi;
         label.setText(audience.labelRes());
         bindNote(audience.noteRes(aqi));
         bindTime(audience.outdoorMinutes(aqi));
         setVisibility(View.VISIBLE);
+    }
+
+    /** Re-renders the current reading for a different audience. */
+    public void bindAudience(Audience audience) {
+        bind(audience, aqi);
     }
 
     private void bindOptional(TextView view, int textRes) {
@@ -70,6 +77,7 @@ public class GuidanceSection extends LinearLayout {
     }
 
     public void clear() {
+        aqi = Double.NaN;
         setVisibility(View.GONE);
     }
 }

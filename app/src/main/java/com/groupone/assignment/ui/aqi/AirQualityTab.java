@@ -23,7 +23,6 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_cloud;
 
     private MainViewModel viewModel;
-    private double lastAqi = Double.NaN;
 
     @Override
     protected TabAqiBinding createBinding(LayoutInflater inflater,
@@ -55,16 +54,11 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void renderStation(StationDetail station) {
-        lastAqi = station.getAqi();
         binding.aqiHero.bind(station, viewModel.getLocationService().placeName());
-
         binding.guidanceSection.bind(
                 AudienceService.INSTANCE.current(requireContext()), station.getAqi());
-
         binding.headerSection.bind(station);
-
         binding.subIndicesSection.bind(station);
-
         binding.weatherSection.bind(station);
         binding.trendSection.bind(station);
 
@@ -75,18 +69,16 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     @Override
     public void onResume() {
         super.onResume();
-        if (binding != null && !Double.isNaN(lastAqi)) {
-            binding.guidanceSection.bind(
-                    AudienceService.INSTANCE.current(requireContext()), lastAqi);
+        if (binding != null) {
+            binding.guidanceSection.bindAudience(
+                    AudienceService.INSTANCE.current(requireContext()));
         }
     }
 
     private void renderError(String message) {
         binding.errorCard.show(message);
         binding.swipeRefresh.setRefreshing(false);
-
         binding.aqiHero.showError();
-        lastAqi = Double.NaN;
         binding.guidanceSection.clear();
         binding.weatherSection.clear();
         binding.trendSection.clear();
