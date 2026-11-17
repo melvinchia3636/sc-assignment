@@ -47,8 +47,7 @@ public class PollutantCard extends MaterialCardView {
         label.setText(name);
         value.setText(AqiScale.format(reading));
 
-        int from = Math.max(0, series.size() - 24);
-        List<Double> recent = new ArrayList<>(series.subList(from, series.size()));
+        List<Double> recent = renderChart(series);
         double high = Double.NaN;
         double low = Double.NaN;
         for (double sample : recent) {
@@ -60,7 +59,13 @@ public class PollutantCard extends MaterialCardView {
         }
         maximum.setText(AqiScale.format(high));
         minimum.setText(AqiScale.format(low));
+    }
+
+    private List<Double> renderChart(List<Double> series) {
+        int from = Math.max(0, series.size() - 24);
+        List<Double> recent = new ArrayList<>(series.subList(from, series.size()));
         SparklineChart.show(chart, recent, true);
+        return recent;
     }
 
     public void clear() {
