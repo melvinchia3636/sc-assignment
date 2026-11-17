@@ -41,7 +41,8 @@
     <string name="audience_general">Orang awam</string>
     <string name="audience_children">Kanak-kanak</string>
     <string name="audience_elderly">Warga emas</string>
-    <string name="guidance_for">PANDUAN UNTUK %1$s</string>
+    <string name="guidance_prefix">"PANDUAN UNTUK "</string>
+    <string name="guidance_suffix"></string>
     <string name="audience_note_children_good">Keadaan baik untuk bermain di luar.</string>
     <string name="audience_note_children_fair">Bermain di luar ok, tetapi berehat kerap.</string>
     <string name="audience_note_children_poor">Hadkan masa bermain di luar dan elakkan aktiviti berat.</string>

@@ -32,11 +32,29 @@
                     android:src="@drawable/ic_directions_walk" />
 
                 <TextView
-                    android:id="@+id/guidance_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/dm_sans_medium"
                     android:letterSpacing="0.12"
+                    android:text="@string/guidance_prefix"
+                    android:textColor="@color/muted"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/guidance_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans_bold"
+                    android:letterSpacing="0.12"
+                    android:textColor="@color/muted"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans_medium"
+                    android:letterSpacing="0.12"
+                    android:text="@string/guidance_suffix"
                     android:textColor="@color/muted"
                     android:textSize="10sp" />
             </LinearLayout>

@@ -1,9 +1,6 @@
 package com.groupone.assignment.ui.aqi;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,22 +33,11 @@ public class GuidanceSection extends LinearLayout {
             clear();
             return;
         }
-        label.setText(titleFor(audience));
+
+        label.setText(audience.labelRes());
         bindNote(audience.noteRes(aqi));
         bindTime(audience.outdoorMinutes(aqi));
         setVisibility(View.VISIBLE);
-    }
-
-    private CharSequence titleFor(Audience audience) {
-        String audienceLabel = getContext().getString(audience.labelRes());
-        String title = getContext().getString(R.string.guidance_for, audienceLabel);
-        SpannableString styledTitle = new SpannableString(title);
-        int start = title.indexOf(audienceLabel);
-        if (start >= 0) {
-            styledTitle.setSpan(new StyleSpan(Typeface.BOLD), start,
-                    start + audienceLabel.length(), 0);
-        }
-        return styledTitle;
     }
 
     private void bindNote(int noteRes) {
