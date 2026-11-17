@@ -3,7 +3,6 @@ package com.groupone.assignment.ui.settings;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,10 +31,6 @@ public class SettingsRowView extends LinearLayout {
 
     public SettingsRowView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setOrientation(HORIZONTAL);
-        setGravity(Gravity.CENTER_VERTICAL);
-        int padding = dp(16);
-        setPadding(padding, padding, padding, padding);
         LayoutInflater.from(context).inflate(R.layout.view_settings_row, this, true);
         title = findViewById(R.id.settings_row_title);
         value = findViewById(R.id.settings_row_value);
@@ -70,9 +65,5 @@ public class SettingsRowView extends LinearLayout {
         if (chevron != null) {
             chevron.setVisibility(isClickable() ? VISIBLE : GONE);
         }
-    }
-
-    private int dp(int value) {
-        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 }
