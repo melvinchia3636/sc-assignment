@@ -106,6 +106,7 @@ sc-assignment/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/groupone/assignment/
+│       │   │   ├── guidance/     # audience strategies and air-quality guidance
 │       │   │   ├── services/     # bootstrap, location, localization, audience, navigation
 │       │   │   ├── repositories/# models, SnapshotCache, AirQualityRepository
 │       │   │   ├── scrapers/    # WaqiClient, parsers, sources and lib helpers

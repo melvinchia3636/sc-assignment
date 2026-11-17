@@ -41,8 +41,14 @@
     <string name="audience_general">一般公众</string>
     <string name="audience_children">儿童</string>
     <string name="audience_elderly">老年人</string>
-    <string name="audience_note_children">儿童对空气污染更敏感。AQI 升高时应减少户外活动。</string>
-    <string name="audience_note_elderly">老年人应格外注意，避免长时间户外活动。</string>
+    <string name="audience_note_children_good">适合户外玩耍。</string>
+    <string name="audience_note_children_fair">可以户外玩耍，但要经常休息。</string>
+    <string name="audience_note_children_poor">缩短户外玩耍时间，避免剧烈活动。</string>
+    <string name="audience_note_elderly_good">适合散步的好天气。</string>
+    <string name="audience_note_elderly_fair">放轻松，户外活动时注意休息。</string>
+    <string name="audience_note_elderly_poor">避免长时间户外活动。</string>
+    <string name="audience_outdoor_limit">建议户外时间：最多 %1$d 分钟</string>
+    <string name="audience_outdoor_avoid">建议户外时间：避免户外活动</string>
     <string name="language_system">跟随系统</string>
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>

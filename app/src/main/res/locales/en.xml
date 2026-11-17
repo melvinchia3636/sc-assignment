@@ -41,8 +41,14 @@
     <string name="audience_general">General public</string>
     <string name="audience_children">Children</string>
     <string name="audience_elderly">Elderly</string>
-    <string name="audience_note_children">Children are more sensitive to air pollution. Limit outdoor play when the AQI is elevated.</string>
-    <string name="audience_note_elderly">Older adults should take extra care and avoid prolonged exertion outdoors.</string>
+    <string name="audience_note_children_good">Great conditions for outdoor play.</string>
+    <string name="audience_note_children_fair">Outdoor play is fine, but take frequent breaks.</string>
+    <string name="audience_note_children_poor">Keep outdoor play short and avoid strenuous activity.</string>
+    <string name="audience_note_elderly_good">A good day for a walk.</string>
+    <string name="audience_note_elderly_fair">Take it easy and take breaks outdoors.</string>
+    <string name="audience_note_elderly_poor">Avoid prolonged outdoor exertion.</string>
+    <string name="audience_outdoor_limit">Suggested outdoor time: up to %1$d min</string>
+    <string name="audience_outdoor_avoid">Suggested outdoor time: avoid outdoor activity</string>
     <string name="language_system">System default</string>
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>

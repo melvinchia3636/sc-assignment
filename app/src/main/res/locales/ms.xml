@@ -41,8 +41,14 @@
     <string name="audience_general">Orang awam</string>
     <string name="audience_children">Kanak-kanak</string>
     <string name="audience_elderly">Warga emas</string>
-    <string name="audience_note_children">Kanak-kanak lebih sensitif terhadap pencemaran udara. Hadkan permainan di luar apabila AQI tinggi.</string>
-    <string name="audience_note_elderly">Warga emas harus lebih berhati-hati dan elakkan aktiviti luar yang berpanjangan.</string>
+    <string name="audience_note_children_good">Keadaan baik untuk bermain di luar.</string>
+    <string name="audience_note_children_fair">Bermain di luar ok, tetapi berehat kerap.</string>
+    <string name="audience_note_children_poor">Hadkan masa bermain di luar dan elakkan aktiviti berat.</string>
+    <string name="audience_note_elderly_good">Hari yang baik untuk berjalan.</string>
+    <string name="audience_note_elderly_fair">Bertenang dan berehat semasa di luar.</string>
+    <string name="audience_note_elderly_poor">Elakkan aktiviti luar yang berpanjangan.</string>
+    <string name="audience_outdoor_limit">Cadangan masa luar: sehingga %1$d min</string>
+    <string name="audience_outdoor_avoid">Cadangan masa luar: elakkan aktiviti luar</string>
     <string name="language_system">Lalai sistem</string>
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
