@@ -24,6 +24,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.ActivityMainBinding;
 import com.groupone.assignment.location.LocationService;
+import com.groupone.assignment.ui.common.BaseTab;
 
 import org.osmdroid.config.Configuration;
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         applySystemBarInsets();
         setUpTabs();
-        TabNavigation.style(binding.bottomNavigation);
+        BaseTab.styleNavigation(binding.bottomNavigation);
 
         if (savedInstanceState == null) {
             if (hasLocationPermission()) {
@@ -95,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
                     ? R.id.tab_aqi : navController.getCurrentDestination().getId();
             if (current != item.getItemId()) {
                 navigateTo(item.getItemId(),
-                        TabNavigation.indexOf(current),
-                        TabNavigation.indexOf(item.getItemId()));
+                        BaseTab.tabIndex(current),
+                        BaseTab.tabIndex(item.getItemId()));
             }
             return true;
         });
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             if (binding.bottomNavigation.getSelectedItemId() != destination.getId()) {
                 binding.bottomNavigation.getMenu().findItem(destination.getId()).setChecked(true);
             }
-            TabNavigation.updateIcons(binding.bottomNavigation);
+            BaseTab.updateNavigationIcons(binding.bottomNavigation);
         });
     }
 
