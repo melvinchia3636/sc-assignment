@@ -205,14 +205,13 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <com.groupone.assignment.ui.common.SectionView
+                android:id="@+id/pollutants_section"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:letterSpacing="0.12"
-                android:text="@string/pollutants_label"
-                android:textColor="@color/muted"
-                android:textSize="10sp" />
+                android:orientation="vertical"
+                app:sectionTitle="@string/pollutants_label">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -276,22 +275,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
             </LinearLayout>
+            </com.groupone.assignment.ui.common.SectionView>
 
-            <LinearLayout
+            <com.groupone.assignment.ui.common.SectionView
                 android:id="@+id/weather_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:letterSpacing="0.12"
-                    android:text="@string/weather_label"
-                    android:textColor="@color/muted"
-                    android:textSize="10sp" />
+                android:visibility="gone"
+                app:sectionTitle="@string/weather_label">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/weather_card"
@@ -352,16 +345,14 @@
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+            </com.groupone.assignment.ui.common.SectionView>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <com.groupone.assignment.ui.common.SectionView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:letterSpacing="0.12"
-                android:text="@string/trend_label"
-                android:textColor="@color/muted"
-                android:textSize="10sp" />
+                android:orientation="vertical"
+                app:sectionTitle="@string/trend_label">
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/aqi_sparkline"
@@ -376,6 +367,7 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/muted"
                 android:textSize="11sp" />
+            </com.groupone.assignment.ui.common.SectionView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
