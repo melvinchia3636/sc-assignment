@@ -15,7 +15,7 @@ import com.groupone.assignment.repositories.model.SeriesPoint;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.databinding.TabAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
-import com.groupone.assignment.repositories.model.Audience;
+import com.groupone.assignment.guidance.Audience;
 import com.groupone.assignment.services.AudienceService;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
@@ -38,6 +38,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_cloud;
 
     private MainViewModel viewModel;
+    private double lastAqi = Double.NaN;
 
     @Override
     protected TabAqiBinding createBinding(LayoutInflater inflater,
@@ -89,6 +90,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void render(StationDetail station) {
+        lastAqi = station.getAqi();
         AqiScale.Level level = AqiScale.classify(station.getAqi());
         int background = Color.parseColor(level.getColourHex());
         int foreground = Color.parseColor(level.getTextColourHex());
@@ -106,7 +108,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiValue.setText(AqiScale.format(station.getAqi()));
         binding.aqiCategory.setText(level.getLabelRes());
         binding.aqiAdvice.setText(level.getAdviceRes());
-        applyAudienceNote();
+        applyAudienceNote(station.getAqi());
         binding.audienceNote.setTextColor(foreground);
 
         long updatedAt = station.getUpdatedAt();
@@ -128,22 +130,29 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.swipeRefresh.setRefreshing(false);
     }
 
-    private void applyAudienceNote() {
-        Audience audience = AudienceService.INSTANCE.current(requireContext());
-        int noteRes = audience.getNoteRes();
-        if (noteRes == 0) {
+    private void applyAudienceNote(double aqi) {
+        if (Double.isNaN(aqi)) {
             binding.audienceNote.setVisibility(View.GONE);
             return;
         }
-        binding.audienceNote.setText(noteRes);
+
+        Audience audience = AudienceService.INSTANCE.current(requireContext());
+        int minutes = audience.outdoorMinutes(aqi);
+        String limit = minutes > 0
+                ? getString(R.string.audience_outdoor_limit, minutes)
+                : getString(R.string.audience_outdoor_avoid);
+
+        int noteRes = audience.noteRes(aqi);
+        String note = noteRes == 0 ? limit : getString(noteRes) + "\n" + limit;
+        binding.audienceNote.setText(note);
         binding.audienceNote.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (binding != null) {
-            applyAudienceNote();
+        if (binding != null && !Double.isNaN(lastAqi)) {
+            applyAudienceNote(lastAqi);
         }
     }
 
@@ -209,6 +218,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiFaceIcon.setImageDrawable(AppIcons.drawable(
                 requireContext(), FontAwesome.Icon.faw_meh, "#FFFFFF", 18));
         binding.aqiAdvice.setText(R.string.connection_advice);
+        lastAqi = Double.NaN;
         binding.audienceNote.setVisibility(View.GONE);
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");

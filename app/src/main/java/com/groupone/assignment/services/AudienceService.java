@@ -3,7 +3,7 @@ package com.groupone.assignment.services;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.groupone.assignment.repositories.model.Audience;
+import com.groupone.assignment.guidance.Audience;
 
 /**
  * Owns the selected audience preference.
@@ -40,7 +40,7 @@ public final class AudienceService extends ChoiceService<Audience> {
 
     @Override
     public int labelRes(Audience value) {
-        return value.getLabelRes();
+        return value.labelRes();
     }
 
     private SharedPreferences preferences(Context context) {
