@@ -12,7 +12,6 @@
     <string name="map_subtitle">附近的 WAQI 监测站</string>
     <string name="map_station_count">%1$d 个监测站</string>
     <string name="map_empty">尚未加载监测站。</string>
-    <string name="map_station_snippet">AQI %1$s · 编号 %2$s</string>
     <string name="map_zoom_in">放大</string>
     <string name="map_zoom_out">缩小</string>
 
