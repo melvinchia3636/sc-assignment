@@ -5,51 +5,37 @@ import androidx.annotation.StringRes;
 import com.mikepenz.iconics.typeface.IIcon;
 
 /**
- * Strategy for one AQI band: its guidance, colour and face icon.
+ * Strategy for one AQI band.
  */
-public abstract class AqiLevelStrategy {
+public interface AqiLevelStrategy {
 
-    @StringRes
-    private final int labelRes;
-    @StringRes
-    private final int adviceRes;
-    private final String colourHex;
-    private final IIcon icon;
-    private final double maxAqi;
+    Data data();
 
-    protected AqiLevelStrategy(@StringRes int labelRes, @StringRes int adviceRes,
-                               String colourHex, IIcon icon, double maxAqi) {
-        this.labelRes = labelRes;
-        this.adviceRes = adviceRes;
-        this.colourHex = colourHex;
-        this.icon = icon;
-        this.maxAqi = maxAqi;
+    default int labelRes() {
+        return data().labelRes();
     }
 
-    @StringRes
-    public final int labelRes() {
-        return labelRes;
+    default int adviceRes() {
+        return data().adviceRes();
     }
 
-    @StringRes
-    public final int adviceRes() {
-        return adviceRes;
+    default String colourHex() {
+        return data().colourHex();
     }
 
-    public final String colourHex() {
-        return colourHex;
+    default IIcon icon() {
+        return data().icon();
     }
 
-    public final IIcon icon() {
-        return icon;
+    default double maxAqi() {
+        return data().maxAqi();
     }
 
-    /** Inclusive upper bound of this band. */
-    public final double maxAqi() {
-        return maxAqi;
+    default boolean matches(double aqi) {
+        return !Double.isNaN(aqi) && aqi <= maxAqi();
     }
 
-    public final boolean matches(double aqi) {
-        return !Double.isNaN(aqi) && aqi <= maxAqi;
+    record Data(@StringRes int labelRes, @StringRes int adviceRes,
+                String colourHex, IIcon icon, double maxAqi) {
     }
 }
