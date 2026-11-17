@@ -37,7 +37,7 @@ public class Api2Parser {
         }
 
         List<ObservationSeries> decoded = decodeObservations(
-                message.obs, message.time == null ? null : message.time.tz);
+                message.obs, message.time == null ? null : message.time.timezone);
         Map<String, List<SeriesPoint>> aligned = Series.alignSeries(decoded);
 
         return new StationDetail(
@@ -58,14 +58,14 @@ public class Api2Parser {
      * {@code m}.
      */
     public List<Point> decodeSeries(Api2Repository.Series series, String timezone) {
-        double scale = series.m == null ? 1 : series.m;
-        List<Object> values = series.v;
+        double scale = series.scale == null ? 1 : series.scale;
+        List<Object> values = series.values;
         if (values == null || values.isEmpty() || !(values.get(0) instanceof Number)) {
             return Collections.emptyList();
         }
 
         double value = ((Number) values.get(0)).doubleValue();
-        long time = Time.epochSeconds(series.s, timezone);
+        long time = Time.epochSeconds(series.start, timezone);
         List<Point> points = new ArrayList<>();
         points.add(new Point(time, value / scale));
 
@@ -99,7 +99,7 @@ public class Api2Parser {
         }
         if (message.iaqi != null) {
             for (Map.Entry<String, Api2Repository.Reading> entry : message.iaqi.entrySet()) {
-                Double value = entry.getValue() == null ? null : entry.getValue().v;
+                Double value = entry.getValue() == null ? null : entry.getValue().value;
                 if (value != null && Double.isFinite(value)) {
                     current.put(entry.getKey(), value);
                 }
@@ -132,7 +132,7 @@ public class Api2Parser {
         }
         long timestamp = message.time == null
                 ? 0
-                : Time.epochSeconds(message.time.s, message.time.tz);
+                : Time.epochSeconds(message.time.timestamp, message.time.timezone);
         return timestamp != 0
                 ? timestamp
                 : Math.max(0, Series.newestSeriesTime(decoded));
