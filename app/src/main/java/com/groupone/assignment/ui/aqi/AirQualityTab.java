@@ -34,7 +34,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
     @Override
     protected TabAqiBinding createBinding(LayoutInflater inflater,
-                                               ViewGroup container) {
+            ViewGroup container) {
         return TabAqiBinding.inflate(inflater, container, false);
     }
 
@@ -45,22 +45,23 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         binding.swipeRefresh.setOnRefreshListener(viewModel::refresh);
         binding.errorCard.setOnRetryListener(viewModel::refresh);
-        observeViewModel();
+        observeAirQuality();
     }
 
-    private void observeViewModel() {
-        viewModel.airQuality().getStation().observe(getViewLifecycleOwner(), this::render);
+    private void observeAirQuality() {
+        viewModel.airQuality().getStation().observe(getViewLifecycleOwner(), this::renderStation);
         observeError(message -> {
             if (message != null) {
-                showError(message);
+                renderError(message);
             }
         });
+
         viewModel.getLocationService().getPlaceName().observe(getViewLifecycleOwner(),
                 name -> binding.cityTitle.setText(name));
         observeLoading(binding.swipeRefresh);
     }
 
-    private void render(StationDetail station) {
+    private void renderStation(StationDetail station) {
         lastAqi = station.getAqi();
         binding.aqiHero.bind(station, viewModel.getLocationService().placeName());
 
@@ -91,7 +92,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         }
     }
 
-    private void showError(String message) {
+    private void renderError(String message) {
         binding.errorCard.show(message);
         binding.swipeRefresh.setRefreshing(false);
 
