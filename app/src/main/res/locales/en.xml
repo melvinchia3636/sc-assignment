@@ -31,6 +31,7 @@
 
     <string name="settings_title">Settings</string>
     <string name="settings_sources_label">DATA SOURCES</string>
+    <string name="settings_personalization_label">PERSONALIZATION</string>
     <string name="settings_air_quality">Air quality</string>
     <string name="settings_air_quality_value">WAQI / aqicn.org</string>
     <string name="settings_language">Language</string>
