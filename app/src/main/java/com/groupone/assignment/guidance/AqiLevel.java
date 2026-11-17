@@ -26,9 +26,7 @@ public enum AqiLevel implements AqiLevelStrategy {
     HAZARDOUS(R.string.aqi_hazardous, R.string.aqi_hazardous_advice,
             "#7e0023", FontAwesome.Icon.faw_dizzy, Double.POSITIVE_INFINITY);
 
-    @StringRes
     private final int labelRes;
-    @StringRes
     private final int adviceRes;
     private final String colourHex;
     private final IIcon icon;
@@ -77,29 +75,6 @@ public enum AqiLevel implements AqiLevelStrategy {
 
     @Override
     public double maxAqi() {
-        return maxAqi;
-    }
-
-    @StringRes
-    public int getLabelRes() {
-        return labelRes;
-    }
-
-    @StringRes
-    public int getAdviceRes() {
-        return adviceRes;
-    }
-
-    public String getColourHex() {
-        return colourHex;
-    }
-
-    public IIcon getIcon() {
-        return icon;
-    }
-
-    /** Inclusive upper bound of this band. */
-    public double getMaxAqi() {
         return maxAqi;
     }
 }

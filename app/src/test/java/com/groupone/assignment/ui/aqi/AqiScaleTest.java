@@ -16,34 +16,34 @@ class AqiScaleTest {
 
     @Test
     void classify_boundaryValues_returnExpectedBand() {
-        assertEquals(R.string.aqi_good, AqiLevel.classify(0).getLabelRes());
-        assertEquals(R.string.aqi_good, AqiLevel.classify(50).getLabelRes());
-        assertEquals(R.string.aqi_moderate, AqiLevel.classify(51).getLabelRes());
-        assertEquals(R.string.aqi_moderate, AqiLevel.classify(100).getLabelRes());
-        assertEquals(R.string.aqi_sensitive, AqiLevel.classify(101).getLabelRes());
-        assertEquals(R.string.aqi_sensitive, AqiLevel.classify(150).getLabelRes());
-        assertEquals(R.string.aqi_unhealthy, AqiLevel.classify(151).getLabelRes());
-        assertEquals(R.string.aqi_unhealthy, AqiLevel.classify(200).getLabelRes());
-        assertEquals(R.string.aqi_very_unhealthy, AqiLevel.classify(201).getLabelRes());
-        assertEquals(R.string.aqi_very_unhealthy, AqiLevel.classify(300).getLabelRes());
-        assertEquals(R.string.aqi_hazardous, AqiLevel.classify(301).getLabelRes());
-        assertEquals(R.string.aqi_hazardous, AqiLevel.classify(500).getLabelRes());
+        assertEquals(R.string.aqi_good, AqiLevel.classify(0).labelRes());
+        assertEquals(R.string.aqi_good, AqiLevel.classify(50).labelRes());
+        assertEquals(R.string.aqi_moderate, AqiLevel.classify(51).labelRes());
+        assertEquals(R.string.aqi_moderate, AqiLevel.classify(100).labelRes());
+        assertEquals(R.string.aqi_sensitive, AqiLevel.classify(101).labelRes());
+        assertEquals(R.string.aqi_sensitive, AqiLevel.classify(150).labelRes());
+        assertEquals(R.string.aqi_unhealthy, AqiLevel.classify(151).labelRes());
+        assertEquals(R.string.aqi_unhealthy, AqiLevel.classify(200).labelRes());
+        assertEquals(R.string.aqi_very_unhealthy, AqiLevel.classify(201).labelRes());
+        assertEquals(R.string.aqi_very_unhealthy, AqiLevel.classify(300).labelRes());
+        assertEquals(R.string.aqi_hazardous, AqiLevel.classify(301).labelRes());
+        assertEquals(R.string.aqi_hazardous, AqiLevel.classify(500).labelRes());
     }
 
     @Test
     void classify_exposesInclusiveUpperBounds() {
-        assertEquals(50, AqiLevel.classify(50).getMaxAqi());
-        assertEquals(100, AqiLevel.classify(100).getMaxAqi());
-        assertEquals(150, AqiLevel.classify(150).getMaxAqi());
-        assertEquals(200, AqiLevel.classify(200).getMaxAqi());
-        assertEquals(300, AqiLevel.classify(300).getMaxAqi());
-        assertTrue(Double.isInfinite(AqiLevel.classify(301).getMaxAqi()));
-        assertTrue(Double.isNaN(AqiLevel.classify(Double.NaN).getMaxAqi()));
+        assertEquals(50, AqiLevel.classify(50).maxAqi());
+        assertEquals(100, AqiLevel.classify(100).maxAqi());
+        assertEquals(150, AqiLevel.classify(150).maxAqi());
+        assertEquals(200, AqiLevel.classify(200).maxAqi());
+        assertEquals(300, AqiLevel.classify(300).maxAqi());
+        assertTrue(Double.isInfinite(AqiLevel.classify(301).maxAqi()));
+        assertTrue(Double.isNaN(AqiLevel.classify(Double.NaN).maxAqi()));
     }
 
     @Test
     void classify_missingValue_returnsUnknown() {
-        assertEquals(R.string.aqi_unknown, AqiLevel.classify(Double.NaN).getLabelRes());
+        assertEquals(R.string.aqi_unknown, AqiLevel.classify(Double.NaN).labelRes());
     }
 
     @Test
@@ -52,22 +52,22 @@ class AqiScaleTest {
         for (double sample : samples) {
             AqiLevel level = AqiLevel.classify(sample);
             assertAll(
-                    () -> assertNotEquals(0, level.getLabelRes()),
-                    () -> assertNotEquals(0, level.getAdviceRes()),
-                    () -> assertTrue(level.getColourHex().matches("#[0-9A-Fa-f]{6}")),
-                    () -> assertNotNull(level.getIcon())
+                    () -> assertNotEquals(0, level.labelRes()),
+                    () -> assertNotEquals(0, level.adviceRes()),
+                    () -> assertTrue(level.colourHex().matches("#[0-9A-Fa-f]{6}")),
+                    () -> assertNotNull(level.icon())
             );
         }
     }
 
     @Test
     void classify_facesMatchBands() {
-        assertEquals(FontAwesome.Icon.faw_smile, AqiLevel.classify(10).getIcon());
-        assertEquals(FontAwesome.Icon.faw_meh, AqiLevel.classify(75).getIcon());
-        assertEquals(FontAwesome.Icon.faw_frown_open, AqiLevel.classify(125).getIcon());
-        assertEquals(FontAwesome.Icon.faw_frown, AqiLevel.classify(175).getIcon());
-        assertEquals(FontAwesome.Icon.faw_tired, AqiLevel.classify(250).getIcon());
-        assertEquals(FontAwesome.Icon.faw_dizzy, AqiLevel.classify(400).getIcon());
+        assertEquals(FontAwesome.Icon.faw_smile, AqiLevel.classify(10).icon());
+        assertEquals(FontAwesome.Icon.faw_meh, AqiLevel.classify(75).icon());
+        assertEquals(FontAwesome.Icon.faw_frown_open, AqiLevel.classify(125).icon());
+        assertEquals(FontAwesome.Icon.faw_frown, AqiLevel.classify(175).icon());
+        assertEquals(FontAwesome.Icon.faw_tired, AqiLevel.classify(250).icon());
+        assertEquals(FontAwesome.Icon.faw_dizzy, AqiLevel.classify(400).icon());
     }
 
     @Test

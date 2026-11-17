@@ -91,8 +91,8 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         marker.setTitle(station.getName().isEmpty() ? station.getIdx() : station.getName());
         marker.setRelatedObject(station);
         marker.setIcon(AqiBadge.create(requireContext(), AqiScale.format(station.getAqi()),
-                Color.parseColor(level.getColourHex()),
-                Color.parseColor(AqiScale.textColourFor(level.getColourHex()))));
+                Color.parseColor(level.colourHex()),
+                Color.parseColor(AqiScale.textColourFor(level.colourHex()))));
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
         marker.setInfoWindow(new StationInfoWindow(map));
         return marker;
