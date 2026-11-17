@@ -17,13 +17,13 @@ import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
  */
 public class WeatherSection extends SectionView {
 
-    private WeatherItem[] items;
+    private final WeatherItem[] items;
 
     public WeatherSection(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_weather_section, this, true);
 
-        addItems(context,
+        items = addItems(context,
                 findViewById(R.id.weather_row_top),
                 findViewById(R.id.weather_row_bottom));
     }
@@ -38,8 +38,8 @@ public class WeatherSection extends SectionView {
         setVisibility(hasValue ? View.VISIBLE : View.GONE);
     }
 
-    private void addItems(Context context, LinearLayout top, LinearLayout bottom) {
-        items = new WeatherItem[] {
+    private WeatherItem[] addItems(Context context, LinearLayout top, LinearLayout bottom) {
+        WeatherItem[] created = {
                 new WeatherItem(context, "t", "%.1f °C",
                         FontAwesome.Icon.faw_thermometer_half,
                         R.string.weather_temperature),
@@ -55,15 +55,15 @@ public class WeatherSection extends SectionView {
         };
 
         LinearLayout[] rows = { top, bottom };
-
-        for (int index = 0; index < items.length; index++) {
+        for (int index = 0; index < created.length; index++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
             if (index % 2 == 0) {
                 params.setMarginEnd(Math.round(8 * getResources().getDisplayMetrics().density));
             }
-            rows[index / 2].addView(items[index], params);
+            rows[index / 2].addView(created[index], params);
         }
 
+        return created;
     }
 }
