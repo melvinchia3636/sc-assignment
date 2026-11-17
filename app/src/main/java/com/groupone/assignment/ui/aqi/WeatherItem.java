@@ -1,7 +1,6 @@
 package com.groupone.assignment.ui.aqi;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -25,32 +24,23 @@ public class WeatherItem extends LinearLayout {
     private final ImageView icon;
     private final TextView value;
     private final TextView label;
+    private final String key;
+    private final String format;
 
-    private String key;
-    private String format;
-
-    public WeatherItem(Context context) {
-        this(context, null);
-    }
-
-    public WeatherItem(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public WeatherItem(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public WeatherItem(Context context, String key, String format,
+                       IIcon metricIcon, @StringRes int labelRes) {
+        super(context);
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
         LayoutInflater.from(context).inflate(R.layout.view_weather_item, this, true);
+
+        this.key = key;
+        this.format = format;
         icon = findViewById(R.id.weather_icon);
         value = findViewById(R.id.weather_value);
         label = findViewById(R.id.weather_label);
-    }
 
-    public void setUp(String key, String format, IIcon icon, @StringRes int labelRes) {
-        this.key = key;
-        this.format = format;
-        this.icon.setImageDrawable(AppIcons.drawable(getContext(), icon, "#1B5E20", 18));
+        icon.setImageDrawable(AppIcons.drawable(context, metricIcon, "#1B5E20", 18));
         label.setText(labelRes);
     }
 
