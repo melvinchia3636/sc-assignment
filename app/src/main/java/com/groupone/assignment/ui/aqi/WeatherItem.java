@@ -1,7 +1,6 @@
 package com.groupone.assignment.ui.aqi;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.groupone.assignment.R;
+import com.groupone.assignment.repositories.model.StationDetail;
+import com.groupone.assignment.ui.common.AppIcons;
 
 import java.util.Locale;
 
@@ -21,6 +22,8 @@ public class WeatherItem extends LinearLayout {
     private final ImageView icon;
     private final TextView value;
     private final TextView label;
+
+    private WeatherMetric metric;
 
     public WeatherItem(Context context) {
         this(context, null);
@@ -40,19 +43,19 @@ public class WeatherItem extends LinearLayout {
         label = findViewById(R.id.weather_label);
     }
 
-    public void setUp(Drawable drawable, CharSequence labelText) {
-        icon.setImageDrawable(drawable);
-        label.setText(labelText);
+    public void setUp(WeatherMetric metric) {
+        this.metric = metric;
+        icon.setImageDrawable(AppIcons.drawable(getContext(), metric.icon(), "#1B5E20", 18));
+        label.setText(metric.labelRes());
     }
 
-    public void setValue(CharSequence text) {
-        value.setText(text);
-    }
-
-    public void setValue(double reading, String format) {
+    /** Binds the metric value and returns whether the station reported it. */
+    public boolean bind(StationDetail station) {
+        double reading = station.current(metric.key());
         value.setText(Double.isNaN(reading)
                 ? getContext().getString(R.string.dash)
-                : String.format(Locale.getDefault(), format, reading));
+                : String.format(Locale.getDefault(), metric.format(), reading));
+        return !Double.isNaN(reading);
     }
 
     public void clear() {
