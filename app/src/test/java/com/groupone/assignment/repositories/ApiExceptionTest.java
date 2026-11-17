@@ -1,4 +1,4 @@
-package com.groupone.assignment.data;
+package com.groupone.assignment.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

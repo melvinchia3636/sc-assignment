@@ -10,10 +10,8 @@
     <string name="dash">--</string>
     <string name="pollutants_label">POLLUTANT SUB-INDICES (AQI)</string>
     <string name="green_spaces_title">Green spaces nearby</string>
-    <string name="green_spaces_subtitle">Parks and gardens within 3 km</string>
-    <string name="empty_green_spaces">No green spaces found within 3 km.</string>
-    <string name="green_found">%1$d found</string>
-    <string name="green_unavailable">Green space data is unavailable right now.</string>
+    <string name="green_spaces_subtitle">Coming soon</string>
+    <string name="empty_green_spaces">Green space monitoring is coming soon.</string>
     <string name="retry">Try again</string>
     <string name="trend_label">24-HOUR AQI TREND</string>
     <string name="not_enough_history">Not enough history yet.</string>
@@ -27,8 +25,6 @@
     <string name="settings_sources_label">DATA SOURCES</string>
     <string name="settings_air_quality">Air quality</string>
     <string name="settings_air_quality_value">WAQI / aqicn.org</string>
-    <string name="settings_green_spaces">Green spaces</string>
-    <string name="settings_green_spaces_value">OpenStreetMap Overpass API</string>
     <string name="settings_language">Language</string>
     <string name="language_system">System default</string>
     <string name="language_english">English</string>
@@ -60,9 +56,6 @@
     <string name="aqi_hazardous">Hazardous</string>
     <string name="aqi_hazardous_advice">Emergency conditions. Stay indoors with windows closed.</string>
 
-    <string name="sparkline_now">now</string>
-    <string name="sparkline_hours_ago">-%1$dh</string>
-
     <string name="error_offline">You\'re offline. Check your connection and try again.</string>
     <string name="error_no_data">No data is available for this location.</string>
     <string name="error_too_many">Too many requests right now. Please try again in a moment.</string>
@@ -74,5 +67,4 @@
     <string name="error_station_token">Failed to obtain the station token.</string>
     <string name="error_airnet_key">Failed to obtain the air quality key.</string>
     <string name="error_request_prepare">The request could not be prepared.</string>
-    <string name="error_green_data">The green space data could not be read.</string>
 </resources>

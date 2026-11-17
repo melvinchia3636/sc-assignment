@@ -1,4 +1,4 @@
-package com.groupone.assignment.data;
+package com.groupone.assignment.repositories;
 
 import android.content.Context;
 
