@@ -5,9 +5,9 @@ Scenario 5 of the Software Construction group assignment (SDG 11: Sustainable
 Cities and Communities).
 
 The app asks for location permission, finds the nearest WAQI monitoring station,
-explains the health impact of its US AQI reading, shows a 24-hour AQI trend,
-weather, and lists parks and gardens within 3 km. Data is cached so the last
-good reading stays visible when the network is unavailable.
+explains the health impact of its US AQI reading, and shows a 24-hour AQI trend
+with weather. Data is cached so the last good reading stays visible when the
+network is unavailable. The green spaces tab is a placeholder for now.
 
 ## Features
 
@@ -16,7 +16,7 @@ good reading stays visible when the network is unavailable.
 - Pollutant sub-indices: PM2.5, PM10, PM1, O₃, NO₂, SO₂, CO
 - 72-hour WAQI series with a 24-hour AQI sparkline
 - Weather from the station's CWOP feed (temperature, humidity, pressure, wind)
-- Nearby green spaces (parks, gardens, grass) sorted by distance
+- Green spaces tab placeholder
 - Pull-to-refresh and a manual refresh button
 - Graceful degradation: cached data plus an "offline" banner on failure
 - Human-readable error messages for 404, 429, 5xx and network failures
@@ -86,20 +86,16 @@ open app/build/reports/tests/testDebugUnitTest/index.html
 
 ## Data sources
 
-- **Air quality** -- the app calls the companion `aqi-api` service
-  ([source](https://github.com/melvinchia/aqi-api),
-  `https://aqi-api-melvin.fly.dev`), which scrapes WAQI /
-  [aqicn.org](https://aqicn.org) and returns the nearest reporting station
-  with its current sub-indices and 72-hour series. Upstream endpoints:
+- **Air quality** -- the app scrapes WAQI / [aqicn.org](https://aqicn.org)
+  directly, finding the nearest reporting station with its current sub-indices
+  and 72-hour series:
   - `https://mapq.waqi.info/mapq2/bounds` for nearby stations
   - `https://api2.waqi.info/api/token/{idx}` and `/api/feed/@{idx}/aqi.json` for
     numeric station ids
   - `https://airnet.waqi.info/airnet/feed/hourly/{id}` and
     `/feed/cwop/{id}` for `A`-prefixed stations
-- **Green spaces** -- [OpenStreetMap Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API):
-  `https://overpass-api.de/api/interpreter`
 
-The WAQI endpoints are unofficial and can change; the green space API is public.
+The WAQI endpoints are unofficial and can change.
 
 ## Project structure
 
@@ -110,13 +106,14 @@ sc-assignment/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/groupone/assignment/
-│       │   │   ├── data/        # StationDetail, repository, cache, ApiException
-│       │   │   ├── net/         # AirQualityApi, GreenSpaceApi, OkHttp client
+│       │   │   ├── lib/         # series maths, TTL cache, time, HTTP upstream
+│       │   │   ├── repositories/# models, SnapshotCache, AirQualityRepository
+│       │   │   ├── scrapers/    # WaqiClient, parsers and station sources
 │       │   │   ├── ui/
 │       │   │   │   ├── MainActivity.java
 │       │   │   │   ├── MainViewModel.java
 │       │   │   │   ├── aqi/     # AqiFragment, AqiScale, PollutantCard, WeatherItem
-│       │   │   │   ├── green/   # GreenSpaceFragment + ListAdapter
+│       │   │   │   ├── green/   # green space placeholder screen
 │       │   │   │   └── common/  # Base fragments, icon helpers, chart setup
 │       │   └── res/             # layouts, colours, theme, strings
 │       └── test/java/com/groupone/assignment/

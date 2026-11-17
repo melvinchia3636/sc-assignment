@@ -3,8 +3,6 @@ package com.groupone.assignment.ui.common;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 
-import com.groupone.assignment.R;
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -14,6 +12,9 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -50,10 +51,12 @@ public final class SparklineChart {
     }
 
     /**
-     * Trend variant with labelled axes and relative hour labels.
+     * Trend variant with labelled axes; X labels are clock times in the
+     * device's timezone.
      */
-    public static void showTrend(LineChart chart, List<Double> values) {
-        List<Entry> entries = entries(values);
+    public static void showTrend(LineChart chart, List<Double> values,
+                                 long startEpochSeconds, int stepSeconds) {
+        List<Entry> entries = indexedEntries(values);
         if (entries.size() < 2) {
             clear(chart);
             return;
@@ -66,7 +69,10 @@ public final class SparklineChart {
         chart.setMinOffset(4f);
         chart.setExtraOffsets(4f, 4f, 4f, 4f);
 
-        int lastIndex = entries.size() - 1;
+        int lastIndex = Math.max(1, values.size() - 1);
+        int step = Math.max(1, stepSeconds);
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
+                .withZone(ZoneId.systemDefault());
         XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -82,11 +88,8 @@ public final class SparklineChart {
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                int hoursAgo = Math.round(lastIndex - value);
-                if (hoursAgo <= 0) {
-                    return chart.getContext().getString(R.string.sparkline_now);
-                }
-                return chart.getContext().getString(R.string.sparkline_hours_ago, hoursAgo);
+                long epochSeconds = startEpochSeconds + Math.round(value) * (long) step;
+                return timeFormat.format(Instant.ofEpochSecond(epochSeconds));
             }
         });
 
@@ -126,6 +129,19 @@ public final class SparklineChart {
                     continue;
                 }
                 entries.add(new Entry(index++, value.floatValue()));
+            }
+        }
+        return entries;
+    }
+
+    private static List<Entry> indexedEntries(List<Double> values) {
+        List<Entry> entries = new ArrayList<>();
+        if (values != null) {
+            for (int i = 0; i < values.size(); i++) {
+                Double value = values.get(i);
+                if (value != null && !value.isNaN()) {
+                    entries.add(new Entry(i, value.floatValue()));
+                }
             }
         }
         return entries;

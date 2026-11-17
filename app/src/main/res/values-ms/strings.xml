@@ -10,10 +10,8 @@
     <string name="dash">--</string>
     <string name="pollutants_label">SUB-INDEKS PENCEMAR (AQI)</string>
     <string name="green_spaces_title">Ruang hijau berdekatan</string>
-    <string name="green_spaces_subtitle">Taman dan kebun dalam 3 km</string>
-    <string name="empty_green_spaces">Tiada ruang hijau ditemui dalam 3 km.</string>
-    <string name="green_found">%1$d ditemui</string>
-    <string name="green_unavailable">Data ruang hijau tidak tersedia buat masa ini.</string>
+    <string name="green_spaces_subtitle">Akan datang</string>
+    <string name="empty_green_spaces">Pemantauan ruang hijau akan datang.</string>
     <string name="retry">Cuba lagi</string>
     <string name="trend_label">TREND AQI 24 JAM</string>
     <string name="not_enough_history">Sejarah belum mencukupi.</string>
@@ -27,8 +25,6 @@
     <string name="settings_sources_label">SUMBER DATA</string>
     <string name="settings_air_quality">Kualiti udara</string>
     <string name="settings_air_quality_value">WAQI / aqicn.org</string>
-    <string name="settings_green_spaces">Ruang hijau</string>
-    <string name="settings_green_spaces_value">OpenStreetMap Overpass API</string>
     <string name="settings_language">Bahasa</string>
     <string name="language_system">Lalai sistem</string>
     <string name="language_english">English</string>
@@ -60,9 +56,6 @@
     <string name="aqi_hazardous">Berbahaya</string>
     <string name="aqi_hazardous_advice">Keadaan kecemasan. Kekal di dalam rumah dengan tingkap tertutup.</string>
 
-    <string name="sparkline_now">kini</string>
-    <string name="sparkline_hours_ago">-%1$dj</string>
-
     <string name="error_offline">Anda luar talian. Periksa sambungan anda dan cuba lagi.</string>
     <string name="error_no_data">Tiada data tersedia untuk lokasi ini.</string>
     <string name="error_too_many">Terlalu banyak permintaan. Sila cuba sebentar lagi.</string>
@@ -74,5 +67,4 @@
     <string name="error_station_token">Gagal mendapatkan token stesen.</string>
     <string name="error_airnet_key">Gagal mendapatkan kunci kualiti udara.</string>
     <string name="error_request_prepare">Permintaan tidak dapat disediakan.</string>
-    <string name="error_green_data">Data ruang hijau tidak dapat dibaca.</string>
 </resources>

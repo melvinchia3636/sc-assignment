@@ -11,8 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.groupone.assignment.R;
-import com.groupone.assignment.data.Snapshot;
-import com.groupone.assignment.data.StationDetail;
+import com.groupone.assignment.repositories.StationRepository.SeriesPoint;
+import com.groupone.assignment.repositories.Snapshot;
+import com.groupone.assignment.repositories.StationRepository.StationDetail;
 import com.groupone.assignment.databinding.FragmentAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.common.AppIcons;
@@ -108,12 +109,12 @@ public class AirQualityTab extends BaseTab<FragmentAqiBinding> {
                 ? station.getUpdatedAt() : snapshot.getSavedAtMillis() / 1000;
         binding.updatedText.setText(getString(R.string.updated_at, formatEpoch(updatedAt)));
 
-        binding.pm25Card.bind("PM2.5", station.current("pm25"), station.series("pm25"));
-        binding.pm10Card.bind("PM10", station.current("pm10"), station.series("pm10"));
-        binding.no2Card.bind("NO₂", station.current("no2"), station.series("no2"));
-        binding.o3Card.bind("O₃", station.current("o3"), station.series("o3"));
-        binding.so2Card.bind("SO₂", station.current("so2"), station.series("so2"));
-        binding.coCard.bind("CO", station.current("co"), station.series("co"));
+        binding.pm25Card.bind("PM2.5", station.current("pm25"), station.values("pm25"));
+        binding.pm10Card.bind("PM10", station.current("pm10"), station.values("pm10"));
+        binding.no2Card.bind("NO₂", station.current("no2"), station.values("no2"));
+        binding.o3Card.bind("O₃", station.current("o3"), station.values("o3"));
+        binding.so2Card.bind("SO₂", station.current("so2"), station.values("so2"));
+        binding.coCard.bind("CO", station.current("co"), station.values("co"));
 
         renderWeather(station);
         renderTrend(station);
@@ -146,10 +147,14 @@ public class AirQualityTab extends BaseTab<FragmentAqiBinding> {
     }
 
     private void renderTrend(StationDetail station) {
-        List<Double> series = station.series("aqi");
-        int from = Math.max(0, series.size() - 24);
-        List<Double> recent = new ArrayList<>(series.subList(from, series.size()));
-        SparklineChart.showTrend(binding.aqiSparkline, recent);
+        List<SeriesPoint> points = station.series("aqi");
+        int from = Math.max(0, points.size() - 24);
+        List<Double> recent = new ArrayList<>(station.values("aqi").subList(from, points.size()));
+        long startEpoch = from < points.size() ? points.get(from).getT() : 0;
+        int step = points.size() > 1
+                ? (int) (points.get(1).getT() - points.get(0).getT())
+                : 3600;
+        SparklineChart.showTrend(binding.aqiSparkline, recent, startEpoch, step);
 
         double min = Double.MAX_VALUE;
         double max = -Double.MAX_VALUE;

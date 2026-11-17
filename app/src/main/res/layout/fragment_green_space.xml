@@ -18,28 +18,13 @@
             android:paddingEnd="20dp"
             android:paddingBottom="28dp">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/dm_sans_medium"
-                    android:text="@string/green_spaces_title"
-                    android:textColor="@color/ink"
-                    android:textSize="26sp" />
-
-                <TextView
-                    android:id="@+id/green_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/muted"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                android:fontFamily="@font/dm_sans_medium"
+                android:text="@string/green_spaces_title"
+                android:textColor="@color/ink"
+                android:textSize="26sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -49,23 +34,14 @@
                 android:textColor="@color/muted"
                 android:textSize="12sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/green_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never" />
-
             <TextView
-                android:id="@+id/green_empty"
+                android:id="@+id/green_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="@string/empty_green_spaces"
                 android:textColor="@color/muted"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:textSize="12sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
