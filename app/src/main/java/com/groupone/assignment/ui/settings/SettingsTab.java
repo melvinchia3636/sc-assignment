@@ -33,8 +33,8 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         syncSelection();
-        binding.languageCard.setOnClickListener(clicked -> showLanguageDialog());
-        binding.audienceCard.setOnClickListener(clicked -> showAudienceDialog());
+        binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
+        binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
     }
 
     private void syncSelection() {
