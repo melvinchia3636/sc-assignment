@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,14 +18,12 @@ public class SettingsRowView extends LinearLayout {
 
     private final TextView title;
     private final TextView value;
-    private final ImageView chevron;
 
     public SettingsRowView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_settings_row, this, true);
         title = findViewById(R.id.settings_row_title);
         value = findViewById(R.id.settings_row_value);
-        chevron = findViewById(R.id.settings_row_chevron);
 
         TypedArray attributes = context.obtainStyledAttributes(
                 attrs, R.styleable.SettingsRowView);
@@ -49,10 +46,6 @@ public class SettingsRowView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
-        if (chevron != null) {
-            chevron.setVisibility(isClickable() ? VISIBLE : GONE);
-        }
+        findViewById(R.id.settings_row_chevron).setVisibility(isClickable() ? VISIBLE : GONE);
     }
-
 }
