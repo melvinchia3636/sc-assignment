@@ -41,12 +41,15 @@ public abstract class BaseTab<VB extends ViewBinding> extends Fragment {
         }
     }
 
-    private static final NavTab[] NAV_TABS = {
-            new NavTab(R.id.tab_aqi, AirQualityTab.NAV_ICON),
-            new NavTab(R.id.tab_map, StationMapTab.NAV_ICON),
-            new NavTab(R.id.tab_green, GreenSpacesTab.NAV_ICON),
-            new NavTab(R.id.tab_settings, SettingsTab.NAV_ICON),
-    };
+    /** Lazily loaded so tab classes finish initialising before their icons are read. */
+    private static final class NavTabs {
+        static final NavTab[] ALL = {
+                new NavTab(R.id.tab_aqi, AirQualityTab.NAV_ICON),
+                new NavTab(R.id.tab_map, StationMapTab.NAV_ICON),
+                new NavTab(R.id.tab_green, GreenSpacesTab.NAV_ICON),
+                new NavTab(R.id.tab_settings, SettingsTab.NAV_ICON),
+        };
+    }
 
     protected VB binding;
 
@@ -84,7 +87,7 @@ public abstract class BaseTab<VB extends ViewBinding> extends Fragment {
         int selected = navigation.getSelectedItemId();
         int active = Color.parseColor("#1B5E20");
         int inactive = Color.parseColor("#5F665F");
-        for (NavTab tab : NAV_TABS) {
+        for (NavTab tab : NavTabs.ALL) {
             navigation.getMenu().findItem(tab.menuId).setIcon(
                     AppIcons.drawable(navigation.getContext(), tab.icon,
                             selected == tab.menuId ? active : inactive, 24));
@@ -92,8 +95,8 @@ public abstract class BaseTab<VB extends ViewBinding> extends Fragment {
     }
 
     public static int tabIndex(int menuId) {
-        for (int index = 0; index < NAV_TABS.length; index++) {
-            if (NAV_TABS[index].menuId == menuId) {
+        for (int index = 0; index < NavTabs.ALL.length; index++) {
+            if (NavTabs.ALL[index].menuId == menuId) {
                 return index;
             }
         }
