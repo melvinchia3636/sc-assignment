@@ -18,16 +18,12 @@ import androidx.viewbinding.ViewBinding;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.groupone.assignment.R;
-import com.groupone.assignment.repositories.model.Station;
-import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.ui.aqi.AirQualityTab;
 import com.groupone.assignment.ui.green.GreenSpacesTab;
 import com.groupone.assignment.ui.map.StationMapTab;
 import com.groupone.assignment.ui.settings.SettingsTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
-
-import java.util.List;
 
 /**
  * Base for bottom-bar tabs: owns the ViewBinding lifecycle, navigation icon
@@ -72,18 +68,6 @@ public abstract class BaseTab<VB extends ViewBinding> extends Fragment {
             viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         }
         return viewModel;
-    }
-
-    protected void observeStation(Observer<StationDetail> observer) {
-        sharedViewModel().getStation().observe(getViewLifecycleOwner(), observer);
-    }
-
-    protected void observeStations(Observer<List<Station>> observer) {
-        sharedViewModel().getStations().observe(getViewLifecycleOwner(), observer);
-    }
-
-    protected void observeStationsLoading(Observer<Boolean> observer) {
-        sharedViewModel().getStationsLoading().observe(getViewLifecycleOwner(), observer);
     }
 
     public static void styleNavigation(BottomNavigationView navigation) {

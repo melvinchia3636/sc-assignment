@@ -61,9 +61,10 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         binding.mapZoomIn.setOnClickListener(click -> map.getController().zoomIn());
         binding.mapZoomOut.setOnClickListener(click -> map.getController().zoomOut());
 
-        observeStations(this::render);
-        observeStationsLoading(loading -> binding.mapLoading.setVisibility(
-                Boolean.TRUE.equals(loading) ? android.view.View.VISIBLE : android.view.View.GONE));
+        viewModel.getStations().observe(getViewLifecycleOwner(), this::render);
+        viewModel.getStationsLoading().observe(getViewLifecycleOwner(),
+                loading -> binding.mapLoading.setVisibility(
+                        Boolean.TRUE.equals(loading) ? android.view.View.VISIBLE : android.view.View.GONE));
     }
 
     private void render(List<Station> stations) {
