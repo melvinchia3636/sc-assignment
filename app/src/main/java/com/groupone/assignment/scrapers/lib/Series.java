@@ -1,4 +1,4 @@
-package com.groupone.assignment.lib;
+package com.groupone.assignment.scrapers.lib;
 
 import com.groupone.assignment.repositories.model.ObservationSeries;
 import com.groupone.assignment.repositories.model.Point;

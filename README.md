@@ -106,9 +106,8 @@ sc-assignment/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/groupone/assignment/
-│       │   │   ├── lib/         # series maths, TTL cache, time, HTTP upstream
 │       │   │   ├── repositories/# models, SnapshotCache, AirQualityRepository
-│       │   │   ├── scrapers/    # WaqiClient, parsers and station sources
+│       │   │   ├── scrapers/    # WaqiClient, parsers, sources and lib helpers
 │       │   │   ├── ui/
 │       │   │   │   ├── MainActivity.java
 │       │   │   │   ├── MainViewModel.java
