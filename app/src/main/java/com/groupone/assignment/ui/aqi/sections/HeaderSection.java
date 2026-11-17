@@ -30,18 +30,14 @@ public class HeaderSection extends LinearLayout {
         updatedText = findViewById(R.id.updated_text);
     }
 
-    public void bindPlaceName(String placeName) {
-        cityTitle.setText(placeName);
-    }
-
-    public void bindStation(StationDetail station) {
+    public void bind(StationDetail station) {
         long updatedAt = station.getUpdatedAt();
         updatedText.setText(updatedAt > 0
                 ? getContext().getString(R.string.updated_at, formatEpoch(updatedAt))
                 : getContext().getString(R.string.not_updated));
     }
 
-    public void markUnavailable() {
+    public void setUnavailable() {
         updatedText.setText(R.string.not_updated);
     }
 

@@ -50,7 +50,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         });
 
         viewModel.getLocationService().getPlaceName().observe(getViewLifecycleOwner(),
-                name -> binding.headerSection.bindPlaceName(name));
+                name -> binding.headerSection.setPlaceName(name));
         observeLoading(binding.swipeRefresh);
     }
 
@@ -61,7 +61,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.guidanceSection.bind(
                 AudienceService.INSTANCE.current(requireContext()), station.getAqi());
 
-        binding.headerSection.bindStation(station);
+        binding.headerSection.bind(station);
 
         binding.subIndicesSection.bind(station);
 
@@ -92,6 +92,6 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.weatherWrapper.setVisibility(View.GONE);
         binding.trendSection.clear();
         binding.subIndicesSection.clear();
-        binding.headerSection.markUnavailable();
+        binding.headerSection.setUnavailable();
     }
 }
