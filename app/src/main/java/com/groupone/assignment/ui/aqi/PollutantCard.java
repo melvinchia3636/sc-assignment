@@ -5,8 +5,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.material.card.MaterialCardView;
 import com.groupone.assignment.R;
@@ -36,11 +34,6 @@ public class PollutantCard extends MaterialCardView {
 
     public PollutantCard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setCardBackgroundColor(ContextCompat.getColor(context, R.color.card));
-        setCardElevation(0);
-        setRadius(dp(16));
-        setStrokeColor(ContextCompat.getColor(context, R.color.line));
-        setStrokeWidth(dp(1));
         LayoutInflater.from(context).inflate(R.layout.view_pollutant, this, true);
         value = findViewById(R.id.pollutant_value);
         label = findViewById(R.id.pollutant_label);
@@ -75,9 +68,5 @@ public class PollutantCard extends MaterialCardView {
         maximum.setText(R.string.dash);
         minimum.setText(R.string.dash);
         SparklineChart.clear(chart);
-    }
-
-    private int dp(int value) {
-        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 }

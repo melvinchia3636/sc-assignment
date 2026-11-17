@@ -221,6 +221,7 @@
                 android:orientation="horizontal">
 
                 <com.groupone.assignment.ui.aqi.PollutantCard
+                    style="@style/Widget.AirGreen.PollutantCard"
                     android:id="@+id/pm25_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -228,6 +229,7 @@
                     android:layout_weight="1" />
 
                 <com.groupone.assignment.ui.aqi.PollutantCard
+                    style="@style/Widget.AirGreen.PollutantCard"
                     android:id="@+id/pm10_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -242,6 +244,7 @@
                 android:orientation="horizontal">
 
                 <com.groupone.assignment.ui.aqi.PollutantCard
+                    style="@style/Widget.AirGreen.PollutantCard"
                     android:id="@+id/no2_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -249,6 +252,7 @@
                     android:layout_weight="1" />
 
                 <com.groupone.assignment.ui.aqi.PollutantCard
+                    style="@style/Widget.AirGreen.PollutantCard"
                     android:id="@+id/o3_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -263,6 +267,7 @@
                 android:orientation="horizontal">
 
                 <com.groupone.assignment.ui.aqi.PollutantCard
+                    style="@style/Widget.AirGreen.PollutantCard"
                     android:id="@+id/so2_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -270,6 +275,7 @@
                     android:layout_weight="1" />
 
                 <com.groupone.assignment.ui.aqi.PollutantCard
+                    style="@style/Widget.AirGreen.PollutantCard"
                     android:id="@+id/co_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
