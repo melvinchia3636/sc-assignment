@@ -6,15 +6,15 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import com.groupone.assignment.repositories.model.Snapshot;
+import com.groupone.assignment.repositories.Snapshot;
 
 /**
- * Stores the last successful snapshot so the app can keep showing data when
- * the network is unavailable.
+ * Stores the last successful station reading so the app can keep showing data
+ * when the network is unavailable.
  */
-public class SnapshotCache {
+public class AirQualityCache {
 
-    private static final String PREFS_NAME = "air_green_cache";
+    private static final String PREFS_NAME = "air_quality_cache";
     private static final String KEY_SNAPSHOT = "last_snapshot";
 
     private static final Gson GSON = new GsonBuilder()
@@ -23,7 +23,7 @@ public class SnapshotCache {
 
     private final SharedPreferences preferences;
 
-    public SnapshotCache(Context context) {
+    public AirQualityCache(Context context) {
         this.preferences = context.getApplicationContext()
                 .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }

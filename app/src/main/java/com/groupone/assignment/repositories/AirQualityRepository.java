@@ -2,8 +2,7 @@ package com.groupone.assignment.repositories;
 
 import android.content.Context;
 
-import com.groupone.assignment.repositories.local.SnapshotCache;
-import com.groupone.assignment.repositories.model.Snapshot;
+import com.groupone.assignment.repositories.local.AirQualityCache;
 import com.groupone.assignment.repositories.model.StationRepository.Coordinates;
 import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 import com.groupone.assignment.scrapers.WaqiClient;
@@ -14,13 +13,13 @@ import com.groupone.assignment.scrapers.WaqiClient;
 public class AirQualityRepository {
 
     private final WaqiClient waqiClient;
-    private final SnapshotCache cache;
+    private final AirQualityCache cache;
 
     public AirQualityRepository(Context context) {
-        this(new WaqiClient(), new SnapshotCache(context));
+        this(new WaqiClient(), new AirQualityCache(context));
     }
 
-    public AirQualityRepository(WaqiClient waqiClient, SnapshotCache cache) {
+    public AirQualityRepository(WaqiClient waqiClient, AirQualityCache cache) {
         this.waqiClient = waqiClient;
         this.cache = cache;
     }
