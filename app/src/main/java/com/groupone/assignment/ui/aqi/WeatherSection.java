@@ -23,7 +23,18 @@ public class WeatherSection extends SectionView {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_weather_section, this, true);
 
-        items = addItems(context,
+        items = new WeatherItem[]{
+                new WeatherItem(context, "t", "%.1f °C",
+                        FontAwesome.Icon.faw_thermometer_half, R.string.weather_temperature),
+                new WeatherItem(context, "h", "%.0f %%",
+                        GoogleMaterial.Icon.gmd_opacity, R.string.weather_humidity),
+                new WeatherItem(context, "p", "%.0f hPa",
+                        GoogleMaterial.Icon.gmd_speed, R.string.weather_pressure),
+                new WeatherItem(context, "w", "%.1f km/h",
+                        FontAwesome.Icon.faw_wind, R.string.weather_wind),
+        };
+
+        placeItems(items,
                 findViewById(R.id.weather_row_top),
                 findViewById(R.id.weather_row_bottom));
     }
@@ -38,32 +49,15 @@ public class WeatherSection extends SectionView {
         setVisibility(hasValue ? View.VISIBLE : View.GONE);
     }
 
-    private WeatherItem[] addItems(Context context, LinearLayout top, LinearLayout bottom) {
-        WeatherItem[] created = {
-                new WeatherItem(context, "t", "%.1f °C",
-                        FontAwesome.Icon.faw_thermometer_half,
-                        R.string.weather_temperature),
-                new WeatherItem(context, "h", "%.0f %%",
-                        GoogleMaterial.Icon.gmd_opacity,
-                        R.string.weather_humidity),
-                new WeatherItem(context, "p", "%.0f hPa",
-                        GoogleMaterial.Icon.gmd_speed,
-                        R.string.weather_pressure),
-                new WeatherItem(context, "w", "%.1f km/h",
-                        FontAwesome.Icon.faw_wind,
-                        R.string.weather_wind),
-        };
-
+    private void placeItems(WeatherItem[] items, LinearLayout top, LinearLayout bottom) {
         LinearLayout[] rows = { top, bottom };
-        for (int index = 0; index < created.length; index++) {
+        for (int index = 0; index < items.length; index++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
             if (index % 2 == 0) {
                 params.setMarginEnd(Math.round(8 * getResources().getDisplayMetrics().density));
             }
-            rows[index / 2].addView(created[index], params);
+            rows[index / 2].addView(items[index], params);
         }
-
-        return created;
     }
 }
