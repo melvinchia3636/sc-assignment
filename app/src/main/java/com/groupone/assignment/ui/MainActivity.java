@@ -1,18 +1,12 @@
 package com.groupone.assignment.ui;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.SystemBarStyle;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,25 +21,29 @@ import com.groupone.assignment.ui.common.BaseTab;
 
 import org.osmdroid.config.Configuration;
 
-import java.util.Map;
-
 /**
- * Hosts the tabs, permission handling and navigation.
+ * Hosts the tabs and navigation.
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final double DEFAULT_LATITUDE = 3.1390;
-    private static final double DEFAULT_LONGITUDE = 101.6869;
-    private static final String DEFAULT_PLACE = "Kuala Lumpur";
+    private final LocationService.Listener locationListener = new LocationService.Listener() {
+        @Override
+        public void onLocated(String place, double latitude, double longitude) {
+            if (isFinishing() || isDestroyed()) {
+                return;
+            }
+            viewModel.setLocation(place, latitude, longitude);
+        }
 
-    private static final String[] LOCATION_PERMISSIONS = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
+        @Override
+        public void onFallback(String place, double latitude, double longitude, int messageRes) {
+            if (isFinishing() || isDestroyed()) {
+                return;
+            }
+            Toast.makeText(MainActivity.this, messageRes, Toast.LENGTH_LONG).show();
+            viewModel.setLocation(place, latitude, longitude);
+        }
     };
-
-    private final ActivityResultLauncher<String[]> permissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
-                    this::onPermissionResult);
 
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
@@ -73,11 +71,8 @@ public class MainActivity extends AppCompatActivity {
         BaseTab.styleNavigation(binding.bottomNavigation);
 
         if (savedInstanceState == null) {
-            if (hasLocationPermission()) {
-                loadFromDeviceLocation();
-            } else {
-                permissionLauncher.launch(LOCATION_PERMISSIONS);
-            }
+            viewModel.startLocationLookup();
+            locationService.locate(locationListener);
         }
     }
 
@@ -88,54 +83,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         new TabService(host.getNavController(), binding.bottomNavigation).attach();
-    }
-
-    private void onPermissionResult(Map<String, Boolean> result) {
-        boolean granted = Boolean.TRUE.equals(result.get(Manifest.permission.ACCESS_COARSE_LOCATION))
-                || Boolean.TRUE.equals(result.get(Manifest.permission.ACCESS_FINE_LOCATION));
-        if (granted) {
-            loadFromDeviceLocation();
-        } else {
-            Toast.makeText(this, R.string.location_permission_denied, Toast.LENGTH_LONG).show();
-            useFallbackLocation();
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private void loadFromDeviceLocation() {
-        if (!hasLocationPermission()) {
-            useFallbackLocation();
-            return;
-        }
-        viewModel.startLocationLookup();
-        locationService.request(new LocationService.Listener() {
-            @Override
-            public void onLocated(String place, double latitude, double longitude) {
-                if (isFinishing() || isDestroyed()) {
-                    return;
-                }
-                viewModel.setLocation(place, latitude, longitude);
-            }
-
-            @Override
-            public void onUnavailable() {
-                if (isFinishing() || isDestroyed()) {
-                    return;
-                }
-                Toast.makeText(MainActivity.this, R.string.location_unavailable,
-                        Toast.LENGTH_LONG).show();
-                useFallbackLocation();
-            }
-        });
-    }
-
-    private boolean hasLocationPermission() {
-        return ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void useFallbackLocation() {
-        viewModel.setLocation(DEFAULT_PLACE, DEFAULT_LATITUDE, DEFAULT_LONGITUDE);
     }
 
     private void applySystemBarInsets() {
