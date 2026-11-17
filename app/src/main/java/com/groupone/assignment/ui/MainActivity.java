@@ -1,24 +1,14 @@
 package com.groupone.assignment.ui;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.activity.SystemBarStyle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.groupone.assignment.R;
 import com.groupone.assignment.databinding.ActivityMainBinding;
+import com.groupone.assignment.services.BootstrapService;
 import com.groupone.assignment.services.LocationService;
-import com.groupone.assignment.services.TabService;
-import com.groupone.assignment.ui.common.BaseTab;
-
-import org.osmdroid.config.Configuration;
 
 /**
  * Hosts the tabs and navigation.
@@ -51,37 +41,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Configuration.getInstance().load(getApplicationContext(),
-                getSharedPreferences("osmdroid", MODE_PRIVATE));
-        Configuration.getInstance().setUserAgentValue(getPackageName());
-        Configuration.getInstance().setAnimationSpeedShort(180);
-        Configuration.getInstance().setAnimationSpeedDefault(250);
-        EdgeToEdge.enable(this,
-                SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
-                SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT));
+        BootstrapService bootstrap = new BootstrapService(this);
+        bootstrap.configure();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         locationService = new LocationService(this);
 
-        applySystemBarInsets();
-        TabService.attach(this, binding.bottomNavigation);
-        BaseTab.styleNavigation(binding.bottomNavigation);
+        bootstrap.attach(binding);
 
         if (savedInstanceState == null) {
             viewModel.startLocationLookup();
             locationService.locate(locationListener);
         }
-    }
-
-    private void applySystemBarInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root, (view, windowInsets) -> {
-            Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
-            return windowInsets;
-        });
-        ViewCompat.requestApplyInsets(binding.root);
     }
 
     @Override
