@@ -83,8 +83,7 @@ public class StationMapTab extends BaseTab<FragmentStationMapBinding> {
         Marker marker = new Marker(map);
         marker.setPosition(new GeoPoint(station.getLatitude(), station.getLongitude()));
         marker.setTitle(station.getName().isEmpty() ? station.getIdx() : station.getName());
-        marker.setSnippet(getString(R.string.map_station_snippet,
-                AqiScale.format(station.getAqi()), station.getIdx()));
+        marker.setRelatedObject(station);
         marker.setIcon(AqiBadge.create(requireContext(), AqiScale.format(station.getAqi()),
                 Color.parseColor(level.getColourHex()),
                 Color.parseColor(level.getTextColourHex())));
