@@ -28,6 +28,11 @@ public final class SparklineChart {
     private static final int AXIS_COLOUR = Color.parseColor("#5F665F");
     private static final int GRID_COLOUR = Color.parseColor("#E0E4DE");
 
+    /** WAQI caps the AQI scale at 500, so the trend axis never goes above it. */
+    private static final float AQI_MAXIMUM = 500f;
+    /** Smallest trend window, so a flat low reading is not blown up. */
+    private static final float AQI_MINIMUM_SPAN = 50f;
+
     private SparklineChart() {
     }
 
@@ -103,6 +108,7 @@ public final class SparklineChart {
         left.setGridLineWidth(0.5f);
         left.setLabelCount(4);
         left.setAxisMinimum(0f);
+        left.setAxisMaximum(trendMaximum(entries));
         left.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -120,8 +126,21 @@ public final class SparklineChart {
         chart.invalidate();
     }
 
-    private static List<Entry> entries(List<Double> values) {
-        List<Entry> entries = new ArrayList<>();
+    /**
+     * Rounds the trend ceiling up to a readable step with a little headroom,
+     * keeping it within the AQI scale and never below {@link #AQI_MINIMUM_SPAN}.
+     */
+    private static float trendMaximum(List<Entry> entries) {
+        float highest = 0f;
+        for (Entry entry : entries) {
+            highest = Math.max(highest, entry.getY());
+        }
+
+        float padded = (float) Math.ceil(highest * 1.15f / 10f) * 10f;
+        return Math.min(AQI_MAXIMUM, Math.max(AQI_MINIMUM_SPAN, padded));
+    }
+
+    private static List<Entry> entries(List<Double> values) {        List<Entry> entries = new ArrayList<>();
         int index = 0;
         if (values != null) {
             for (Double value : values) {
