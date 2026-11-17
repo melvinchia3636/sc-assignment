@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
@@ -89,27 +90,43 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.groupone.assignment.ui.aqi.sections.SubIndicesSection
-                android:id="@+id/sub_indices_section"
+            <com.groupone.assignment.ui.common.SectionView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:sectionTitle="@string/pollutants_label" />
+                android:orientation="vertical"
+                app:sectionTitle="@string/pollutants_label">
+                <com.groupone.assignment.ui.aqi.sections.SubIndicesSection
+                    android:id="@+id/sub_indices_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.groupone.assignment.ui.common.SectionView>
 
-            <com.groupone.assignment.ui.aqi.sections.WeatherSection
-                android:id="@+id/weather_section"
+            <com.groupone.assignment.ui.common.SectionView
+                android:id="@+id/weather_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:orientation="vertical"
                 android:visibility="gone"
-                app:sectionTitle="@string/weather_label" />
+                app:sectionTitle="@string/weather_label">
+                <com.groupone.assignment.ui.aqi.sections.WeatherSection
+                    android:id="@+id/weather_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.groupone.assignment.ui.common.SectionView>
 
-            <com.groupone.assignment.ui.aqi.sections.TrendSection
-                android:id="@+id/trend_section"
+            <com.groupone.assignment.ui.common.SectionView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:sectionTitle="@string/trend_label" />
+                android:orientation="vertical"
+                app:sectionTitle="@string/trend_label">
+                <com.groupone.assignment.ui.aqi.sections.TrendSection
+                    android:id="@+id/trend_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.groupone.assignment.ui.common.SectionView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
