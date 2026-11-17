@@ -1,10 +1,9 @@
-package com.groupone.assignment.repositories.model;
+package com.groupone.assignment.repositories;
 
 import com.groupone.assignment.repositories.model.StationRepository.StationDetail;
 
 /**
- * A complete screen's worth of data: the nearest WAQI station reading, with
- * the time it was fetched.
+ * The last fetched station reading and when it was saved.
  */
 public final class Snapshot {
 
