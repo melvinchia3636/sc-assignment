@@ -77,7 +77,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
     }
 
     private void observeViewModel() {
-        observeStation(this::render);
+        viewModel.getStation().observe(getViewLifecycleOwner(), this::render);
         observeError(message -> {
             if (message != null) {
                 showError(message);
