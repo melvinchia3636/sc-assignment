@@ -20,24 +20,11 @@
             android:paddingEnd="20dp"
             android:paddingBottom="28dp">
 
-            <TextView
-                android:id="@+id/city_title"
+            <com.groupone.assignment.ui.aqi.sections.HeaderSection
+                android:id="@+id/header_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/dm_sans_medium"
-                android:maxLines="1"
-                android:text="@string/city_name"
-                android:textColor="@color/ink"
-                android:textSize="26sp" />
-
-            <TextView
-                android:id="@+id/updated_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" "
-                android:textColor="@color/muted"
-                android:textSize="12sp" />
+                android:orientation="vertical" />
 
             <com.groupone.assignment.ui.aqi.sections.AqiHeroSection
                 android:id="@+id/aqi_hero"
