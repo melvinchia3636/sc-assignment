@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Udara &amp; Hijau</string>
+    <string name="city_name">Kuala Lumpur</string>
+
+    <string name="tab_aqi">Kualiti udara</string>
+    <string name="tab_green">Ruang hijau</string>
+    <string name="tab_settings">Tetapan</string>
+
+    <string name="dash">--</string>
+    <string name="pollutants_label">SUB-INDEKS PENCEMAR (AQI)</string>
+    <string name="green_spaces_title">Ruang hijau berdekatan</string>
+    <string name="green_spaces_subtitle">Taman dan kebun dalam 3 km</string>
+    <string name="empty_green_spaces">Tiada ruang hijau ditemui dalam 3 km.</string>
+    <string name="green_found">%1$d ditemui</string>
+    <string name="green_unavailable">Data ruang hijau tidak tersedia buat masa ini.</string>
+    <string name="retry">Cuba lagi</string>
+    <string name="trend_label">TREND AQI 24 JAM</string>
+    <string name="not_enough_history">Sejarah belum mencukupi.</string>
+    <string name="aqi_range">Julat %1$d-%2$d AQI sepanjang %3$d jam lepas</string>
+    <string name="updated_at">Dikemas kini %1$s</string>
+    <string name="not_updated">Tidak dikemas kini</string>
+    <string name="unavailable">Tidak tersedia</string>
+    <string name="connection_advice">Periksa sambungan anda dan cuba lagi.</string>
+
+    <string name="settings_title">Tetapan</string>
+    <string name="settings_sources_label">SUMBER DATA</string>
+    <string name="settings_air_quality">Kualiti udara</string>
+    <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_green_spaces">Ruang hijau</string>
+    <string name="settings_green_spaces_value">OpenStreetMap Overpass API</string>
+    <string name="settings_language">Bahasa</string>
+    <string name="language_system">Lalai sistem</string>
+    <string name="language_english">English</string>
+    <string name="language_malay">Bahasa Melayu</string>
+    <string name="language_chinese">Cina (Ringkas)</string>
+
+    <string name="weather_label">CUACA</string>
+    <string name="weather_temperature">SUHU</string>
+    <string name="weather_humidity">KELEMBAPAN</string>
+    <string name="weather_pressure">TEKANAN</string>
+    <string name="weather_wind">KELAJUAN ANGIN</string>
+
+    <string name="your_location">Lokasi anda</string>
+    <string name="location_permission_denied">Kebenaran lokasi ditolak. Menunjukkan Kuala Lumpur.</string>
+    <string name="location_unavailable">Tidak dapat lokasi anda. Menunjukkan Kuala Lumpur.</string>
+
+    <string name="aqi_unknown">Tidak diketahui</string>
+    <string name="aqi_unknown_advice">Data kualiti udara tidak tersedia buat masa ini.</string>
+    <string name="aqi_good">Baik</string>
+    <string name="aqi_good_advice">Kualiti udara memuaskan. Hari yang baik untuk berada di luar.</string>
+    <string name="aqi_moderate">Sederhana</string>
+    <string name="aqi_moderate_advice">Kualiti udara boleh diterima. Orang yang sangat sensitif patut mengurangkan aktiviti luar yang berpanjangan.</string>
+    <string name="aqi_sensitive">Tidak sihat untuk kumpulan sensitif</string>
+    <string name="aqi_sensitive_advice">Kumpulan sensitif mungkin merasai kesan. Hadkan aktiviti luar yang lama.</string>
+    <string name="aqi_unhealthy">Tidak sihat</string>
+    <string name="aqi_unhealthy_advice">Semua orang mungkin mula merasai kesan. Kurangkan aktiviti luar.</string>
+    <string name="aqi_very_unhealthy">Sangat tidak sihat</string>
+    <string name="aqi_very_unhealthy_advice">Amaran kesihatan. Elakkan aktiviti luar jika boleh.</string>
+    <string name="aqi_hazardous">Berbahaya</string>
+    <string name="aqi_hazardous_advice">Keadaan kecemasan. Kekal di dalam rumah dengan tingkap tertutup.</string>
+
+    <string name="sparkline_now">kini</string>
+    <string name="sparkline_hours_ago">-%1$dj</string>
+
+    <string name="error_offline">Anda luar talian. Periksa sambungan anda dan cuba lagi.</string>
+    <string name="error_no_data">Tiada data tersedia untuk lokasi ini.</string>
+    <string name="error_too_many">Terlalu banyak permintaan. Sila cuba sebentar lagi.</string>
+    <string name="error_unavailable">Perkhidmatan tidak tersedia sementara. Sila cuba kemudian.</string>
+    <string name="error_unexpected">Respons tidak dijangka daripada perkhidmatan (HTTP %1$d).</string>
+    <string name="error_no_station">Tiada stesen pemantauan melaporkan berhampiran anda.</string>
+    <string name="error_station_list">Senarai stesen tidak dapat dibaca.</string>
+    <string name="error_station_data">Data stesen tidak dapat dibaca.</string>
+    <string name="error_station_token">Gagal mendapatkan token stesen.</string>
+    <string name="error_airnet_key">Gagal mendapatkan kunci kualiti udara.</string>
+    <string name="error_request_prepare">Permintaan tidak dapat disediakan.</string>
+    <string name="error_green_data">Data ruang hijau tidak dapat dibaca.</string>
+</resources>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Air &amp; Green</string>
+    <string name="city_name">Kuala Lumpur</string>
+
+    <string name="tab_aqi">Air quality</string>
+    <string name="tab_green">Green space</string>
+    <string name="tab_settings">Settings</string>
+
+    <string name="dash">--</string>
+    <string name="pollutants_label">POLLUTANT SUB-INDICES (AQI)</string>
+    <string name="green_spaces_title">Green spaces nearby</string>
+    <string name="green_spaces_subtitle">Parks and gardens within 3 km</string>
+    <string name="empty_green_spaces">No green spaces found within 3 km.</string>
+    <string name="green_found">%1$d found</string>
+    <string name="green_unavailable">Green space data is unavailable right now.</string>
+    <string name="retry">Try again</string>
+    <string name="trend_label">24-HOUR AQI TREND</string>
+    <string name="not_enough_history">Not enough history yet.</string>
+    <string name="aqi_range">Range %1$d-%2$d AQI over the last %3$d hours</string>
+    <string name="updated_at">Updated %1$s</string>
+    <string name="not_updated">Not updated</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="connection_advice">Check your connection and try again.</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_sources_label">DATA SOURCES</string>
+    <string name="settings_air_quality">Air quality</string>
+    <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_green_spaces">Green spaces</string>
+    <string name="settings_green_spaces_value">OpenStreetMap Overpass API</string>
+    <string name="settings_language">Language</string>
+    <string name="language_system">System default</string>
+    <string name="language_english">English</string>
+    <string name="language_malay">Bahasa Melayu</string>
+    <string name="language_chinese">Chinese (Simplified)</string>
+
+    <string name="weather_label">WEATHER</string>
+    <string name="weather_temperature">TEMPERATURE</string>
+    <string name="weather_humidity">HUMIDITY</string>
+    <string name="weather_pressure">PRESSURE</string>
+    <string name="weather_wind">WIND SPEED</string>
+
+    <string name="your_location">Your location</string>
+    <string name="location_permission_denied">Location permission denied. Showing Kuala Lumpur.</string>
+    <string name="location_unavailable">Couldn\'t get your location. Showing Kuala Lumpur.</string>
+
+    <string name="aqi_unknown">Unknown</string>
+    <string name="aqi_unknown_advice">Air quality data is not available right now.</string>
+    <string name="aqi_good">Good</string>
+    <string name="aqi_good_advice">Air quality is satisfactory. A good day to be outdoors.</string>
+    <string name="aqi_moderate">Moderate</string>
+    <string name="aqi_moderate_advice">Acceptable air quality. Unusually sensitive people should consider reducing prolonged exertion.</string>
+    <string name="aqi_sensitive">Unhealthy for sensitive groups</string>
+    <string name="aqi_sensitive_advice">Sensitive groups may feel effects. Limit long outdoor activity.</string>
+    <string name="aqi_unhealthy">Unhealthy</string>
+    <string name="aqi_unhealthy_advice">Everyone may begin to feel effects. Reduce outdoor exertion.</string>
+    <string name="aqi_very_unhealthy">Very unhealthy</string>
+    <string name="aqi_very_unhealthy_advice">Health alert. Avoid outdoor activity where possible.</string>
+    <string name="aqi_hazardous">Hazardous</string>
+    <string name="aqi_hazardous_advice">Emergency conditions. Stay indoors with windows closed.</string>
+
+    <string name="sparkline_now">now</string>
+    <string name="sparkline_hours_ago">-%1$dh</string>
+
+    <string name="error_offline">You\'re offline. Check your connection and try again.</string>
+    <string name="error_no_data">No data is available for this location.</string>
+    <string name="error_too_many">Too many requests right now. Please try again in a moment.</string>
+    <string name="error_unavailable">The service is temporarily unavailable. Please try again later.</string>
+    <string name="error_unexpected">Unexpected response from the service (HTTP %1$d).</string>
+    <string name="error_no_station">No monitoring station is reporting near you.</string>
+    <string name="error_station_list">The station list could not be read.</string>
+    <string name="error_station_data">The station data could not be read.</string>
+    <string name="error_station_token">Failed to obtain the station token.</string>
+    <string name="error_airnet_key">Failed to obtain the air quality key.</string>
+    <string name="error_request_prepare">The request could not be prepared.</string>
+    <string name="error_green_data">The green space data could not be read.</string>
+</resources>

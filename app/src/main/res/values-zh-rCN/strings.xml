@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">空气与绿地</string>
+    <string name="city_name">吉隆坡</string>
+
+    <string name="tab_aqi">空气质量</string>
+    <string name="tab_green">绿地</string>
+    <string name="tab_settings">设置</string>
+
+    <string name="dash">--</string>
+    <string name="pollutants_label">污染物分指数（AQI）</string>
+    <string name="green_spaces_title">附近绿地</string>
+    <string name="green_spaces_subtitle">3 公里内的公园和花园</string>
+    <string name="empty_green_spaces">3 公里内未找到绿地。</string>
+    <string name="green_found">找到 %1$d 处</string>
+    <string name="green_unavailable">绿地数据暂时不可用。</string>
+    <string name="retry">重试</string>
+    <string name="trend_label">24 小时 AQI 趋势</string>
+    <string name="not_enough_history">历史数据不足。</string>
+    <string name="aqi_range">过去 %3$d 小时的 AQI 范围为 %1$d-%2$d</string>
+    <string name="updated_at">更新于 %1$s</string>
+    <string name="not_updated">未更新</string>
+    <string name="unavailable">不可用</string>
+    <string name="connection_advice">请检查网络连接后重试。</string>
+
+    <string name="settings_title">设置</string>
+    <string name="settings_sources_label">数据来源</string>
+    <string name="settings_air_quality">空气质量</string>
+    <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_green_spaces">绿地</string>
+    <string name="settings_green_spaces_value">OpenStreetMap Overpass API</string>
+    <string name="settings_language">语言</string>
+    <string name="language_system">跟随系统</string>
+    <string name="language_english">English</string>
+    <string name="language_malay">Bahasa Melayu</string>
+    <string name="language_chinese">简体中文</string>
+
+    <string name="weather_label">天气</string>
+    <string name="weather_temperature">温度</string>
+    <string name="weather_humidity">湿度</string>
+    <string name="weather_pressure">气压</string>
+    <string name="weather_wind">风速</string>
+
+    <string name="your_location">我的位置</string>
+    <string name="location_permission_denied">定位权限被拒绝。将显示吉隆坡。</string>
+    <string name="location_unavailable">无法获取您的位置。将显示吉隆坡。</string>
+
+    <string name="aqi_unknown">未知</string>
+    <string name="aqi_unknown_advice">当前没有空气质量数据。</string>
+    <string name="aqi_good">良好</string>
+    <string name="aqi_good_advice">空气质量令人满意，适合户外活动。</string>
+    <string name="aqi_moderate">中等</string>
+    <string name="aqi_moderate_advice">空气质量可接受，异常敏感人群应减少长时间户外活动。</string>
+    <string name="aqi_sensitive">对敏感人群不健康</string>
+    <string name="aqi_sensitive_advice">敏感人群可能会受到影响，请减少长时间户外活动。</string>
+    <string name="aqi_unhealthy">不健康</string>
+    <string name="aqi_unhealthy_advice">所有人都可能受到影响，请减少户外活动。</string>
+    <string name="aqi_very_unhealthy">非常不健康</string>
+    <string name="aqi_very_unhealthy_advice">健康警报，请尽量避免户外活动。</string>
+    <string name="aqi_hazardous">危险</string>
+    <string name="aqi_hazardous_advice">紧急状况，请留在室内并关闭门窗。</string>
+
+    <string name="sparkline_now">现在</string>
+    <string name="sparkline_hours_ago">-%1$d小时</string>
+
+    <string name="error_offline">您已离线，请检查网络连接后重试。</string>
+    <string name="error_no_data">该位置没有可用数据。</string>
+    <string name="error_too_many">请求过多，请稍后再试。</string>
+    <string name="error_unavailable">服务暂时不可用，请稍后再试。</string>
+    <string name="error_unexpected">服务返回了意外响应（HTTP %1$d）。</string>
+    <string name="error_no_station">附近没有正在上报的监测站。</string>
+    <string name="error_station_list">无法读取监测站列表。</string>
+    <string name="error_station_data">无法读取监测站数据。</string>
+    <string name="error_station_token">获取监测站令牌失败。</string>
+    <string name="error_airnet_key">获取空气质量密钥失败。</string>
+    <string name="error_request_prepare">无法准备请求。</string>
+    <string name="error_green_data">无法读取绿地数据。</string>
+</resources>
