@@ -25,7 +25,7 @@ public final class AudienceService {
         }
     }
 
-    public static void select(Context context, Audience audience) {
+    public static void apply(Context context, Audience audience) {
         preferences(context).edit().putString(KEY_AUDIENCE, audience.name()).apply();
     }
 
