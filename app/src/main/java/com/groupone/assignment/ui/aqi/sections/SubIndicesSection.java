@@ -3,24 +3,25 @@ package com.groupone.assignment.ui.aqi.sections;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.repositories.model.StationDetail;
 import com.groupone.assignment.ui.aqi.PollutantCard;
-import com.groupone.assignment.ui.common.SectionView;
 
 /**
  * Pollutant sub-index grid.
  */
-public class SubIndicesSection extends SectionView {
+public class SubIndicesSection extends LinearLayout {
 
-    private static final String[] KEYS = {"pm25", "pm10", "no2", "o3", "so2", "co"};
-    private static final String[] NAMES = {"PM2.5", "PM10", "NO₂", "O₃", "SO₂", "CO"};
+    private static final String[] KEYS = { "pm25", "pm10", "no2", "o3", "so2", "co" };
+    private static final String[] NAMES = { "PM2.5", "PM10", "NO₂", "O₃", "SO₂", "CO" };
 
     private final PollutantCard[] cards;
 
     public SubIndicesSection(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setOrientation(VERTICAL);
         LayoutInflater.from(context).inflate(R.layout.view_sub_indices_section, this, true);
         cards = new PollutantCard[]{
                 findViewById(R.id.pm25_card),

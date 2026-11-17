@@ -74,7 +74,8 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         binding.subIndicesSection.bind(station);
 
-        binding.weatherSection.bind(station);
+        binding.weatherWrapper.setVisibility(
+                binding.weatherSection.bind(station) ? View.VISIBLE : View.GONE);
         binding.trendSection.bind(station);
 
         binding.errorCard.setVisibility(View.GONE);
@@ -98,7 +99,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.aqiHero.showError();
         lastAqi = Double.NaN;
         binding.guidanceSection.clear();
-        binding.weatherSection.setVisibility(View.GONE);
+        binding.weatherWrapper.setVisibility(View.GONE);
         binding.trendSection.clear();
         binding.subIndicesSection.clear();
         binding.updatedText.setText(R.string.not_updated);
