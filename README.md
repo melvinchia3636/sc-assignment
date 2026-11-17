@@ -106,6 +106,7 @@ sc-assignment/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/groupone/assignment/
+│       │   │   ├── location/     # fused location + reverse geocoding
 │       │   │   ├── repositories/# models, SnapshotCache, AirQualityRepository
 │       │   │   ├── scrapers/    # WaqiClient, parsers, sources and lib helpers
 │       │   │   ├── ui/
