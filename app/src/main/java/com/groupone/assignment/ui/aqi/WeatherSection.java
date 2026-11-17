@@ -40,10 +40,10 @@ public class WeatherSection extends SectionView {
 
         LinearLayout top = findViewById(R.id.weather_row_top);
         LinearLayout bottom = findViewById(R.id.weather_row_bottom);
-        addItem(top, items[0], true);
-        addItem(top, items[1], false);
-        addItem(bottom, items[2], true);
-        addItem(bottom, items[3], false);
+        LinearLayout[] rows = {top, bottom};
+        for (int index = 0; index < items.length; index++) {
+            addItem(rows[index / 2], items[index], index % 2 == 0);
+        }
     }
 
     public void bind(StationDetail station) {
@@ -59,9 +59,11 @@ public class WeatherSection extends SectionView {
     private void addItem(LinearLayout row, WeatherItem item, boolean spaced) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+
         if (spaced) {
             params.setMarginEnd(Math.round(8 * getResources().getDisplayMetrics().density));
         }
+
         row.addView(item, params);
     }
 }
