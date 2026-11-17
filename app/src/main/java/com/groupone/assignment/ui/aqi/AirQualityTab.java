@@ -197,7 +197,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
         binding.guidanceCard.setVisibility(View.GONE);
         binding.aqiCard.setCardBackgroundColor(Color.parseColor("#5F665F"));
         binding.stationName.setText("");
-        binding.weatherSection.clear();
+        binding.weatherSection.setVisibility(View.GONE);
         SparklineChart.clear(binding.aqiSparkline);
         binding.pm25Card.clear();
         binding.pm10Card.clear();
