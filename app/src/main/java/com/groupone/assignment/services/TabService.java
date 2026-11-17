@@ -1,7 +1,9 @@
 package com.groupone.assignment.services;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.groupone.assignment.R;
@@ -16,12 +18,21 @@ public class TabService {
     private final NavController navController;
     private final BottomNavigationView navigation;
 
-    public TabService(NavController navController, BottomNavigationView navigation) {
+    private TabService(NavController navController, BottomNavigationView navigation) {
         this.navController = navController;
         this.navigation = navigation;
     }
 
-    public void attach() {
+    public static void attach(AppCompatActivity activity, BottomNavigationView navigation) {
+        NavHostFragment host = (NavHostFragment) activity.getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        if (host == null) {
+            return;
+        }
+        new TabService(host.getNavController(), navigation).wire();
+    }
+
+    private void wire() {
         navigation.setOnItemSelectedListener(item -> {
             int current = navController.getCurrentDestination() == null
                     ? R.id.tab_aqi : navController.getCurrentDestination().getId();
