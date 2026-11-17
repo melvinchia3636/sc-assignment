@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.guidance.AqiLevel;
+import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.repositories.model.Station;
 import com.groupone.assignment.ui.aqi.AqiScale;
 
@@ -32,7 +33,7 @@ public class StationInfoWindow extends InfoWindow {
             return;
         }
 
-        AqiLevel level = AqiLevel.classify(station.getAqi());
+        AqiLevelStrategy level = AqiLevel.classify(station.getAqi());
         TextView name = mView.findViewById(R.id.info_name);
         TextView aqi = mView.findViewById(R.id.info_aqi);
         TextView category = mView.findViewById(R.id.info_category);

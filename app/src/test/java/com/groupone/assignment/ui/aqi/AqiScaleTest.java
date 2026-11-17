@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.groupone.assignment.R;
 import com.groupone.assignment.guidance.AqiLevel;
+import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class AqiScaleTest {
     void classify_everyBand_hasResourcesColourAndIcon() {
         double[] samples = {10, 75, 125, 175, 250, 400};
         for (double sample : samples) {
-            AqiLevel level = AqiLevel.classify(sample);
+            AqiLevelStrategy level = AqiLevel.classify(sample);
             assertAll(
                     () -> assertNotEquals(0, level.labelRes()),
                     () -> assertNotEquals(0, level.adviceRes()),

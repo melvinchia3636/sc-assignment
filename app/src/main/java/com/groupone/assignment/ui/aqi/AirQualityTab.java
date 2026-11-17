@@ -19,6 +19,7 @@ import com.groupone.assignment.databinding.TabAqiBinding;
 import com.groupone.assignment.ui.MainViewModel;
 import com.groupone.assignment.guidance.Audience;
 import com.groupone.assignment.guidance.AqiLevel;
+import com.groupone.assignment.guidance.AqiLevelStrategy;
 import com.groupone.assignment.services.AudienceService;
 import com.groupone.assignment.ui.common.AppIcons;
 import com.groupone.assignment.ui.common.BaseTab;
@@ -72,7 +73,7 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
     private void render(StationDetail station) {
         lastAqi = station.getAqi();
-        AqiLevel level = AqiLevel.classify(station.getAqi());
+        AqiLevelStrategy level = AqiLevel.classify(station.getAqi());
         int background = Color.parseColor(level.colourHex());
         int foreground = Color.parseColor(AqiScale.textColourFor(level.colourHex()));
 
