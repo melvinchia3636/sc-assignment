@@ -47,6 +47,7 @@
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">Cina (Ringkas)</string>
+    <string name="language_japanese">Bahasa Jepun</string>
 
     <string name="weather_label">CUACA</string>
     <string name="weather_temperature">SUHU</string>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Air &amp; Green</string>
+    <string name="city_name">クアラルンプール</string>
+
+    <string name="tab_aqi">大気質</string>
+    <string name="tab_map">地図</string>
+    <string name="tab_green">緑地</string>
+    <string name="tab_settings">設定</string>
+
+    <string name="map_title">観測所マップ</string>
+    <string name="map_subtitle">近くの WAQI 観測所</string>
+    <string name="map_station_count">%1$d 地点</string>
+    <string name="map_empty">まだ観測所が読み込まれていません。</string>
+    <string name="map_zoom_in">拡大</string>
+    <string name="map_zoom_out">縮小</string>
+
+    <string name="dash">--</string>
+    <string name="pollutants_label">汚染物質別指数（AQI）</string>
+    <string name="green_spaces_title">近くの緑地</string>
+    <string name="green_spaces_subtitle">近日公開</string>
+    <string name="empty_green_spaces">緑地モニタリングは近日公開予定です。</string>
+    <string name="retry">再試行</string>
+    <string name="trend_label">24時間のAQI推移</string>
+    <string name="not_enough_history">履歴がまだ十分ではありません。</string>
+    <string name="aqi_range">過去 %3$d 時間の範囲 %1$d-%2$d AQI</string>
+    <string name="updated_at">%1$s に更新</string>
+    <string name="not_updated">未更新</string>
+    <string name="unavailable">利用不可</string>
+    <string name="connection_advice">接続を確認して再試行してください。</string>
+
+    <string name="settings_title">設定</string>
+    <string name="settings_sources_label">データソース</string>
+    <string name="settings_personalization_label">パーソナライズ</string>
+    <string name="settings_air_quality">大気質</string>
+    <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_map">地図</string>
+    <string name="settings_map_value">OpenStreetMap</string>
+    <string name="settings_language">言語</string>
+    <string name="settings_audience">健康グループ</string>
+    <string name="audience_general">一般</string>
+    <string name="audience_children">子ども</string>
+    <string name="audience_elderly">高齢者</string>
+    <string name="audience_note_children">子どもは大気汚染に敏感です。AQIが高いときは屋外での遊びを控えましょう。</string>
+    <string name="audience_note_elderly">高齢者は特に注意し、長時間の屋外活動を避けましょう。</string>
+    <string name="language_system">システム既定</string>
+    <string name="language_english">英語</string>
+    <string name="language_malay">マレー語</string>
+    <string name="language_chinese">中国語（簡体字）</string>
+    <string name="language_japanese">日本語</string>
+
+    <string name="weather_label">天気</string>
+    <string name="weather_temperature">気温</string>
+    <string name="weather_humidity">湿度</string>
+    <string name="weather_pressure">気圧</string>
+    <string name="weather_wind">風速</string>
+
+    <string name="your_location">現在地</string>
+    <string name="location_permission_denied">位置情報の権限が拒否されました。クアラルンプールを表示しています。</string>
+    <string name="location_unavailable">現在地を取得できませんでした。クアラルンプールを表示しています。</string>
+
+    <string name="aqi_unknown">不明</string>
+    <string name="aqi_unknown_advice">大気質データは現在利用できません。</string>
+    <string name="aqi_good">良好</string>
+    <string name="aqi_good_advice">大気質は良好です。屋外活動に適した日です。</string>
+    <string name="aqi_moderate">普通</string>
+    <string name="aqi_moderate_advice">許容できる大気質です。敏感な人は長時間の激しい運動を控えましょう。</string>
+    <string name="aqi_sensitive">敏感な人に不健康</string>
+    <string name="aqi_sensitive_advice">敏感な人は影響を感じる可能性があります。長時間の屋外活動を控えましょう。</string>
+    <string name="aqi_unhealthy">不健康</string>
+    <string name="aqi_unhealthy_advice">誰もが影響を感じる可能性があります。屋外での運動を減らしましょう。</string>
+    <string name="aqi_very_unhealthy">非常に不健康</string>
+    <string name="aqi_very_unhealthy_advice">健康警報。可能な限り屋外活動を避けましょう。</string>
+    <string name="aqi_hazardous">危険</string>
+    <string name="aqi_hazardous_advice">緊急事態。窓を閉めて屋内にとどまりましょう。</string>
+
+    <string name="error_offline">オフラインです。接続を確認して再試行してください。</string>
+    <string name="error_no_data">この場所のデータは利用できません。</string>
+    <string name="error_too_many">リクエストが多すぎます。しばらくしてから再試行してください。</string>
+    <string name="error_unavailable">サービスは一時的に利用できません。後でもう一度お試しください。</string>
+    <string name="error_unexpected">サービスから予期しない応答がありました（HTTP %1$d）。</string>
+    <string name="error_no_station">近くに報告中の観測所がありません。</string>
+    <string name="error_station_list">観測所リストを読み取れませんでした。</string>
+    <string name="error_station_data">観測所データを読み取れませんでした。</string>
+    <string name="error_station_token">観測所トークンを取得できませんでした。</string>
+    <string name="error_airnet_key">大気質キーを取得できませんでした。</string>
+    <string name="error_request_prepare">リクエストを準備できませんでした。</string>
+</resources>

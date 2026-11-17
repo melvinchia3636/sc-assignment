@@ -15,7 +15,8 @@ public enum Language {
     SYSTEM(R.string.language_system, ""),
     ENGLISH(R.string.language_english, "en"),
     MALAY(R.string.language_malay, "ms"),
-    CHINESE(R.string.language_chinese, "zh-CN");
+    CHINESE(R.string.language_chinese, "zh-CN"),
+    JAPANESE(R.string.language_japanese, "ja");
 
     @StringRes
     private final int labelRes;
