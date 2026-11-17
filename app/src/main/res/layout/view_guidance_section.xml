@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/dm_sans_medium"
-                    android:letterSpacing="0.12"
+                    android:letterSpacing="0.18"
                     android:text="@string/guidance_prefix"
                     android:textColor="@color/muted"
                     android:textSize="10sp" />
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/dm_sans"
-                    android:letterSpacing="0.12"
+                    android:letterSpacing="0.18"
                     android:textColor="@color/muted"
                     android:textSize="10sp"
                     android:textStyle="bold" />
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/dm_sans_medium"
-                    android:letterSpacing="0.12"
+                    android:letterSpacing="0.18"
                     android:text="@string/guidance_suffix"
                     android:textColor="@color/muted"
                     android:textSize="10sp" />
