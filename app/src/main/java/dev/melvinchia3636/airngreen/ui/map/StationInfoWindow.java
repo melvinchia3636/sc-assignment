@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.repositories.model.AqiLevel;
-import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
+import dev.melvinchia3636.airngreen.repositories.strategies.AqiLevelStrategy;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
 import dev.melvinchia3636.airngreen.ui.common.AqiScale;
 

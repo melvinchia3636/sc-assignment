@@ -1,5 +1,6 @@
 package dev.melvinchia3636.airngreen.ui.map;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,17 +18,17 @@ import dev.melvinchia3636.airngreen.repositories.ApiException;
 import dev.melvinchia3636.airngreen.repositories.model.AqiLevel;
 import dev.melvinchia3636.airngreen.repositories.model.MapProvider;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
-import dev.melvinchia3636.airngreen.repositories.remote.GoogleTilesRepository;
 import dev.melvinchia3636.airngreen.services.ApiKeyStore;
-import dev.melvinchia3636.airngreen.services.AppSigning;
 import dev.melvinchia3636.airngreen.services.MapProviderService;
-import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
+import dev.melvinchia3636.airngreen.repositories.strategies.AqiLevelStrategy;
+import dev.melvinchia3636.airngreen.repositories.strategies.MapProviderStrategy;
 import dev.melvinchia3636.airngreen.ui.MainViewModel;
 import dev.melvinchia3636.airngreen.ui.common.AqiScale;
 import dev.melvinchia3636.airngreen.ui.common.AppIcons;
 import dev.melvinchia3636.airngreen.ui.common.BaseTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
+import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
@@ -104,14 +105,12 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
 
     private void configureTiles(boolean nightMode) {
         MapProvider provider = MapProviderService.INSTANCE.current(requireContext());
-        if (provider != MapProvider.GOOGLE_MAPS) {
-            map.setTileSource(nightMode ? MapTiles.DARK : MapTiles.LIGHT);
-            binding.mapAttribution.setVisibility(View.GONE);
-            return;
-        }
+        MapProviderStrategy strategy = MapStrategies.of(provider);
+        String apiKey = strategy.requiresApiKey()
+                ? ApiKeyStore.googleMapsKey(requireContext())
+                : "";
 
-        String apiKey = ApiKeyStore.googleMapsKey(requireContext());
-        if (apiKey.isEmpty()) {
+        if (strategy.requiresApiKey() && apiKey.isEmpty()) {
             map.setVisibility(View.GONE);
             binding.mapAttribution.setVisibility(View.GONE);
             binding.mapNotice.setText(R.string.map_google_key_missing);
@@ -119,23 +118,29 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
             return;
         }
 
-        GoogleTileSource tiles = new GoogleTileSource(apiKey, nightMode);
+        ITileSource tiles = strategy.tileSource(apiKey, nightMode);
         map.setTileSource(tiles);
         binding.mapNotice.setVisibility(View.GONE);
-        binding.mapAttribution.setVisibility(View.VISIBLE);
-        loadGoogleSession(tiles, apiKey, nightMode);
+        showAttribution(strategy);
+        prepareTiles(strategy, tiles);
     }
 
-    private void loadGoogleSession(GoogleTileSource tiles, String apiKey, boolean nightMode) {
-        String styleJson = nightMode ? MapStyles.night(requireContext()) : null;
+    private void showAttribution(MapProviderStrategy strategy) {
+        if (strategy.attributionRes() == 0) {
+            binding.mapAttribution.setVisibility(View.GONE);
+            return;
+        }
+        binding.mapAttribution.setText(strategy.attributionRes());
+        binding.mapAttribution.setVisibility(View.VISIBLE);
+    }
+
+    private void prepareTiles(MapProviderStrategy strategy, ITileSource tiles) {
+        Context context = requireContext().getApplicationContext();
         binding.mapLoading.setVisibility(View.VISIBLE);
         tileExecutor.execute(() -> {
             try {
-                GoogleTilesRepository.Session session =
-                        GoogleTilesRepository.createSession(apiKey,
-                                AppSigning.googleKeyHeaders(requireContext()), styleJson);
+                strategy.prepare(tiles, context);
                 postToMap(() -> {
-                    tiles.setSession(session.token());
                     binding.mapLoading.setVisibility(View.GONE);
                     map.invalidate();
                 });
