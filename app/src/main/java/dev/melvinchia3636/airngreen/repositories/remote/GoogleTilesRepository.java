@@ -1,12 +1,16 @@
 package dev.melvinchia3636.airngreen.repositories.remote;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.repositories.ApiException;
 import dev.melvinchia3636.airngreen.scrapers.lib.Upstream;
 
 import okhttp3.HttpUrl;
+
+import java.util.Map;
 
 /**
  * Creates Google Map Tiles API sessions for a user-supplied API key.
@@ -23,7 +27,8 @@ public final class GoogleTilesRepository {
     public record Session(String token, long expiryEpochSeconds) {
     }
 
-    public static Session createSession(String apiKey) throws ApiException {
+    public static Session createSession(String apiKey, Map<String, String> headers)
+            throws ApiException {
         HttpUrl url = HttpUrl.parse(SESSION_URL);
         if (url == null) {
             throw new ApiException(ApiException.INVALID_RESPONSE,
@@ -35,11 +40,13 @@ public final class GoogleTilesRepository {
         SessionResponse response;
         try {
             response = Upstream.fetchJson(
-                    endpoint, SessionResponse.class, Upstream.Options.postJson(body));
+                    endpoint, SessionResponse.class,
+                    Upstream.Options.postJson(headers, body));
         } catch (ApiException failure) {
             if (failure.getStatusCode() == 403 || failure.getStatusCode() == 400) {
                 throw new ApiException(failure.getStatusCode(),
-                        R.string.map_google_key_rejected, failure);
+                        R.string.map_google_key_rejected, googleReason(failure.getDetail()),
+                        failure);
             }
             throw failure;
         }
@@ -50,10 +57,25 @@ public final class GoogleTilesRepository {
         return new Session(response.session, response.expiry);
     }
 
-    @SuppressWarnings("unused")
+    /** Extracts the human-readable reason from a Google error payload. */
+    private static String googleReason(String detail) {
+        if (detail == null) {
+            return null;
+        }
+        try {
+            JsonObject error = JsonParser.parseString(detail).getAsJsonObject()
+                    .getAsJsonObject("error");
+            return error != null && error.has("message")
+                    ? error.get("message").getAsString()
+                    : null;
+        } catch (RuntimeException notGoogleError) {
+            return null;
+        }
+    }
+
     private static final class SessionRequest {
         final String mapType = "roadmap";
-        final String language = "en";
+        final String language = "en-US";
         final String region = "US";
     }
 
