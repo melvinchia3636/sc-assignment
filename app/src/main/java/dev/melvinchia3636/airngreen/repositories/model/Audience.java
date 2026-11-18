@@ -1,8 +1,9 @@
-package dev.melvinchia3636.airngreen.guidance;
+package dev.melvinchia3636.airngreen.repositories.model;
 
 import androidx.annotation.StringRes;
 
 import dev.melvinchia3636.airngreen.R;
+import dev.melvinchia3636.airngreen.strategies.AudienceStrategy;
 
 /**
  * Audiences with their own guidance and exposure recommendations.

@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import dev.melvinchia3636.airngreen.R;
-import dev.melvinchia3636.airngreen.guidance.Audience;
+import dev.melvinchia3636.airngreen.repositories.model.Audience;
 
 /**
  * Audience-specific guidance card: note plus outdoor-time recommendation.
