@@ -12,8 +12,9 @@ final class GoogleTileSource extends OnlineTileSourceBase {
     private final String apiKey;
     private volatile String session = "";
 
-    GoogleTileSource(String apiKey) {
-        super("GoogleMaps", 0, 22, 256, ".png",
+    GoogleTileSource(String apiKey, boolean nightMode) {
+        // A distinct name keeps the light and dark tiles in separate caches.
+        super(nightMode ? "GoogleMapsNight" : "GoogleMaps", 0, 22, 256, ".png",
                 new String[]{"https://tile.googleapis.com/v1/2dtiles/"}, "Google");
         this.apiKey = apiKey;
     }
