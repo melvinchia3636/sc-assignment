@@ -71,6 +71,7 @@
     <string name="language_chinese">Chinese (Simplified)</string>
     <string name="language_japanese">Japanese</string>
     <string name="language_korean">Korean</string>
+    <string name="language_hindi">Hindi</string>
 
     <string name="appearance_system">System default</string>
     <string name="appearance_light">Light</string>
