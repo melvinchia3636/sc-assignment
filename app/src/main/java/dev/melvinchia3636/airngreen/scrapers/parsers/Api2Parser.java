@@ -6,7 +6,7 @@ import dev.melvinchia3636.airngreen.repositories.model.SeriesPoint;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 import dev.melvinchia3636.airngreen.scrapers.lib.Series;
 import dev.melvinchia3636.airngreen.scrapers.lib.Time;
-import dev.melvinchia3636.airngreen.repositories.remote.Api2Repository;
+import dev.melvinchia3636.airngreen.scrapers.wire.Api2Wire;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,8 +30,8 @@ public class Api2Parser {
      * Uses the first observation message that has both current readings
      * ({@code iaqi}) and a historical series ({@code obs}).
      */
-    public StationDetail parse(Api2Repository.Response root, String idx) {
-        Api2Repository.Message message = findObservationMessage(root);
+    public StationDetail parse(Api2Wire.Response root, String idx) {
+        Api2Wire.Message message = findObservationMessage(root);
         if (message == null || message.iaqi == null || message.obs == null) {
             return null;
         }
@@ -57,7 +57,7 @@ public class Api2Parser {
      * reversed into ascending order. Values are divided by the series scale
      * {@code m}.
      */
-    public List<Point> decodeSeries(Api2Repository.Series series, String timezone) {
+    public List<Point> decodeSeries(Api2Wire.Series series, String timezone) {
         double scale = series.scale == null ? 1 : series.scale;
         List<Object> values = series.values;
         if (values == null || values.isEmpty() || !(values.get(0) instanceof Number)) {
@@ -92,13 +92,13 @@ public class Api2Parser {
         return points;
     }
 
-    private Map<String, Double> currentValues(Api2Repository.Message message) {
+    private Map<String, Double> currentValues(Api2Wire.Message message) {
         Map<String, Double> current = new LinkedHashMap<>();
         if (message.aqi != null && Double.isFinite(message.aqi)) {
             current.put("aqi", message.aqi);
         }
         if (message.iaqi != null) {
-            for (Map.Entry<String, Api2Repository.Reading> entry : message.iaqi.entrySet()) {
+            for (Map.Entry<String, Api2Wire.Reading> entry : message.iaqi.entrySet()) {
                 Double value = entry.getValue() == null ? null : entry.getValue().value;
                 if (value != null && Double.isFinite(value)) {
                     current.put(entry.getKey(), value);
@@ -125,7 +125,7 @@ public class Api2Parser {
         return withAqi;
     }
 
-    private long resolveUpdatedAt(Api2Repository.Message message,
+    private long resolveUpdatedAt(Api2Wire.Message message,
                                   List<ObservationSeries> decoded) {
         if (message.time != null && message.time.iso != null && !message.time.iso.isEmpty()) {
             return Time.epochSeconds(message.time.iso);
@@ -138,11 +138,11 @@ public class Api2Parser {
                 : Math.max(0, Series.newestSeriesTime(decoded));
     }
 
-    private Api2Repository.Message findObservationMessage(Api2Repository.Response root) {
+    private Api2Wire.Message findObservationMessage(Api2Wire.Response root) {
         if (root.rxs == null || root.rxs.obs == null) {
             return null;
         }
-        for (Api2Repository.Observation entry : root.rxs.obs) {
+        for (Api2Wire.Observation entry : root.rxs.obs) {
             if (entry.msg != null && entry.msg.iaqi != null && entry.msg.obs != null) {
                 return entry.msg;
             }
@@ -151,9 +151,9 @@ public class Api2Parser {
     }
 
     private List<ObservationSeries> decodeObservations(
-            Map<String, Api2Repository.Series> observations, String timezone) {
+            Map<String, Api2Wire.Series> observations, String timezone) {
         List<ObservationSeries> decoded = new ArrayList<>();
-        for (Map.Entry<String, Api2Repository.Series> entry : observations.entrySet()) {
+        for (Map.Entry<String, Api2Wire.Series> entry : observations.entrySet()) {
             decoded.add(new ObservationSeries(entry.getKey(),
                     decodeSeries(entry.getValue(), timezone)));
         }

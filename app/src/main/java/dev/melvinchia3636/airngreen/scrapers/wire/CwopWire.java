@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories.remote;
+package dev.melvinchia3636.airngreen.scrapers.wire;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -7,9 +7,9 @@ import java.util.Map;
 /**
  * Wire shape for the CWOP weather feed.
  */
-public final class CwopRepository {
+public final class CwopWire {
 
-    private CwopRepository() {
+    private CwopWire() {
     }
 
     public static final class Response {

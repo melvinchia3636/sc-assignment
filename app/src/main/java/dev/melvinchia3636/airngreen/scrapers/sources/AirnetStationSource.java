@@ -6,8 +6,8 @@ import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 import dev.melvinchia3636.airngreen.scrapers.lib.TtlCache;
 import dev.melvinchia3636.airngreen.scrapers.lib.Upstream;
 import dev.melvinchia3636.airngreen.scrapers.parsers.AirnetParser;
-import dev.melvinchia3636.airngreen.repositories.remote.AirnetRepository;
-import dev.melvinchia3636.airngreen.repositories.remote.CwopRepository;
+import dev.melvinchia3636.airngreen.scrapers.wire.AirnetWire;
+import dev.melvinchia3636.airngreen.scrapers.wire.CwopWire;
 
 import okhttp3.HttpUrl;
 
@@ -33,16 +33,16 @@ public class AirnetStationSource implements StationSource {
         // AirNet station ids are prefixed with "A"; the feed takes the numeric id.
         String id = idx.substring(1);
 
-        AirnetRepository.Response hourly = Upstream.fetchJson(
+        AirnetWire.Response hourly = Upstream.fetchJson(
                 feedUrl("hourly", id, token).toString(),
-                AirnetRepository.Response.class,
+                AirnetWire.Response.class,
                 Upstream.Options.get(Upstream.BROWSER_HEADERS));
 
-        CwopRepository.Response cwop = null;
+        CwopWire.Response cwop = null;
         try {
             cwop = Upstream.fetchJson(
                     feedUrl("cwop", id, token).toString(),
-                    CwopRepository.Response.class,
+                    CwopWire.Response.class,
                     Upstream.Options.get(Upstream.BROWSER_HEADERS));
         } catch (ApiException weatherUnavailable) {
             // Weather is optional; an unavailable CWOP feed should not fail the station.
@@ -52,12 +52,12 @@ public class AirnetStationSource implements StationSource {
     }
 
     private String requestToken() throws ApiException {
-        AirnetRepository.TokenResponse response = Upstream.fetchJson(
+        AirnetWire.TokenResponse response = Upstream.fetchJson(
                 AIRNET_BASE.newBuilder()
                         .addPathSegments("airnet/token")
                         .build()
                         .toString(),
-                AirnetRepository.TokenResponse.class,
+                AirnetWire.TokenResponse.class,
                 Upstream.Options.post(Upstream.FORM_HEADERS, ""));
 
         if (response.key == null || response.key.isEmpty()) {

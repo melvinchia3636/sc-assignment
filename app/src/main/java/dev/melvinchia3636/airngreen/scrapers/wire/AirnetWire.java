@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories.remote;
+package dev.melvinchia3636.airngreen.scrapers.wire;
 
 import java.util.List;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Map;
 /**
  * Wire shapes for the AirNet hourly feed and token endpoints.
  */
-public final class AirnetRepository {
+public final class AirnetWire {
 
-    private AirnetRepository() {
+    private AirnetWire() {
     }
 
     public static final class Response {

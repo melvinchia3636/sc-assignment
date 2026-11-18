@@ -1,13 +1,13 @@
-package dev.melvinchia3636.airngreen.repositories.remote;
+package dev.melvinchia3636.airngreen.scrapers.wire;
 
 import java.util.List;
 
 /**
  * Wire shape for the WAQI map bounds endpoint.
  */
-public final class BoundsRepository {
+public final class BoundsWire {
 
-    private BoundsRepository() {
+    private BoundsWire() {
     }
 
     public static final class Response {

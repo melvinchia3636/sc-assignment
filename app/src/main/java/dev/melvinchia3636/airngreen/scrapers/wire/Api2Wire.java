@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories.remote;
+package dev.melvinchia3636.airngreen.scrapers.wire;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,9 +8,9 @@ import java.util.Map;
 /**
  * Wire shapes for the numeric WAQI api2 endpoints.
  */
-public final class Api2Repository {
+public final class Api2Wire {
 
-    private Api2Repository() {
+    private Api2Wire() {
     }
 
     public static final class Response {
