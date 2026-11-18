@@ -2,6 +2,7 @@ package dev.melvinchia3636.airngreen.ui.common;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.StringRes;
 
@@ -26,10 +27,11 @@ public final class TextInputDialog {
                             @StringRes int hintRes,
                             String initialValue,
                             Consumer<String> onSave) {
-        TextInputLayout layout = (TextInputLayout) LayoutInflater.from(context)
+        View content = LayoutInflater.from(context)
                 .inflate(R.layout.view_text_input, null);
+        TextInputLayout layout = content.findViewById(R.id.text_input_layout);
         layout.setHint(context.getString(hintRes));
-        TextInputEditText input = layout.findViewById(R.id.text_input);
+        TextInputEditText input = content.findViewById(R.id.text_input);
         input.setText(initialValue);
         if (initialValue != null && !initialValue.isEmpty()) {
             input.setSelection(initialValue.length());
@@ -37,7 +39,7 @@ public final class TextInputDialog {
 
         new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_AirGreen_Dialog)
                 .setTitle(titleRes)
-                .setView(layout)
+                .setView(content)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(R.string.save, (dialog, which) ->
                         onSave.accept(String.valueOf(input.getText())))
