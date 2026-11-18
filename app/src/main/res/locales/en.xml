@@ -72,6 +72,16 @@
     <string name="language_japanese">Japanese</string>
     <string name="language_korean">Korean</string>
     <string name="language_hindi">Hindi</string>
+    <string name="language_french">French</string>
+    <string name="language_german">German</string>
+    <string name="language_italian">Italian</string>
+    <string name="language_thai">Thai</string>
+    <string name="language_polish">Polish</string>
+    <string name="language_russian">Russian</string>
+    <string name="language_spanish">Spanish</string>
+    <string name="language_swedish">Swedish</string>
+    <string name="language_tamil">Tamil</string>
+    <string name="language_turkish">Turkish</string>
 
     <string name="appearance_system">System default</string>
     <string name="appearance_light">Light</string>

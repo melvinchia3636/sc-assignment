@@ -15,7 +15,17 @@ public enum Language {
     CHINESE(R.string.language_chinese, "zh-CN"),
     JAPANESE(R.string.language_japanese, "ja"),
     KOREAN(R.string.language_korean, "ko"),
-    HINDI(R.string.language_hindi, "hi");
+    HINDI(R.string.language_hindi, "hi"),
+    FRENCH(R.string.language_french, "fr"),
+    GERMAN(R.string.language_german, "de"),
+    ITALIAN(R.string.language_italian, "it"),
+    THAI(R.string.language_thai, "th"),
+    POLISH(R.string.language_polish, "pl"),
+    RUSSIAN(R.string.language_russian, "ru"),
+    SPANISH(R.string.language_spanish, "es"),
+    SWEDISH(R.string.language_swedish, "sv"),
+    TAMIL(R.string.language_tamil, "ta"),
+    TURKISH(R.string.language_turkish, "tr");
 
     @StringRes
     private final int labelRes;

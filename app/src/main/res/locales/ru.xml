@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Air &amp; Green</string>
+    <string name="city_name">Куала-Лумпур</string>
+
+    <string name="tab_aqi">Качество воздуха</string>
+    <string name="tab_map">Карта</string>
+    <string name="tab_green">Зелёные зоны</string>
+    <string name="tab_settings">Настройки</string>
+
+    <string name="map_title">Карта станций</string>
+    <string name="map_subtitle">Ближайшие станции мониторинга WAQI</string>
+    <string name="map_station_count">Станций: %1$d</string>
+    <string name="map_empty">Станции ещё не загружены.</string>
+    <string name="map_zoom_in">Увеличить</string>
+    <string name="map_zoom_out">Уменьшить</string>
+
+    <string name="dash">--</string>
+    <string name="pollutants_label">ПОДИНДЕКСЫ ЗАГРЯЗНИТЕЛЕЙ (AQI)</string>
+    <string name="green_spaces_title">Зелёные зоны рядом</string>
+    <string name="green_spaces_subtitle">Скоро</string>
+    <string name="empty_green_spaces">Мониторинг зелёных зон появится скоро.</string>
+    <string name="retry">Повторить</string>
+    <string name="trend_label">ДИНАМИКА AQI ЗА 24 ЧАСА</string>
+    <string name="not_enough_history">Пока недостаточно истории.</string>
+    <string name="aqi_range">Диапазон AQI %1$d-%2$d за последние %3$d ч</string>
+    <string name="updated_at">Обновлено %1$s</string>
+    <string name="not_updated">Не обновлено</string>
+    <string name="unavailable">Недоступно</string>
+    <string name="connection_advice">Проверьте подключение и повторите попытку.</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_sources_label">ИСТОЧНИКИ ДАННЫХ</string>
+    <string name="settings_personalization_label">ПЕРСОНАЛИЗАЦИЯ</string>
+    <string name="settings_air_quality">Качество воздуха</string>
+    <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_map">Карта</string>
+    <string name="settings_map_value">OpenStreetMap, Esri</string>
+    <string name="settings_map_label">КАРТА</string>
+    <string name="settings_map_provider">Поставщик карт</string>
+    <string name="settings_google_key">Ключ API Google</string>
+    <string name="map_provider_osm">OpenStreetMap</string>
+    <string name="map_provider_google">Google Maps</string>
+    <string name="api_key_saved">Сохранён</string>
+    <string name="api_key_missing">Не задан</string>
+    <string name="api_key_hint">Ключ API</string>
+    <string name="save">Сохранить</string>
+    <string name="map_google_key_missing">Добавьте ключ API Google Maps в настройках.</string>
+    <string name="map_google_session_failed">Не удалось запустить сеанс Google Maps.</string>
+    <string name="map_google_key_rejected">Google отклонил этот ключ API. Проверьте, что Map Tiles API включён, а ключ не имеет ограничений.</string>
+    <string name="map_attribution_google">Google</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_appearance">Оформление</string>
+    <string name="settings_audience">Группа здоровья</string>
+    <string name="audience_general">Все</string>
+    <string name="audience_children">Дети</string>
+    <string name="audience_elderly">Пожилые люди</string>
+    <string name="guidance_prefix">РЕКОМЕНДАЦИИ ДЛЯ</string>
+    <string name="guidance_suffix"></string>
+    <string name="audience_note_children_good">Отличные условия для игр на улице.</string>
+    <string name="audience_note_children_fair">Играть на улице можно, но делайте частые перерывы.</string>
+    <string name="audience_note_children_poor">Сократите время игр на улице и избегайте нагрузок.</string>
+    <string name="audience_note_elderly_good">Хороший день для прогулки.</string>
+    <string name="audience_note_elderly_fair">Не перегружайтесь и отдыхайте на улице.</string>
+    <string name="audience_note_elderly_poor">Избегайте длительных нагрузок на улице.</string>
+    <string name="audience_outdoor_limit">Рекомендуемое время на улице: до %1$d мин</string>
+    <string name="audience_outdoor_avoid">Рекомендуемое время на улице: избегайте активности на улице</string>
+    <string name="language_system">Как в системе</string>
+    <string name="language_english">English</string>
+    <string name="language_malay">Bahasa Melayu</string>
+    <string name="language_chinese">简体中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_french">Français</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_thai">ไทย</string>
+    <string name="language_polish">Polski</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_swedish">Svenska</string>
+    <string name="language_tamil">தமிழ்</string>
+    <string name="language_turkish">Türkçe</string>
+
+    <string name="appearance_system">Как в системе</string>
+    <string name="appearance_light">Светлое</string>
+    <string name="appearance_dark">Тёмное</string>
+
+    <string name="weather_label">ПОГОДА</string>
+    <string name="weather_temperature">ТЕМПЕРАТУРА</string>
+    <string name="weather_humidity">ВЛАЖНОСТЬ</string>
+    <string name="weather_pressure">ДАВЛЕНИЕ</string>
+    <string name="weather_wind">СКОРОСТЬ ВЕТРА</string>
+
+    <string name="your_location">Ваше местоположение</string>
+    <string name="location_permission_denied">Доступ к местоположению запрещён. Показан Куала-Лумпур.</string>
+    <string name="location_unavailable">Не удалось определить местоположение. Показан Куала-Лумпур.</string>
+
+    <string name="aqi_unknown">Неизвестно</string>
+    <string name="aqi_unknown_advice">Данные о качестве воздуха сейчас недоступны.</string>
+    <string name="aqi_good">Хорошо</string>
+    <string name="aqi_good_advice">Качество воздуха удовлетворительное. Хороший день, чтобы побыть на улице.</string>
+    <string name="aqi_moderate">Умеренно</string>
+    <string name="aqi_moderate_advice">Приемлемое качество воздуха. Особо чувствительным людям стоит сократить длительные нагрузки.</string>
+    <string name="aqi_sensitive">Вредно для чувствительных групп</string>
+    <string name="aqi_sensitive_advice">Чувствительные группы могут ощущать влияние. Ограничьте длительную активность на улице.</string>
+    <string name="aqi_unhealthy">Вредно</string>
+    <string name="aqi_unhealthy_advice">Все могут начать ощущать влияние. Сократите нагрузки на улице.</string>
+    <string name="aqi_very_unhealthy">Очень вредно</string>
+    <string name="aqi_very_unhealthy_advice">Оповещение о здоровье. По возможности избегайте активности на улице.</string>
+    <string name="aqi_hazardous">Опасно</string>
+    <string name="aqi_hazardous_advice">Чрезвычайная ситуация. Оставайтесь дома с закрытыми окнами.</string>
+
+    <string name="error_offline">Нет подключения. Проверьте сеть и повторите попытку.</string>
+    <string name="error_no_data">Для этого места нет данных.</string>
+    <string name="error_too_many">Слишком много запросов. Попробуйте чуть позже.</string>
+    <string name="error_unavailable">Сервис временно недоступен. Попробуйте позже.</string>
+    <string name="error_unexpected">Неожиданный ответ сервиса (HTTP %1$d).</string>
+    <string name="error_no_station">Рядом нет станций мониторинга с данными.</string>
+    <string name="error_station_list">Не удалось прочитать список станций.</string>
+    <string name="error_station_data">Не удалось прочитать данные станции.</string>
+    <string name="error_station_token">Не удалось получить токен станции.</string>
+    <string name="error_airnet_key">Не удалось получить ключ качества воздуха.</string>
+    <string name="error_request_prepare">Не удалось подготовить запрос.</string>
+</resources>
