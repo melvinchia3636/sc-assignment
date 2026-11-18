@@ -11,12 +11,16 @@ import androidx.annotation.StringRes;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.databinding.TabSettingsBinding;
+import dev.melvinchia3636.airngreen.repositories.model.MapProvider;
+import dev.melvinchia3636.airngreen.services.ApiKeyStore;
 import dev.melvinchia3636.airngreen.services.AppearanceService;
 import dev.melvinchia3636.airngreen.services.AudienceService;
 import dev.melvinchia3636.airngreen.services.ChoiceService;
 import dev.melvinchia3636.airngreen.services.LocalizationService;
+import dev.melvinchia3636.airngreen.services.MapProviderService;
 import dev.melvinchia3636.airngreen.ui.common.BaseTab;
 import dev.melvinchia3636.airngreen.ui.common.SingleChoiceDialog;
+import dev.melvinchia3636.airngreen.ui.common.TextInputDialog;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 /**
@@ -40,6 +44,8 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
         binding.appearanceRow.setOnClickListener(clicked -> showAppearanceDialog());
         binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
+        binding.mapProviderRow.setOnClickListener(clicked -> showMapProviderDialog());
+        binding.mapKeyRow.setOnClickListener(clicked -> showGoogleKeyDialog());
     }
 
     @Override
@@ -57,6 +63,20 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
                 AppearanceService.INSTANCE.current(requireContext())));
         binding.audienceRow.setValue(AudienceService.INSTANCE.labelRes(
                 AudienceService.INSTANCE.current(requireContext())));
+        refreshMapValues();
+    }
+
+    private void refreshMapValues() {
+        MapProvider provider = MapProviderService.INSTANCE.current(requireContext());
+        binding.mapProviderRow.setValue(MapProviderService.INSTANCE.labelRes(provider));
+        binding.mapRow.setValue(MapProviderService.INSTANCE.labelRes(provider));
+        binding.mapKeyRow.setValue(ApiKeyStore.hasGoogleMapsKey(requireContext())
+                ? R.string.api_key_saved
+                : R.string.api_key_missing);
+
+        boolean google = provider == MapProvider.GOOGLE_MAPS;
+        binding.mapKeyRow.setVisibility(google ? View.VISIBLE : View.GONE);
+        binding.mapKeyDivider.setVisibility(google ? View.VISIBLE : View.GONE);
     }
 
     private void showLanguageDialog() {
@@ -74,6 +94,23 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
     private void showAudienceDialog() {
         showChoiceDialog(R.string.settings_audience, AudienceService.INSTANCE,
                 this::refreshValues);
+    }
+
+    private void showMapProviderDialog() {
+        showChoiceDialog(R.string.settings_map_provider, MapProviderService.INSTANCE,
+                this::refreshMapValues);
+    }
+
+    private void showGoogleKeyDialog() {
+        TextInputDialog.show(
+                requireContext(),
+                R.string.settings_google_key,
+                R.string.api_key_hint,
+                ApiKeyStore.googleMapsKey(requireContext()),
+                key -> {
+                    ApiKeyStore.saveGoogleMapsKey(requireContext(), key);
+                    refreshMapValues();
+                });
     }
 
     private <T> void showChoiceDialog(@StringRes int titleRes,

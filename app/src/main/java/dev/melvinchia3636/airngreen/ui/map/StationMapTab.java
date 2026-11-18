@@ -3,7 +3,6 @@ package dev.melvinchia3636.airngreen.ui.map;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,14 @@ import androidx.core.content.ContextCompat;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.databinding.TabStationMapBinding;
+import dev.melvinchia3636.airngreen.repositories.ApiException;
 import dev.melvinchia3636.airngreen.repositories.model.AqiLevel;
-import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
+import dev.melvinchia3636.airngreen.repositories.model.MapProvider;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
+import dev.melvinchia3636.airngreen.repositories.remote.GoogleTilesRepository;
+import dev.melvinchia3636.airngreen.services.ApiKeyStore;
+import dev.melvinchia3636.airngreen.services.MapProviderService;
+import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
 import dev.melvinchia3636.airngreen.ui.MainViewModel;
 import dev.melvinchia3636.airngreen.ui.common.AqiScale;
 import dev.melvinchia3636.airngreen.ui.common.AppIcons;
@@ -28,13 +32,18 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * OpenStreetMap view of every nearby WAQI station, labelled with its AQI.
+ * Map view of every nearby WAQI station, labelled with its AQI. Uses
+ * OpenStreetMap or Google tiles depending on the user's setting.
  */
 public class StationMapTab extends BaseTab<TabStationMapBinding> {
 
     public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_map;
+
+    private ExecutorService tileExecutor;
 
     private MainViewModel viewModel;
     private MapView map;
@@ -50,13 +59,14 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         super.onViewCreated(view, savedInstanceState);
         viewModel = sharedViewModel();
         map = binding.mapView;
+        tileExecutor = Executors.newSingleThreadExecutor();
 
         boolean nightMode = (getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-        map.setTileSource(nightMode ? MapTiles.DARK : MapTiles.LIGHT);
         map.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.surface));
         map.setMultiTouchControls(true);
         map.setBuiltInZoomControls(false);
+        configureTiles(nightMode);
         map.getController().setZoom(11.0);
         map.getController().setCenter(
                 new GeoPoint(viewModel.getLocationService().getLatitude(),
@@ -91,6 +101,62 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         map.invalidate();
     }
 
+    private void configureTiles(boolean nightMode) {
+        MapProvider provider = MapProviderService.INSTANCE.current(requireContext());
+        if (provider != MapProvider.GOOGLE_MAPS) {
+            map.setTileSource(nightMode ? MapTiles.DARK : MapTiles.LIGHT);
+            binding.mapAttribution.setVisibility(View.GONE);
+            return;
+        }
+
+        String apiKey = ApiKeyStore.googleMapsKey(requireContext());
+        if (apiKey.isEmpty()) {
+            map.setVisibility(View.GONE);
+            binding.mapAttribution.setVisibility(View.GONE);
+            binding.mapNotice.setText(R.string.map_google_key_missing);
+            binding.mapNotice.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        GoogleTileSource tiles = new GoogleTileSource(apiKey);
+        map.setTileSource(tiles);
+        binding.mapNotice.setVisibility(View.GONE);
+        binding.mapAttribution.setVisibility(View.VISIBLE);
+        loadGoogleSession(tiles, apiKey);
+    }
+
+    private void loadGoogleSession(GoogleTileSource tiles, String apiKey) {
+        binding.mapLoading.setVisibility(View.VISIBLE);
+        tileExecutor.execute(() -> {
+            try {
+                GoogleTilesRepository.Session session =
+                        GoogleTilesRepository.createSession(apiKey);
+                postToMap(() -> {
+                    tiles.setSession(session.token());
+                    binding.mapLoading.setVisibility(View.GONE);
+                    map.invalidate();
+                });
+            } catch (ApiException failure) {
+                postToMap(() -> {
+                    binding.mapLoading.setVisibility(View.GONE);
+                    binding.mapNotice.setText(failure.message(requireContext()));
+                    binding.mapNotice.setVisibility(View.VISIBLE);
+                });
+            }
+        });
+    }
+
+    private void postToMap(Runnable action) {
+        if (!isAdded()) {
+            return;
+        }
+        requireActivity().runOnUiThread(() -> {
+            if (isAdded() && map != null) {
+                action.run();
+            }
+        });
+    }
+
     private Marker markerFor(Station station) {
         AqiLevelStrategy level = AqiLevel.classify(station.getAqi());
         Marker marker = new Marker(map);
@@ -123,6 +189,10 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
 
     @Override
     public void onDestroyView() {
+        if (tileExecutor != null) {
+            tileExecutor.shutdownNow();
+            tileExecutor = null;
+        }
         if (map != null) {
             map.onDetach();
             map = null;
