@@ -11,6 +11,7 @@ import androidx.annotation.StringRes;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.databinding.TabSettingsBinding;
+import dev.melvinchia3636.airngreen.services.AppearanceService;
 import dev.melvinchia3636.airngreen.services.AudienceService;
 import dev.melvinchia3636.airngreen.services.ChoiceService;
 import dev.melvinchia3636.airngreen.services.LocalizationService;
@@ -34,15 +35,28 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.languageRow.setValue(
-                LocalizationService.INSTANCE.labelRes(
-                        LocalizationService.INSTANCE.current(requireContext())));
-        binding.audienceRow.setValue(
-                AudienceService.INSTANCE.labelRes(
-                        AudienceService.INSTANCE.current(requireContext())));
+        refreshValues();
 
         binding.languageRow.setOnClickListener(clicked -> showLanguageDialog());
+        binding.appearanceRow.setOnClickListener(clicked -> showAppearanceDialog());
         binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (binding != null) {
+            refreshValues();
+        }
+    }
+
+    private void refreshValues() {
+        binding.languageRow.setValue(LocalizationService.INSTANCE.labelRes(
+                LocalizationService.INSTANCE.current(requireContext())));
+        binding.appearanceRow.setValue(AppearanceService.INSTANCE.labelRes(
+                AppearanceService.INSTANCE.current(requireContext())));
+        binding.audienceRow.setValue(AudienceService.INSTANCE.labelRes(
+                AudienceService.INSTANCE.current(requireContext())));
     }
 
     private void showLanguageDialog() {
@@ -51,11 +65,15 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         });
     }
 
+    private void showAppearanceDialog() {
+        // The activity only recreates when the night mode actually changes.
+        showChoiceDialog(R.string.settings_appearance, AppearanceService.INSTANCE,
+                this::refreshValues);
+    }
+
     private void showAudienceDialog() {
         showChoiceDialog(R.string.settings_audience, AudienceService.INSTANCE,
-                () -> binding.audienceRow.setValue(
-                        AudienceService.INSTANCE.labelRes(
-                                AudienceService.INSTANCE.current(requireContext()))));
+                this::refreshValues);
     }
 
     private <T> void showChoiceDialog(@StringRes int titleRes,
