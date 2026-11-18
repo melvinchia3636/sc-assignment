@@ -69,6 +69,7 @@
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">중국어(간체)</string>
+    <string name="language_chinese_traditional">중국어(번체)</string>
     <string name="language_japanese">일본어</string>
     <string name="language_korean">한국어</string>
     <string name="language_hindi">힌디어</string>

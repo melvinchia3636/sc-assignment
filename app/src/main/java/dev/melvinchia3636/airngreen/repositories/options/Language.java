@@ -13,6 +13,7 @@ public enum Language {
     ENGLISH(R.string.language_english, "en"),
     MALAY(R.string.language_malay, "ms"),
     CHINESE(R.string.language_chinese, "zh-CN"),
+    CHINESE_TRADITIONAL(R.string.language_chinese_traditional, "zh-TW"),
     JAPANESE(R.string.language_japanese, "ja"),
     KOREAN(R.string.language_korean, "ko"),
     HINDI(R.string.language_hindi, "hi"),

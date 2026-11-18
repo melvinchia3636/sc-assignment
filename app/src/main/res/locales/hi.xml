@@ -69,6 +69,7 @@
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">चीनी (सरलीकृत)</string>
+    <string name="language_chinese_traditional">चीनी (पारंपरिक)</string>
     <string name="language_japanese">जापानी</string>
     <string name="language_korean">कोरियाई</string>
     <string name="language_hindi">हिन्दी</string>

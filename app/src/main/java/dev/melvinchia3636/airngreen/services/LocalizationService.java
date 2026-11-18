@@ -31,14 +31,26 @@ public final class LocalizationService extends ChoiceService<Language> {
             return Language.SYSTEM;
         }
         Locale locale = locales.get(0);
-        if (locale != null) {
-            for (Language option : Language.values()) {
-                if (matches(option, locale)) {
-                    return option;
-                }
+        if (locale == null) {
+            return Language.ENGLISH;
+        }
+
+        // Exact tags win, so zh-TW resolves to Traditional rather than Simplified.
+        Language prefixMatch = null;
+        String languageTag = locale.toLanguageTag();
+        for (Language option : Language.values()) {
+            String tag = option.tag();
+            if (tag.isEmpty()) {
+                continue;
+            }
+            if (tag.equalsIgnoreCase(languageTag)) {
+                return option;
+            }
+            if (prefixMatch == null && tag.startsWith(locale.getLanguage())) {
+                prefixMatch = option;
             }
         }
-        return Language.ENGLISH;
+        return prefixMatch == null ? Language.ENGLISH : prefixMatch;
     }
 
     @Override
@@ -52,11 +64,6 @@ public final class LocalizationService extends ChoiceService<Language> {
     @Override
     public int labelRes(Language value) {
         return value.getLabelRes();
-    }
-
-    private static boolean matches(Language language, Locale locale) {
-        String tag = language.tag();
-        return !tag.isEmpty() && tag.startsWith(locale.getLanguage());
     }
 
     private static LocaleListCompat localesFor(Language language) {
