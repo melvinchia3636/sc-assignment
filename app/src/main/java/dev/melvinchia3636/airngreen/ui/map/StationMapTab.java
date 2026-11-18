@@ -123,16 +123,17 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         map.setTileSource(tiles);
         binding.mapNotice.setVisibility(View.GONE);
         binding.mapAttribution.setVisibility(View.VISIBLE);
-        loadGoogleSession(tiles, apiKey);
+        loadGoogleSession(tiles, apiKey, nightMode);
     }
 
-    private void loadGoogleSession(GoogleTileSource tiles, String apiKey) {
+    private void loadGoogleSession(GoogleTileSource tiles, String apiKey, boolean nightMode) {
+        String styleJson = nightMode ? MapStyles.night(requireContext()) : null;
         binding.mapLoading.setVisibility(View.VISIBLE);
         tileExecutor.execute(() -> {
             try {
                 GoogleTilesRepository.Session session =
                         GoogleTilesRepository.createSession(apiKey,
-                                AppSigning.googleKeyHeaders(requireContext()));
+                                AppSigning.googleKeyHeaders(requireContext()), styleJson);
                 postToMap(() -> {
                     tiles.setSession(session.token());
                     binding.mapLoading.setVisibility(View.GONE);

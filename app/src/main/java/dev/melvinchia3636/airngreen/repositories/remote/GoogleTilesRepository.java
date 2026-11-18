@@ -1,6 +1,5 @@
 package dev.melvinchia3636.airngreen.repositories.remote;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -18,7 +17,6 @@ import java.util.Map;
 public final class GoogleTilesRepository {
 
     private static final String SESSION_URL = "https://tile.googleapis.com/v1/createSession";
-    private static final Gson GSON = new Gson();
 
     private GoogleTilesRepository() {
     }
@@ -27,15 +25,15 @@ public final class GoogleTilesRepository {
     public record Session(String token, long expiryEpochSeconds) {
     }
 
-    public static Session createSession(String apiKey, Map<String, String> headers)
-            throws ApiException {
+    public static Session createSession(String apiKey, Map<String, String> headers,
+                                        String styleJson) throws ApiException {
         HttpUrl url = HttpUrl.parse(SESSION_URL);
         if (url == null) {
             throw new ApiException(ApiException.INVALID_RESPONSE,
                     R.string.map_google_session_failed);
         }
         String endpoint = url.newBuilder().addQueryParameter("key", apiKey).build().toString();
-        String body = GSON.toJson(new SessionRequest());
+        String body = sessionRequest(styleJson).toString();
 
         SessionResponse response;
         try {
@@ -73,10 +71,19 @@ public final class GoogleTilesRepository {
         }
     }
 
-    private static final class SessionRequest {
-        final String mapType = "roadmap";
-        final String language = "en-US";
-        final String region = "US";
+    /**
+     * Builds the session payload. Roadmap tiles are the only styleable map type,
+     * so the Night style is applied by session rather than per tile request.
+     */
+    private static JsonObject sessionRequest(String styleJson) {
+        JsonObject request = new JsonObject();
+        request.addProperty("mapType", "roadmap");
+        request.addProperty("language", "en-US");
+        request.addProperty("region", "US");
+        if (styleJson != null && !styleJson.isEmpty()) {
+            request.add("styles", JsonParser.parseString(styleJson));
+        }
+        return request;
     }
 
     private static final class SessionResponse {
