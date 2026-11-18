@@ -69,6 +69,7 @@
     <string name="language_english">English</string>
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">Cina (Ringkas)</string>
+    <string name="language_chinese_traditional">Cina (Tradisional)</string>
     <string name="language_japanese">Bahasa Jepun</string>
     <string name="language_korean">Bahasa Korea</string>
     <string name="language_hindi">Bahasa Hindi</string>
