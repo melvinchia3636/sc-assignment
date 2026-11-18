@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.repositories.model.AqiLevel;
-import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
+import dev.melvinchia3636.airngreen.repositories.strategies.AqiLevelStrategy;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 
 import org.junit.jupiter.api.Test;
