@@ -71,6 +71,7 @@
     <string name="language_chinese">中国語（簡体字）</string>
     <string name="language_japanese">日本語</string>
     <string name="language_korean">韓国語</string>
+    <string name="language_hindi">ヒンディー語</string>
 
     <string name="appearance_system">システム既定</string>
     <string name="appearance_light">ライト</string>
