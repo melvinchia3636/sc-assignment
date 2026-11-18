@@ -20,15 +20,22 @@ public class ApiException extends Exception {
     private final int statusCode;
     @StringRes
     private final int messageRes;
+    private final String detail;
 
     public ApiException(int statusCode, @StringRes int messageRes) {
-        this(statusCode, messageRes, null);
+        this(statusCode, messageRes, null, null);
     }
 
     public ApiException(int statusCode, @StringRes int messageRes, Throwable cause) {
+        this(statusCode, messageRes, null, cause);
+    }
+
+    public ApiException(int statusCode, @StringRes int messageRes, String detail,
+                        Throwable cause) {
         super(cause);
         this.statusCode = statusCode;
         this.messageRes = messageRes;
+        this.detail = detail;
     }
 
     public static ApiException network(IOException cause) {
@@ -37,6 +44,10 @@ public class ApiException extends Exception {
 
     public static ApiException http(int statusCode) {
         return new ApiException(statusCode, messageFor(statusCode));
+    }
+
+    public static ApiException http(int statusCode, String detail) {
+        return new ApiException(statusCode, messageFor(statusCode), detail, null);
     }
 
     private static int messageFor(int statusCode) {
@@ -54,6 +65,11 @@ public class ApiException extends Exception {
 
     public int getStatusCode() {
         return statusCode;
+    }
+
+    /** Server-supplied detail for the failure, or {@code null} when none. */
+    public String getDetail() {
+        return detail;
     }
 
     @StringRes

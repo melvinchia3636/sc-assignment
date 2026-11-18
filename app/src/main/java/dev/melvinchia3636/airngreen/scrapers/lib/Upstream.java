@@ -90,6 +90,10 @@ public final class Upstream {
         public static Options postJson(String body) {
             return new Options("POST", null, body, JSON);
         }
+
+        public static Options postJson(Map<String, String> headers, String body) {
+            return new Options("POST", headers, body, JSON);
+        }
     }
 
     /** Fetches a URL and returns the decoded text, mapping failures to ApiException. */
@@ -116,12 +120,29 @@ public final class Upstream {
 
         try (Response response = CLIENT.newCall(builder.build()).execute()) {
             if (!response.isSuccessful()) {
-                throw ApiException.http(response.code());
+                throw ApiException.http(response.code(), errorDetail(response));
             }
             ResponseBody responseBody = response.body();
             return responseBody == null ? "" : responseBody.string();
         } catch (IOException failure) {
             throw ApiException.network(failure);
+        }
+    }
+
+    /** Returns a JSON error body so callers can surface the server's reason. */
+    private static String errorDetail(Response response) {
+        ResponseBody body = response.body();
+        if (body == null || body.contentType() == null) {
+            return null;
+        }
+        String subtype = body.contentType().subtype();
+        if (subtype == null || !subtype.contains("json")) {
+            return null;
+        }
+        try {
+            return body.string();
+        } catch (IOException unreadable) {
+            return null;
         }
     }
 

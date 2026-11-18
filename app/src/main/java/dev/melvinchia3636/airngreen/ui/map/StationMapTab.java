@@ -19,6 +19,7 @@ import dev.melvinchia3636.airngreen.repositories.model.MapProvider;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
 import dev.melvinchia3636.airngreen.repositories.remote.GoogleTilesRepository;
 import dev.melvinchia3636.airngreen.services.ApiKeyStore;
+import dev.melvinchia3636.airngreen.services.AppSigning;
 import dev.melvinchia3636.airngreen.services.MapProviderService;
 import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
 import dev.melvinchia3636.airngreen.ui.MainViewModel;
@@ -130,7 +131,8 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         tileExecutor.execute(() -> {
             try {
                 GoogleTilesRepository.Session session =
-                        GoogleTilesRepository.createSession(apiKey);
+                        GoogleTilesRepository.createSession(apiKey,
+                                AppSigning.googleKeyHeaders(requireContext()));
                 postToMap(() -> {
                     tiles.setSession(session.token());
                     binding.mapLoading.setVisibility(View.GONE);
@@ -139,7 +141,7 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
             } catch (ApiException failure) {
                 postToMap(() -> {
                     binding.mapLoading.setVisibility(View.GONE);
-                    binding.mapNotice.setText(failure.message(requireContext()));
+                    binding.mapNotice.setText(detailMessage(failure));
                     binding.mapNotice.setVisibility(View.VISIBLE);
                 });
             }
@@ -155,6 +157,12 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
                 action.run();
             }
         });
+    }
+
+    private String detailMessage(ApiException failure) {
+        String message = failure.message(requireContext());
+        String detail = failure.getDetail();
+        return detail == null || detail.isEmpty() ? message : message + "\n" + detail;
     }
 
     private Marker markerFor(Station station) {
