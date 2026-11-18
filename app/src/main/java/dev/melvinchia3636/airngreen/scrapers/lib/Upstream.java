@@ -26,6 +26,8 @@ public final class Upstream {
     private static final long TIMEOUT_SECONDS = 15;
     private static final MediaType FORM =
             MediaType.parse("application/x-www-form-urlencoded");
+    private static final MediaType JSON =
+            MediaType.parse("application/json; charset=utf-8");
     private static final Gson GSON = new Gson();
 
     private static final OkHttpClient CLIENT = new OkHttpClient.Builder()
@@ -63,23 +65,30 @@ public final class Upstream {
         private final String method;
         private final Map<String, String> headers;
         private final String body;
+        private final MediaType mediaType;
 
-        private Options(String method, Map<String, String> headers, String body) {
+        private Options(String method, Map<String, String> headers, String body,
+                        MediaType mediaType) {
             this.method = method;
             this.headers = headers;
             this.body = body;
+            this.mediaType = mediaType;
         }
 
         public static Options get() {
-            return new Options("GET", null, null);
+            return new Options("GET", null, null, null);
         }
 
         public static Options get(Map<String, String> headers) {
-            return new Options("GET", headers, null);
+            return new Options("GET", headers, null, null);
         }
 
         public static Options post(Map<String, String> headers, String body) {
-            return new Options("POST", headers, body);
+            return new Options("POST", headers, body, FORM);
+        }
+
+        public static Options postJson(String body) {
+            return new Options("POST", null, body, JSON);
         }
     }
 
@@ -101,7 +110,7 @@ public final class Upstream {
         } else {
             RequestBody requestBody = options.body == null
                     ? RequestBody.create(new byte[0], null)
-                    : RequestBody.create(options.body, FORM);
+                    : RequestBody.create(options.body, options.mediaType);
             builder.method(options.method, requestBody);
         }
 

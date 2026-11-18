@@ -49,6 +49,11 @@ public class SettingsRowView extends LinearLayout {
         return this;
     }
 
+    public SettingsRowView setValue(CharSequence text) {
+        value.setText(text);
+        return this;
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
