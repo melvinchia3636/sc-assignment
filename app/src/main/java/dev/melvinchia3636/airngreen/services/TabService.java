@@ -81,14 +81,18 @@ public class TabService {
 
     private void navigateTo(int destinationId, int fromTab, int toTab) {
         boolean forward = toTab > fromTab;
+        int enter = forward ? R.anim.slide_in_right : R.anim.slide_in_left;
+        int exit = forward ? R.anim.slide_out_left : R.anim.slide_out_right;
+        // Tab switches pop back to the start destination, so the outgoing
+        // fragment uses the pop exit animation; keep every variant aligned.
         NavOptions options = new NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setRestoreState(true)
                 .setPopUpTo(navController.getGraph().getStartDestinationId(), false, true)
-                .setEnterAnim(forward ? R.anim.slide_in_right : R.anim.slide_in_left)
-                .setExitAnim(forward ? R.anim.slide_out_left : R.anim.slide_out_right)
-                .setPopEnterAnim(forward ? R.anim.slide_in_left : R.anim.slide_in_right)
-                .setPopExitAnim(forward ? R.anim.slide_out_right : R.anim.slide_out_left)
+                .setEnterAnim(enter)
+                .setExitAnim(exit)
+                .setPopEnterAnim(enter)
+                .setPopExitAnim(exit)
                 .build();
         navController.navigate(destinationId, null, options);
     }
