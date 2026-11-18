@@ -2,7 +2,6 @@ package dev.melvinchia3636.airngreen.repositories;
 
 import android.content.Context;
 
-import dev.melvinchia3636.airngreen.repositories.local.AirQualityCache;
 import dev.melvinchia3636.airngreen.repositories.model.Bounds;
 import dev.melvinchia3636.airngreen.repositories.model.Coordinates;
 import dev.melvinchia3636.airngreen.repositories.model.Station;

@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories.local;
+package dev.melvinchia3636.airngreen.repositories;
 
 import android.content.Context;
 import android.content.SharedPreferences;
