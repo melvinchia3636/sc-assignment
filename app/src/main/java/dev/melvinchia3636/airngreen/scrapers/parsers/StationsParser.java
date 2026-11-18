@@ -2,7 +2,7 @@ package dev.melvinchia3636.airngreen.scrapers.parsers;
 
 import dev.melvinchia3636.airngreen.repositories.model.Coordinates;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
-import dev.melvinchia3636.airngreen.repositories.remote.BoundsRepository;
+import dev.melvinchia3636.airngreen.scrapers.wire.BoundsWire;
 
 import net.sf.geographiclib.Geodesic;
 
@@ -23,10 +23,10 @@ public class StationsParser {
      * {@code distanceMeters}; otherwise they are sorted by name without
      * distances.
      */
-    public List<Station> parse(BoundsRepository.Response root, Coordinates origin) {
+    public List<Station> parse(BoundsWire.Response root, Coordinates origin) {
         List<Station> stations = new ArrayList<>();
         if (root.data != null) {
-            for (BoundsRepository.Entry entry : root.data) {
+            for (BoundsWire.Entry entry : root.data) {
                 Station station = toStation(entry, origin);
                 if (station != null) {
                     stations.add(station);
@@ -45,7 +45,7 @@ public class StationsParser {
         return stations;
     }
 
-    private Station toStation(BoundsRepository.Entry entry, Coordinates origin) {
+    private Station toStation(BoundsWire.Entry entry, Coordinates origin) {
         if (entry.idx == null || entry.idx.isEmpty() || entry.geo == null
                 || entry.geo.size() < 2) {
             return null;

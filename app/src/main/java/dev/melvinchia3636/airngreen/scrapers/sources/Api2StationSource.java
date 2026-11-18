@@ -6,7 +6,7 @@ import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 import dev.melvinchia3636.airngreen.scrapers.lib.TtlCache;
 import dev.melvinchia3636.airngreen.scrapers.lib.Upstream;
 import dev.melvinchia3636.airngreen.scrapers.parsers.Api2Parser;
-import dev.melvinchia3636.airngreen.repositories.remote.Api2Repository;
+import dev.melvinchia3636.airngreen.scrapers.wire.Api2Wire;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,26 +30,26 @@ public class Api2StationSource implements StationSource {
         String token = tokens.getOrLoad(idx, TOKEN_TTL_MS, () -> requestToken(idx));
 
         String body = "token=" + encode(token) + "&id=" + encode(idx);
-        Api2Repository.Response feed = Upstream.fetchJson(
+        Api2Wire.Response feed = Upstream.fetchJson(
                 feedUrl(idx).toString(),
-                Api2Repository.Response.class,
+                Api2Wire.Response.class,
                 Upstream.Options.post(Upstream.FORM_HEADERS, body));
 
         return parser.parse(feed, idx);
     }
 
     private String requestToken(String idx) throws ApiException {
-        Api2Repository.TokenResponse response = Upstream.fetchJson(
+        Api2Wire.TokenResponse response = Upstream.fetchJson(
                 API2_BASE.newBuilder()
                         .addPathSegments("api/token")
                         .addPathSegment(idx)
                         .build()
                         .toString(),
-                Api2Repository.TokenResponse.class,
+                Api2Wire.TokenResponse.class,
                 Upstream.Options.post(Upstream.FORM_HEADERS, ""));
 
         if (response.rxs != null && response.rxs.obs != null) {
-            for (Api2Repository.Observation observation : response.rxs.obs) {
+            for (Api2Wire.Observation observation : response.rxs.obs) {
                 if (observation.msg != null && observation.msg.token != null
                         && !observation.msg.token.isEmpty()) {
                     return observation.msg.token;

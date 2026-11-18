@@ -6,8 +6,8 @@ import dev.melvinchia3636.airngreen.repositories.model.SeriesPoint;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 import dev.melvinchia3636.airngreen.scrapers.lib.Series;
 import dev.melvinchia3636.airngreen.scrapers.lib.Time;
-import dev.melvinchia3636.airngreen.repositories.remote.AirnetRepository;
-import dev.melvinchia3636.airngreen.repositories.remote.CwopRepository;
+import dev.melvinchia3636.airngreen.scrapers.wire.AirnetWire;
+import dev.melvinchia3636.airngreen.scrapers.wire.CwopWire;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +55,7 @@ public class AirnetParser {
     private interface WeatherField {
         String key();
 
-        double read(CwopRepository.Reading reading);
+        double read(CwopWire.Reading reading);
     }
 
     private static final WeatherField[] WEATHER_FIELDS = {
@@ -66,7 +66,7 @@ public class AirnetParser {
                 }
 
                 @Override
-                public double read(CwopRepository.Reading reading) {
+                public double read(CwopWire.Reading reading) {
                     return reading.humidity == null ? 0 : reading.humidity;
                 }
             },
@@ -77,7 +77,7 @@ public class AirnetParser {
                 }
 
                 @Override
-                public double read(CwopRepository.Reading reading) {
+                public double read(CwopWire.Reading reading) {
                     return reading.pressure == null ? 0 : reading.pressure;
                 }
             },
@@ -88,7 +88,7 @@ public class AirnetParser {
                 }
 
                 @Override
-                public double read(CwopRepository.Reading reading) {
+                public double read(CwopWire.Reading reading) {
                     return reading.temperature == null ? 0 : reading.temperature;
                 }
             },
@@ -99,7 +99,7 @@ public class AirnetParser {
                 }
 
                 @Override
-                public double read(CwopRepository.Reading reading) {
+                public double read(CwopWire.Reading reading) {
                     return reading.windSpeed == null ? 0 : reading.windSpeed;
                 }
             },
@@ -124,16 +124,16 @@ public class AirnetParser {
      * report. Requires both PM2.5 and PM10 hourly series; PM1 and weather are
      * optional.
      */
-    public StationDetail parse(AirnetRepository.Response root,
-                               CwopRepository.Response cwopRoot,
+    public StationDetail parse(AirnetWire.Response root,
+                               CwopWire.Response cwopRoot,
                                String idx) {
-        AirnetRepository.Data readings = root.data;
+        AirnetWire.Data readings = root.data;
         if (readings == null || readings.pm25 == null || readings.pm25.isEmpty()
                 || readings.pm10 == null || readings.pm10.isEmpty()) {
             return null;
         }
 
-        Map<String, CwopRepository.Reading> cwop = cwopRoot == null || cwopRoot.data == null
+        Map<String, CwopWire.Reading> cwop = cwopRoot == null || cwopRoot.data == null
                 ? null : cwopRoot.data.data;
         List<ObservationSeries> decoded = decodeAirnetSeries(readings, cwop);
         Map<String, List<SeriesPoint>> aligned = Series.alignSeries(decoded);
@@ -172,7 +172,7 @@ public class AirnetParser {
     }
 
     private List<ObservationSeries> decodeAirnetSeries(
-            AirnetRepository.Data readings, Map<String, CwopRepository.Reading> cwop) {
+            AirnetWire.Data readings, Map<String, CwopWire.Reading> cwop) {
         List<ObservationSeries> series = new ArrayList<>();
         series.add(new ObservationSeries("pm25",
                 toIndexPoints(readings.pm25, AirnetParser::pm25ToAqi)));
@@ -188,7 +188,7 @@ public class AirnetParser {
         return series;
     }
 
-    private List<ObservationSeries> weatherSeries(Map<String, CwopRepository.Reading> cwop) {
+    private List<ObservationSeries> weatherSeries(Map<String, CwopWire.Reading> cwop) {
         if (cwop == null) {
             return Collections.emptyList();
         }
@@ -200,7 +200,7 @@ public class AirnetParser {
         for (WeatherField field : WEATHER_FIELDS) {
             List<Point> points = new ArrayList<>();
             for (String time : times) {
-                CwopRepository.Reading reading = cwop.get(time);
+                CwopWire.Reading reading = cwop.get(time);
                 points.add(new Point(Time.epochSeconds(time),
                         reading == null ? 0 : field.read(reading)));
             }
@@ -209,10 +209,10 @@ public class AirnetParser {
         return series;
     }
 
-    private List<Point> toIndexPoints(List<AirnetRepository.Entry> entries,
+    private List<Point> toIndexPoints(List<AirnetWire.Entry> entries,
                                       AqiConverter toAqi) {
         List<Point> points = new ArrayList<>();
-        for (AirnetRepository.Entry entry : entries) {
+        for (AirnetWire.Entry entry : entries) {
             if (entry.mean == null || entry.mean.isNaN()) {
                 continue;
             }
@@ -238,7 +238,7 @@ public class AirnetParser {
     }
 
     private Map<String, Double> currentValues(double[] indexes, double aqi,
-                                              Map<String, CwopRepository.Reading> cwop) {
+                                              Map<String, CwopWire.Reading> cwop) {
         Map<String, Double> current = new LinkedHashMap<>();
         for (int index = 0; index < AQI_SERIES_KEYS.length; index++) {
             if (!Double.isNaN(indexes[index])) {

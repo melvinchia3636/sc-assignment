@@ -9,10 +9,10 @@ import dev.melvinchia3636.airngreen.repositories.model.Coordinates;
 import dev.melvinchia3636.airngreen.repositories.model.Point;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
-import dev.melvinchia3636.airngreen.repositories.remote.AirnetRepository;
-import dev.melvinchia3636.airngreen.repositories.remote.Api2Repository;
-import dev.melvinchia3636.airngreen.repositories.remote.BoundsRepository;
-import dev.melvinchia3636.airngreen.repositories.remote.CwopRepository;
+import dev.melvinchia3636.airngreen.scrapers.wire.AirnetWire;
+import dev.melvinchia3636.airngreen.scrapers.wire.Api2Wire;
+import dev.melvinchia3636.airngreen.scrapers.wire.BoundsWire;
+import dev.melvinchia3636.airngreen.scrapers.wire.CwopWire;
 
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +47,7 @@ class ParsersTest {
 
     @Test
     void stations_sortsByDistanceAndHandlesMissingAqi() {
-        BoundsRepository.Response root = new BoundsRepository.Response();
+        BoundsWire.Response root = new BoundsWire.Response();
         root.data = List.of(
                 boundsEntry("A2", "Far", "66", 3.3, 101.7),
                 boundsEntry("A1", "Near", "-", 3.14, 101.687),
@@ -65,7 +65,7 @@ class ParsersTest {
 
     @Test
     void stations_cleansAndSortsTheGlobalListWithoutDistances() {
-        BoundsRepository.Response root = new BoundsRepository.Response();
+        BoundsWire.Response root = new BoundsWire.Response();
         root.data = List.of(
                 boundsEntry("B", "Beta", null, 1.0, 2.0),
                 boundsEntry("A", "Alpha", null, 3.0, 4.0),
@@ -85,7 +85,7 @@ class ParsersTest {
 
     @Test
     void api2_expandsDeltasAndReversesTheSeries() {
-        Api2Repository.Series series = new Api2Repository.Series();
+        Api2Wire.Series series = new Api2Wire.Series();
         series.start = "2026-11-17 10:00:00";
         series.scale = 1.0;
         series.values = List.of(33.0, List.of(9.0, -3600.0), List.of(-13.0, -3600.0));
@@ -101,26 +101,26 @@ class ParsersTest {
 
     @Test
     void api2_readsCurrentSeriesAndAqi() {
-        Api2Repository.Series pm25 = new Api2Repository.Series();
+        Api2Wire.Series pm25 = new Api2Wire.Series();
         pm25.start = "2026-11-17 10:00:00";
         pm25.scale = 1.0;
         pm25.values = List.of(33.0, List.of(9.0, -3600.0));
 
-        Api2Repository.Message message = new Api2Repository.Message();
+        Api2Wire.Message message = new Api2Wire.Message();
         message.aqi = 33.0;
-        message.city = new Api2Repository.City();
+        message.city = new Api2Wire.City();
         message.city.name = "Kapit, Sarawak, Malaysia";
-        message.time = new Api2Repository.Time();
+        message.time = new Api2Wire.Time();
         message.time.iso = "2026-11-17T10:00:00+08:00";
         message.time.timezone = "+08:00";
         message.iaqi = Map.of("pm25", reading(33), "pm10", reading(21));
         message.obs = Map.of("pm25", pm25);
 
-        Api2Repository.Observation observation = new Api2Repository.Observation();
+        Api2Wire.Observation observation = new Api2Wire.Observation();
         observation.msg = message;
-        Api2Repository.Rxs rxs = new Api2Repository.Rxs();
+        Api2Wire.Rxs rxs = new Api2Wire.Rxs();
         rxs.obs = List.of(observation);
-        Api2Repository.Response root = new Api2Repository.Response();
+        Api2Wire.Response root = new Api2Wire.Response();
         root.rxs = rxs;
 
         StationDetail detail = api2Parser.parse(root, "2609");
@@ -136,8 +136,8 @@ class ParsersTest {
 
     @Test
     void airnet_readsFeedWeatherAndAlignedSeries() {
-        AirnetRepository.Response hourly = new AirnetRepository.Response();
-        hourly.meta = new AirnetRepository.Meta();
+        AirnetWire.Response hourly = new AirnetWire.Response();
+        hourly.meta = new AirnetWire.Meta();
         hourly.meta.name = "Bukit Gita Bayu";
         hourly.meta.utime = 1794885398L;
 
@@ -146,7 +146,7 @@ class ParsersTest {
         feed.put("pm10", List.of(1794885398.0, 2294.0));
         hourly.feed = feed;
 
-        hourly.data = new AirnetRepository.Data();
+        hourly.data = new AirnetWire.Data();
         hourly.data.pm25 = List.of(
                 airnetEntry("2026-11-17T02:00:00Z", 37.27),
                 airnetEntry("2026-11-17T03:00:00Z", 21.6));
@@ -154,14 +154,14 @@ class ParsersTest {
                 airnetEntry("2026-11-17T02:00:00Z", 46.06),
                 airnetEntry("2026-11-17T03:00:00Z", 24.15));
 
-        CwopRepository.Reading weather = new CwopRepository.Reading();
+        CwopWire.Reading weather = new CwopWire.Reading();
         weather.humidity = 70.5;
         weather.pressure = 1010.5;
         weather.temperature = 31.6;
         weather.windSpeed = 7.0;
-        CwopRepository.Data weatherData = new CwopRepository.Data();
+        CwopWire.Data weatherData = new CwopWire.Data();
         weatherData.data = Map.of("2026-11-17T03:00:00Z", weather);
-        CwopRepository.Response cwop = new CwopRepository.Response();
+        CwopWire.Response cwop = new CwopWire.Response();
         cwop.data = weatherData;
 
         StationDetail detail = airnetParser.parse(hourly, cwop, "A2820325");
@@ -176,9 +176,9 @@ class ParsersTest {
         assertEquals(71, detail.series("aqi").get(71).getV());
     }
 
-    private static BoundsRepository.Entry boundsEntry(
+    private static BoundsWire.Entry boundsEntry(
             String idx, String name, String aqi, Double latitude, Double longitude) {
-        BoundsRepository.Entry entry = new BoundsRepository.Entry();
+        BoundsWire.Entry entry = new BoundsWire.Entry();
         entry.idx = idx;
         entry.name = name;
         entry.aqi = aqi;
@@ -191,14 +191,14 @@ class ParsersTest {
         return entry;
     }
 
-    private static Api2Repository.Reading reading(double value) {
-        Api2Repository.Reading reading = new Api2Repository.Reading();
+    private static Api2Wire.Reading reading(double value) {
+        Api2Wire.Reading reading = new Api2Wire.Reading();
         reading.value = value;
         return reading;
     }
 
-    private static AirnetRepository.Entry airnetEntry(String time, double mean) {
-        AirnetRepository.Entry entry = new AirnetRepository.Entry();
+    private static AirnetWire.Entry airnetEntry(String time, double mean) {
+        AirnetWire.Entry entry = new AirnetWire.Entry();
         entry.time = time;
         entry.mean = mean;
         return entry;

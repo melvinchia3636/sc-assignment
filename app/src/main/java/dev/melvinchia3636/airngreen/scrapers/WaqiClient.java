@@ -4,15 +4,16 @@ import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.repositories.ApiException;
 import dev.melvinchia3636.airngreen.repositories.model.Bounds;
 import dev.melvinchia3636.airngreen.repositories.model.Coordinates;
+import dev.melvinchia3636.airngreen.repositories.model.SeriesPoint;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 import dev.melvinchia3636.airngreen.scrapers.lib.TtlCache;
 import dev.melvinchia3636.airngreen.scrapers.lib.Upstream;
 import dev.melvinchia3636.airngreen.scrapers.parsers.StationsParser;
-import dev.melvinchia3636.airngreen.repositories.remote.BoundsRepository;
 import dev.melvinchia3636.airngreen.scrapers.sources.AirnetStationSource;
 import dev.melvinchia3636.airngreen.scrapers.sources.Api2StationSource;
 import dev.melvinchia3636.airngreen.scrapers.sources.StationSource;
+import dev.melvinchia3636.airngreen.scrapers.wire.BoundsWire;
 
 import java.util.List;
 import java.util.Locale;
@@ -76,8 +77,8 @@ public class WaqiClient {
                 : url + "|" + origin.getLat() + "," + origin.getLon();
 
         return stationLists.getOrLoad(cacheKey, STATION_TTL_MS, () -> {
-            BoundsRepository.Response json = Upstream.fetchJson(
-                    url, BoundsRepository.Response.class,
+            BoundsWire.Response json = Upstream.fetchJson(
+                    url, BoundsWire.Response.class,
                     Upstream.Options.get(Upstream.BROWSER_HEADERS));
             return stationParser.parse(json, origin);
         });
