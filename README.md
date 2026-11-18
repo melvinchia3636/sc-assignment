@@ -66,14 +66,17 @@ First build downloads the Gradle wrapper and Android dependencies.
 
 ## Localization
 
-- English is the default (`values/strings.xml`); Malay (`values-ms`) and Simplified Chinese
-  (`values-zh-rCN`) are provided.
-- Settings → Language opens a single-choice dialog (System default, English, Bahasa Melayu,
-  简体中文) and applies the choice via `AppCompatDelegate.setApplicationLocales(...)`.
-- `res/xml/locales_config.xml` is wired through `android:localeConfig`, so Android 13+ also
-  lists the app under Settings → System → Languages → App languages.
-- To add a language, copy `values/strings.xml` to `values-<code>/`, add the code to
-  `locales_config.xml`, and add an entry to the language dialog in `SettingsTab`.
+- English is the default (`res/locales/en.xml` → `values/`); Malay, Simplified Chinese,
+  Japanese and Korean are generated into `values-ms`, `values-zh-rCN`, `values-ja` and
+  `values-ko`.
+- Settings → Language opens a single-choice dialog (System default plus every language)
+  and applies the choice via `AppCompatDelegate.setApplicationLocales(...)`.
+- `xml/locales_config.xml` is generated at build time from the files in `res/locales/`
+  and wired through `android:localeConfig`, so Android 13+ also lists the app under
+  Settings → System → Languages → App languages.
+- To add a language, drop `res/locales/<code>.xml` in place and add a constant to
+  `Language`; the Gradle sync derives the `values-*` folder and the locale config from
+  the file name (`zh_CN` → `zh-CN`).
 
 ## Tests and coverage
 
