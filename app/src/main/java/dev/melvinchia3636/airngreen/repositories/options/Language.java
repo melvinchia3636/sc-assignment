@@ -1,14 +1,11 @@
 package dev.melvinchia3636.airngreen.repositories.options;
 
 import androidx.annotation.StringRes;
-import androidx.core.os.LocaleListCompat;
 
 import dev.melvinchia3636.airngreen.R;
 
-import java.util.Locale;
-
 /**
- * Languages offered by the in-app switcher.
+ * Languages offered by the in-app switcher. The empty tag defers to the system.
  */
 public enum Language {
 
@@ -32,13 +29,8 @@ public enum Language {
         return labelRes;
     }
 
-    public LocaleListCompat locales() {
-        return tag.isEmpty()
-                ? LocaleListCompat.getEmptyLocaleList()
-                : LocaleListCompat.forLanguageTags(tag);
-    }
-
-    public boolean matches(Locale locale) {
-        return !tag.isEmpty() && tag.startsWith(locale.getLanguage());
+    /** BCP 47 language tag, or an empty string to follow the system. */
+    public String tag() {
+        return tag;
     }
 }

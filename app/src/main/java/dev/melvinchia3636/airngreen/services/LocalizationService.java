@@ -33,7 +33,7 @@ public final class LocalizationService extends ChoiceService<Language> {
         Locale locale = locales.get(0);
         if (locale != null) {
             for (Language option : Language.values()) {
-                if (option.matches(locale)) {
+                if (matches(option, locale)) {
                     return option;
                 }
             }
@@ -46,11 +46,23 @@ public final class LocalizationService extends ChoiceService<Language> {
         if (language == current(context)) {
             return;
         }
-        AppCompatDelegate.setApplicationLocales(language.locales());
+        AppCompatDelegate.setApplicationLocales(localesFor(language));
     }
 
     @Override
     public int labelRes(Language value) {
         return value.getLabelRes();
+    }
+
+    private static boolean matches(Language language, Locale locale) {
+        String tag = language.tag();
+        return !tag.isEmpty() && tag.startsWith(locale.getLanguage());
+    }
+
+    private static LocaleListCompat localesFor(Language language) {
+        String tag = language.tag();
+        return tag.isEmpty()
+                ? LocaleListCompat.getEmptyLocaleList()
+                : LocaleListCompat.forLanguageTags(tag);
     }
 }
