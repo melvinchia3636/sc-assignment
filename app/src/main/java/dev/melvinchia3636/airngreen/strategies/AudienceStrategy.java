@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.guidance;
+package dev.melvinchia3636.airngreen.strategies;
 
 /**
  * Audience-specific air-quality guidance.

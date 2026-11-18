@@ -106,9 +106,9 @@ sc-assignment/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/dev/melvinchia3636/airngreen/
-│       │   │   ├── guidance/     # audience strategies and air-quality guidance
+│       │   │   ├── strategies/   # AQI-level and audience strategy contracts
 │       │   │   ├── services/     # bootstrap, location, localization, audience, navigation
-│       │   │   ├── repositories/# models, SnapshotCache, AirQualityRepository
+│       │   │   ├── repositories/# data models (incl. AQI levels, audiences), cache, clients
 │       │   │   ├── scrapers/    # WaqiClient, parsers, sources and lib helpers
 │       │   │   ├── ui/
 │       │   │   │   ├── MainActivity.java

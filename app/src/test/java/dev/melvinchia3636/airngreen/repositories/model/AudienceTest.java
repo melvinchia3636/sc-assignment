@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.guidance;
+package dev.melvinchia3636.airngreen.repositories.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

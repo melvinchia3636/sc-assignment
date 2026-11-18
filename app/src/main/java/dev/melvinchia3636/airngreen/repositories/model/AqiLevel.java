@@ -1,6 +1,7 @@
-package dev.melvinchia3636.airngreen.guidance;
+package dev.melvinchia3636.airngreen.repositories.model;
 
 import dev.melvinchia3636.airngreen.R;
+import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome;
 
 /**
