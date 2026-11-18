@@ -119,7 +119,7 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
             return;
         }
 
-        GoogleTileSource tiles = new GoogleTileSource(apiKey);
+        GoogleTileSource tiles = new GoogleTileSource(apiKey, nightMode);
         map.setTileSource(tiles);
         binding.mapNotice.setVisibility(View.GONE);
         binding.mapAttribution.setVisibility(View.VISIBLE);
