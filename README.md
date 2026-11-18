@@ -18,6 +18,7 @@ network is unavailable. The green spaces tab is a placeholder for now.
 - Weather from the station's CWOP feed (temperature, humidity, pressure, wind)
 - Green spaces tab placeholder
 - Pull-to-refresh and a manual refresh button
+- Pollution-threshold alerts via a small observer pattern, with an in-app banner and a system notification
 - Graceful degradation: cached data plus an "offline" banner on failure
 - Human-readable error messages for 404, 429, 5xx and network failures
 - No stack traces are ever shown to the user
@@ -78,6 +79,19 @@ First build downloads the Gradle wrapper and Android dependencies.
   `Language`; the Gradle sync derives the `values-*` folder and the locale config from
   the file name (`zh_CN` → `zh-CN`).
 
+## Pollution alerts
+
+A deliberately small observer demo:
+
+- `PollutionAlertService` is the subject. `AirQualityService` passes it every fresh reading.
+- It compares the reading's `AqiLevel` with the `AlertThreshold` chosen in Settings. Only
+  upward band changes fire, so repeated refreshes do not repeat an alert; dropping below
+  the threshold re-arms it.
+- Observers: `NotificationAlertObserver` posts a system notification, and the subject also
+  exposes `LiveData<AqiAlert>` which the AQI tab shows as a snackbar.
+- `OFF` in Settings disables alerts; enabling one asks for `POST_NOTIFICATIONS` on
+  Android 13+.
+
 ## Tests and coverage
 
 ```bash
@@ -109,8 +123,8 @@ sc-assignment/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/dev/melvinchia3636/airngreen/
-│       │   │   ├── services/     # bootstrap, location, localization, audience, navigation
-│       │   │   ├── repositories/# data models, map/AQI strategies, cache, clients
+│       │   │   ├── services/     # bootstrap, location, alerts, localization, navigation
+│       │   │   ├── repositories/# data models, options, policy, strategies, cache, clients
 │       │   │   ├── scrapers/    # WaqiClient, parsers, sources and lib helpers
 │       │   │   ├── ui/
 │       │   │   │   ├── MainActivity.java

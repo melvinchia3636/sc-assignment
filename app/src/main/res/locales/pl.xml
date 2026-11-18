@@ -124,4 +124,16 @@
     <string name="error_station_token">Nie udało się pobrać tokena stacji.</string>
     <string name="error_airnet_key">Nie udało się pobrać klucza jakości powietrza.</string>
     <string name="error_request_prepare">Nie udało się przygotować żądania.</string>
+    <string name="settings_alerts_label">ALERTY</string>
+    <string name="settings_alert_threshold">Próg alertu</string>
+    <string name="alert_off">Wyłączone</string>
+    <string name="alert_moderate">Umiarkowana lub gorsza</string>
+    <string name="alert_sensitive">Grupy wrażliwe lub gorsza</string>
+    <string name="alert_unhealthy">Niezdrowa lub gorsza</string>
+    <string name="alert_very_unhealthy">Bardzo niezdrowa lub gorsza</string>
+    <string name="alert_channel_name">Alerty jakości powietrza</string>
+    <string name="alert_channel_description">Powiadomienie, gdy zanieczyszczenie przekroczy próg</string>
+    <string name="alert_notification_title">Alert jakości powietrza</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

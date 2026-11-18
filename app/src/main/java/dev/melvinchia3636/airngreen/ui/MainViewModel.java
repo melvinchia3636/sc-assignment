@@ -7,8 +7,12 @@ import androidx.lifecycle.AndroidViewModel;
 
 import dev.melvinchia3636.airngreen.repositories.AirQualityRepository;
 import dev.melvinchia3636.airngreen.services.AirQualityService;
+import dev.melvinchia3636.airngreen.services.alerts.AqiAlert;
+import dev.melvinchia3636.airngreen.services.alerts.PollutionAlertService;
 import dev.melvinchia3636.airngreen.services.LocationService;
 import dev.melvinchia3636.airngreen.services.StationsService;
+
+import androidx.lifecycle.LiveData;
 
 /**
  * Coordinates the activity-scoped services and exposes their state to tabs.
@@ -37,6 +41,11 @@ public class MainViewModel extends AndroidViewModel {
 
     public StationsService stations() {
         return stations;
+    }
+
+    /** Latest pollution-threshold crossing, for in-app banners. */
+    public LiveData<AqiAlert> latestAlert() {
+        return PollutionAlertService.get(getApplication()).latestAlert();
     }
 
     public void onLocationChanged() {

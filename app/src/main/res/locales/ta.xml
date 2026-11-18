@@ -124,4 +124,16 @@
     <string name="error_station_token">நிலைய டோக்கனைப் பெற முடியவில்லை.</string>
     <string name="error_airnet_key">காற்றின் தர விசையைப் பெற முடியவில்லை.</string>
     <string name="error_request_prepare">கோரிக்கையைத் தயார் செய்ய முடியவில்லை.</string>
+    <string name="settings_alerts_label">எச்சரிக்கைகள்</string>
+    <string name="settings_alert_threshold">எச்சரிக்கை வரம்பு</string>
+    <string name="alert_off">அணை</string>
+    <string name="alert_moderate">மிதமானது அல்லது மோசமானது</string>
+    <string name="alert_sensitive">உணர்திறன் குழுக்கள் அல்லது மோசமானது</string>
+    <string name="alert_unhealthy">ஆபத்தானது அல்லது மோசமானது</string>
+    <string name="alert_very_unhealthy">மிகவும் ஆபத்தானது அல்லது மோசமானது</string>
+    <string name="alert_channel_name">காற்றின் தர எச்சரிக்கைகள்</string>
+    <string name="alert_channel_description">மாசு உங்கள் வரம்பை மீறும்போது அறிவிப்பு</string>
+    <string name="alert_notification_title">காற்றின் தர எச்சரிக்கை</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

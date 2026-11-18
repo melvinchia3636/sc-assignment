@@ -124,4 +124,16 @@
     <string name="error_station_token">Gagal mendapatkan token stesen.</string>
     <string name="error_airnet_key">Gagal mendapatkan kunci kualiti udara.</string>
     <string name="error_request_prepare">Permintaan tidak dapat disediakan.</string>
+    <string name="settings_alerts_label">AMARAN</string>
+    <string name="settings_alert_threshold">Ambang amaran</string>
+    <string name="alert_off">Mati</string>
+    <string name="alert_moderate">Sederhana atau lebih teruk</string>
+    <string name="alert_sensitive">Kumpulan sensitif atau lebih teruk</string>
+    <string name="alert_unhealthy">Tidak sihat atau lebih teruk</string>
+    <string name="alert_very_unhealthy">Sangat tidak sihat atau lebih teruk</string>
+    <string name="alert_channel_name">Amaran kualiti udara</string>
+    <string name="alert_channel_description">Pemberitahuan apabila pencemaran melepasi ambang anda</string>
+    <string name="alert_notification_title">Amaran kualiti udara</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

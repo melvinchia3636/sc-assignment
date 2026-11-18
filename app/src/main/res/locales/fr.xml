@@ -124,4 +124,16 @@
     <string name="error_station_token">Impossible d\'obtenir le jeton de la station.</string>
     <string name="error_airnet_key">Impossible d\'obtenir la clé de qualité de l\'air.</string>
     <string name="error_request_prepare">La requête n\'a pas pu être préparée.</string>
+    <string name="settings_alerts_label">ALERTES</string>
+    <string name="settings_alert_threshold">Seuil d\'alerte</string>
+    <string name="alert_off">Désactivé</string>
+    <string name="alert_moderate">Moyen ou pire</string>
+    <string name="alert_sensitive">Groupes sensibles ou pire</string>
+    <string name="alert_unhealthy">Mauvais ou pire</string>
+    <string name="alert_very_unhealthy">Très mauvais ou pire</string>
+    <string name="alert_channel_name">Alertes de qualité de l\'air</string>
+    <string name="alert_channel_description">Notification lorsque la pollution dépasse votre seuil</string>
+    <string name="alert_notification_title">Alerte de qualité de l\'air</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

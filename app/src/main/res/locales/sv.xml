@@ -124,4 +124,16 @@
     <string name="error_station_token">Det gick inte att hämta stationens token.</string>
     <string name="error_airnet_key">Det gick inte att hämta luftkvalitetsnyckeln.</string>
     <string name="error_request_prepare">Begäran kunde inte förberedas.</string>
+    <string name="settings_alerts_label">LARM</string>
+    <string name="settings_alert_threshold">Larmtröskel</string>
+    <string name="alert_off">Av</string>
+    <string name="alert_moderate">Måttlig eller sämre</string>
+    <string name="alert_sensitive">Känsliga grupper eller sämre</string>
+    <string name="alert_unhealthy">Ohälsosam eller sämre</string>
+    <string name="alert_very_unhealthy">Mycket ohälsosam eller sämre</string>
+    <string name="alert_channel_name">Luftkvalitetslarm</string>
+    <string name="alert_channel_description">Avisering när föroreningen överstiger din tröskel</string>
+    <string name="alert_notification_title">Luftkvalitetslarm</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

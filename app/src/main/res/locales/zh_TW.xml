@@ -124,4 +124,16 @@
     <string name="error_station_token">無法取得測站權杖。</string>
     <string name="error_airnet_key">無法取得空氣品質金鑰。</string>
     <string name="error_request_prepare">無法準備請求。</string>
+    <string name="settings_alerts_label">提醒</string>
+    <string name="settings_alert_threshold">提醒門檻</string>
+    <string name="alert_off">關閉</string>
+    <string name="alert_moderate">中等以上</string>
+    <string name="alert_sensitive">敏感族群以上</string>
+    <string name="alert_unhealthy">不健康以上</string>
+    <string name="alert_very_unhealthy">非常不健康以上</string>
+    <string name="alert_channel_name">空氣品質提醒</string>
+    <string name="alert_channel_description">當污染超過您的門檻時通知</string>
+    <string name="alert_notification_title">空氣品質提醒</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>
