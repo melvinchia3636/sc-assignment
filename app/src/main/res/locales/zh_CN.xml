@@ -124,4 +124,16 @@
     <string name="error_station_token">获取监测站令牌失败。</string>
     <string name="error_airnet_key">获取空气质量密钥失败。</string>
     <string name="error_request_prepare">无法准备请求。</string>
+    <string name="settings_alerts_label">提醒</string>
+    <string name="settings_alert_threshold">提醒阈值</string>
+    <string name="alert_off">关闭</string>
+    <string name="alert_moderate">中等及以上</string>
+    <string name="alert_sensitive">敏感人群及以上</string>
+    <string name="alert_unhealthy">不健康及以上</string>
+    <string name="alert_very_unhealthy">非常不健康及以上</string>
+    <string name="alert_channel_name">空气质量提醒</string>
+    <string name="alert_channel_description">当污染超过您的阈值时通知</string>
+    <string name="alert_notification_title">空气质量提醒</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

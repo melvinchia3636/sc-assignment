@@ -124,4 +124,16 @@
     <string name="error_station_token">ไม่สามารถรับโทเค็นของสถานีได้</string>
     <string name="error_airnet_key">ไม่สามารถรับคีย์คุณภาพอากาศได้</string>
     <string name="error_request_prepare">ไม่สามารถเตรียมคำขอได้</string>
+    <string name="settings_alerts_label">การแจ้งเตือน</string>
+    <string name="settings_alert_threshold">เกณฑ์แจ้งเตือน</string>
+    <string name="alert_off">ปิด</string>
+    <string name="alert_moderate">ปานกลางหรือแย่กว่า</string>
+    <string name="alert_sensitive">กลุ่มเสี่ยงหรือแย่กว่า</string>
+    <string name="alert_unhealthy">เป็นอันตรายหรือแย่กว่า</string>
+    <string name="alert_very_unhealthy">เป็นอันตรายมากหรือแย่กว่า</string>
+    <string name="alert_channel_name">การแจ้งเตือนคุณภาพอากาศ</string>
+    <string name="alert_channel_description">แจ้งเตือนเมื่อมลพิษเกินเกณฑ์ของคุณ</string>
+    <string name="alert_notification_title">แจ้งเตือนคุณภาพอากาศ</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

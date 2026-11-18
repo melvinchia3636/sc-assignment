@@ -8,8 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 import dev.melvinchia3636.airngreen.databinding.TabAqiBinding;
+import dev.melvinchia3636.airngreen.services.alerts.AqiAlert;
 import dev.melvinchia3636.airngreen.services.AudienceService;
 import dev.melvinchia3636.airngreen.ui.MainViewModel;
 import dev.melvinchia3636.airngreen.ui.common.BaseTab;
@@ -51,7 +55,19 @@ public class AirQualityTab extends BaseTab<TabAqiBinding> {
 
         viewModel.getLocationService().getPlaceName().observe(getViewLifecycleOwner(),
                 name -> binding.content.setPlaceName(name));
+        viewModel.latestAlert().observe(getViewLifecycleOwner(), this::showAlert);
         observeLoading(binding.swipeRefresh);
+    }
+
+    private void showAlert(AqiAlert alert) {
+        if (alert == null) {
+            return;
+        }
+        String level = getString(alert.level().labelRes());
+        Snackbar.make(binding.getRoot(),
+                        getString(R.string.alert_snackbar, Math.round(alert.aqi()), level),
+                        Snackbar.LENGTH_LONG)
+                .show();
     }
 
     private void renderStation(StationDetail station) {

@@ -124,4 +124,16 @@
     <string name="error_station_token">Das Stations-Token konnte nicht abgerufen werden.</string>
     <string name="error_airnet_key">Der Luftqualitätsschlüssel konnte nicht abgerufen werden.</string>
     <string name="error_request_prepare">Die Anfrage konnte nicht vorbereitet werden.</string>
+    <string name="settings_alerts_label">ALARME</string>
+    <string name="settings_alert_threshold">Alarmschwelle</string>
+    <string name="alert_off">Aus</string>
+    <string name="alert_moderate">Mäßig oder schlechter</string>
+    <string name="alert_sensitive">Empfindliche Gruppen oder schlechter</string>
+    <string name="alert_unhealthy">Ungesund oder schlechter</string>
+    <string name="alert_very_unhealthy">Sehr ungesund oder schlechter</string>
+    <string name="alert_channel_name">Luftqualitätsalarme</string>
+    <string name="alert_channel_description">Benachrichtigung, wenn die Belastung Ihre Schwelle überschreitet</string>
+    <string name="alert_notification_title">Luftqualitätsalarm</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

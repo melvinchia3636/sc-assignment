@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import dev.melvinchia3636.airngreen.repositories.AirQualityRepository;
 import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
+import dev.melvinchia3636.airngreen.services.alerts.PollutionAlertService;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 
 import java.util.concurrent.ExecutorService;
@@ -61,7 +62,9 @@ public class AirQualityService {
         error.setValue(null);
         executor.execute(() -> {
             try {
-                station.postValue(repository.refresh(latitude, longitude));
+                StationDetail reading = repository.refresh(latitude, longitude);
+                station.postValue(reading);
+                PollutionAlertService.get(context).onReading(reading);
             } catch (ApiException failure) {
                 if (station.getValue() == null) {
                     error.postValue(failure.message(context));

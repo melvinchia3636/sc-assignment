@@ -1,17 +1,25 @@
 package dev.melvinchia3636.airngreen.ui.settings;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.databinding.TabSettingsBinding;
+import dev.melvinchia3636.airngreen.repositories.options.AlertThreshold;
 import dev.melvinchia3636.airngreen.repositories.options.MapProvider;
+import dev.melvinchia3636.airngreen.services.AlertThresholdService;
 import dev.melvinchia3636.airngreen.services.ApiKeyStore;
 import dev.melvinchia3636.airngreen.services.AppearanceService;
 import dev.melvinchia3636.airngreen.services.AudienceService;
@@ -30,6 +38,11 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
 
     public static final GoogleMaterial.Icon NAV_ICON = GoogleMaterial.Icon.gmd_settings;
 
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(),
+                    granted -> {
+                    });
+
     @Override
     protected TabSettingsBinding createBinding(LayoutInflater inflater,
             @Nullable ViewGroup container) {
@@ -46,6 +59,7 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         binding.audienceRow.setOnClickListener(clicked -> showAudienceDialog());
         binding.mapProviderRow.setOnClickListener(clicked -> showMapProviderDialog());
         binding.mapKeyRow.setOnClickListener(clicked -> showGoogleKeyDialog());
+        binding.alertThresholdRow.setOnClickListener(clicked -> showAlertDialog());
     }
 
     @Override
@@ -64,6 +78,8 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
         binding.audienceRow.setValue(AudienceService.INSTANCE.labelRes(
                 AudienceService.INSTANCE.current(requireContext())));
         refreshMapValues();
+        binding.alertThresholdRow.setValue(AlertThresholdService.INSTANCE.labelRes(
+                AlertThresholdService.INSTANCE.current(requireContext())));
     }
 
     private void refreshMapValues() {
@@ -99,6 +115,28 @@ public class SettingsTab extends BaseTab<TabSettingsBinding> {
     private void showMapProviderDialog() {
         showChoiceDialog(R.string.settings_map_provider, MapProviderService.INSTANCE,
                 this::refreshMapValues);
+    }
+
+    private void showAlertDialog() {
+        showChoiceDialog(R.string.settings_alert_threshold, AlertThresholdService.INSTANCE,
+                () -> {
+                    AlertThreshold threshold =
+                            AlertThresholdService.INSTANCE.current(requireContext());
+                    refreshValues();
+                    if (threshold.isEnabled()) {
+                        requestNotificationPermission();
+                    }
+                });
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 
     private void showGoogleKeyDialog() {

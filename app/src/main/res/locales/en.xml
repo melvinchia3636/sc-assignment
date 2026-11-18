@@ -124,4 +124,16 @@
     <string name="error_station_token">Failed to obtain the station token.</string>
     <string name="error_airnet_key">Failed to obtain the air quality key.</string>
     <string name="error_request_prepare">The request could not be prepared.</string>
+    <string name="settings_alerts_label">ALERTS</string>
+    <string name="settings_alert_threshold">Alert threshold</string>
+    <string name="alert_off">Off</string>
+    <string name="alert_moderate">Moderate or worse</string>
+    <string name="alert_sensitive">Sensitive groups or worse</string>
+    <string name="alert_unhealthy">Unhealthy or worse</string>
+    <string name="alert_very_unhealthy">Very unhealthy or worse</string>
+    <string name="alert_channel_name">Air quality alerts</string>
+    <string name="alert_channel_description">Notifications when pollution crosses your threshold</string>
+    <string name="alert_notification_title">Air quality alert</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

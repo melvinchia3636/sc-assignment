@@ -124,4 +124,16 @@
     <string name="error_station_token">観測所トークンを取得できませんでした。</string>
     <string name="error_airnet_key">大気質キーを取得できませんでした。</string>
     <string name="error_request_prepare">リクエストを準備できませんでした。</string>
+    <string name="settings_alerts_label">アラート</string>
+    <string name="settings_alert_threshold">アラートしきい値</string>
+    <string name="alert_off">オフ</string>
+    <string name="alert_moderate">中程度以上</string>
+    <string name="alert_sensitive">敏感なグループ以上</string>
+    <string name="alert_unhealthy">健康に悪い以上</string>
+    <string name="alert_very_unhealthy">非常に健康に悪い以上</string>
+    <string name="alert_channel_name">大気質アラート</string>
+    <string name="alert_channel_description">汚染がしきい値を超えたときに通知します</string>
+    <string name="alert_notification_title">大気質アラート</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>

@@ -124,4 +124,16 @@
     <string name="error_station_token">Не удалось получить токен станции.</string>
     <string name="error_airnet_key">Не удалось получить ключ качества воздуха.</string>
     <string name="error_request_prepare">Не удалось подготовить запрос.</string>
+    <string name="settings_alerts_label">ОПОВЕЩЕНИЯ</string>
+    <string name="settings_alert_threshold">Порог оповещения</string>
+    <string name="alert_off">Выкл.</string>
+    <string name="alert_moderate">Умеренно или хуже</string>
+    <string name="alert_sensitive">Чувствительные группы или хуже</string>
+    <string name="alert_unhealthy">Вредно или хуже</string>
+    <string name="alert_very_unhealthy">Очень вредно или хуже</string>
+    <string name="alert_channel_name">Оповещения о качестве воздуха</string>
+    <string name="alert_channel_description">Уведомление при превышении вашего порога</string>
+    <string name="alert_notification_title">Оповещение о качестве воздуха</string>
+    <string name="alert_notification_text">AQI %1$d — %2$s</string>
+    <string name="alert_snackbar">AQI %1$d — %2$s</string>
 </resources>
