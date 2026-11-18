@@ -1,6 +1,8 @@
 package dev.melvinchia3636.airngreen.services;
 
 import android.content.res.ColorStateList;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -45,19 +47,23 @@ public class TabService {
 
     private final NavController navController;
     private final BottomNavigationView navigation;
+    private final View hostView;
+    private int pendingDirection;
 
-    private TabService(NavController navController, BottomNavigationView navigation) {
+    private TabService(NavController navController, BottomNavigationView navigation,
+                       View hostView) {
         this.navController = navController;
         this.navigation = navigation;
+        this.hostView = hostView;
     }
 
     public static void attach(AppCompatActivity activity, BottomNavigationView navigation) {
         NavHostFragment host = (NavHostFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
-        if (host == null) {
+        if (host == null || host.getView() == null) {
             return;
         }
-        new TabService(host.getNavController(), navigation).wire();
+        new TabService(host.getNavController(), navigation, host.getView()).wire();
     }
 
     private void wire() {
@@ -76,25 +82,45 @@ public class TabService {
                 navigation.getMenu().findItem(destination.getId()).setChecked(true);
             }
             updateIcons();
+            playTransition();
         });
     }
 
     private void navigateTo(int destinationId, int fromTab, int toTab) {
-        boolean forward = toTab > fromTab;
-        int enter = forward ? R.anim.slide_in_right : R.anim.slide_in_left;
-        int exit = forward ? R.anim.slide_out_left : R.anim.slide_out_right;
-        // Tab switches pop back to the start destination, so the outgoing
-        // fragment uses the pop exit animation; keep every variant aligned.
+        pendingDirection = toTab > fromTab ? 1 : -1;
         NavOptions options = new NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setRestoreState(true)
                 .setPopUpTo(navController.getGraph().getStartDestinationId(), false, true)
-                .setEnterAnim(enter)
-                .setExitAnim(exit)
-                .setPopEnterAnim(enter)
-                .setPopExitAnim(exit)
                 .build();
         navController.navigate(destinationId, null, options);
+    }
+
+    /**
+     * Navigation Component bakes animations into each back-stack entry, so pop
+     * paths replay stale directions. Sliding the host view directly keeps every
+     * tab change moving the way the selection moved.
+     */
+    private void playTransition() {
+        if (pendingDirection == 0) {
+            return;
+        }
+        int direction = pendingDirection;
+        pendingDirection = 0;
+
+        hostView.post(() -> {
+            float width = hostView.getWidth() == 0
+                    ? hostView.getResources().getDisplayMetrics().widthPixels
+                    : hostView.getWidth();
+            hostView.setTranslationX(direction * width * 0.08f);
+            hostView.setAlpha(0.7f);
+            hostView.animate()
+                    .translationX(0f)
+                    .alpha(1f)
+                    .setDuration(220L)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
+        });
     }
 
     private void style() {
