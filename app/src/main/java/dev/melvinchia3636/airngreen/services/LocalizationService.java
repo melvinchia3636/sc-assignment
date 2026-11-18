@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 
-import dev.melvinchia3636.airngreen.repositories.model.Language;
+import dev.melvinchia3636.airngreen.repositories.options.Language;
 
 import java.util.Locale;
 

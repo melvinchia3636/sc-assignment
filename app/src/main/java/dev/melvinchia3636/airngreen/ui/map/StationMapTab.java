@@ -16,7 +16,7 @@ import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.databinding.TabStationMapBinding;
 import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
 import dev.melvinchia3636.airngreen.repositories.policy.AqiLevel;
-import dev.melvinchia3636.airngreen.repositories.model.MapProvider;
+import dev.melvinchia3636.airngreen.repositories.options.MapProvider;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
 import dev.melvinchia3636.airngreen.services.ApiKeyStore;
 import dev.melvinchia3636.airngreen.services.MapProviderService;

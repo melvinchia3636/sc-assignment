@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories.model;
+package dev.melvinchia3636.airngreen.repositories.options;
 
 import androidx.annotation.StringRes;
 import androidx.core.os.LocaleListCompat;
