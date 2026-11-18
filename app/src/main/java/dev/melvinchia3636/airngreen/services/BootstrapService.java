@@ -33,8 +33,8 @@ public class BootstrapService {
         Configuration.getInstance().setAnimationSpeedShort(180);
         Configuration.getInstance().setAnimationSpeedDefault(250);
         EdgeToEdge.enable(activity,
-                SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
-                SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT));
+                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
     }
 
     /** Runs after the content view has been inflated. */

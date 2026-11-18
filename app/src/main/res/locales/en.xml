@@ -37,6 +37,7 @@
     <string name="settings_map">Map</string>
     <string name="settings_map_value">OpenStreetMap</string>
     <string name="settings_language">Language</string>
+    <string name="settings_appearance">Appearance</string>
     <string name="settings_audience">Health group</string>
     <string name="audience_general">General public</string>
     <string name="audience_children">Children</string>
@@ -56,6 +57,10 @@
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">Chinese (Simplified)</string>
     <string name="language_japanese">Japanese</string>
+
+    <string name="appearance_system">System default</string>
+    <string name="appearance_light">Light</string>
+    <string name="appearance_dark">Dark</string>
 
     <string name="weather_label">WEATHER</string>
     <string name="weather_temperature">TEMPERATURE</string>

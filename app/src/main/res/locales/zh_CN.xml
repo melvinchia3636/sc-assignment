@@ -37,6 +37,7 @@
     <string name="settings_map">地图</string>
     <string name="settings_map_value">OpenStreetMap</string>
     <string name="settings_language">语言</string>
+    <string name="settings_appearance">外观</string>
     <string name="settings_audience">健康人群</string>
     <string name="audience_general">一般公众</string>
     <string name="audience_children">儿童</string>
@@ -56,6 +57,10 @@
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">简体中文</string>
     <string name="language_japanese">日语</string>
+
+    <string name="appearance_system">跟随系统</string>
+    <string name="appearance_light">浅色</string>
+    <string name="appearance_dark">深色</string>
 
     <string name="weather_label">天气</string>
     <string name="weather_temperature">温度</string>

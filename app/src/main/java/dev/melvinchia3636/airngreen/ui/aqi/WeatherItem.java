@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
@@ -40,7 +41,8 @@ public class WeatherItem extends LinearLayout {
         value = findViewById(R.id.weather_value);
         label = findViewById(R.id.weather_label);
 
-        icon.setImageDrawable(AppIcons.drawable(context, metricIcon, "#1B5E20", 18));
+        icon.setImageDrawable(AppIcons.drawable(context, metricIcon,
+                ContextCompat.getColor(context, R.color.green_700), 18));
         label.setText(labelRes);
     }
 

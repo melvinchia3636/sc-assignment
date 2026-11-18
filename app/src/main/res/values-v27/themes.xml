@@ -1,34 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.AirGreen" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/green_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+    <style name="Theme.AirGreen" parent="Theme.AirGreen.Base">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="fontFamily">@font/dm_sans</item>
-        <item name="android:fontFamily">@font/dm_sans</item>
-        <item name="colorSecondary">@color/green_700</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSecondaryContainer">@color/green_100</item>
-        <item name="colorOnSecondaryContainer">@color/green_700</item>
-        <item name="colorPrimaryContainer">@color/green_50</item>
-        <item name="colorOnPrimaryContainer">@color/green_700</item>
-        <item name="colorSurface">@color/card</item>
-        <item name="colorOnSurface">@color/ink</item>
-        <item name="colorSurfaceVariant">@color/dialog_surface</item>
-        <item name="colorOnSurfaceVariant">@color/muted</item>
-        <item name="colorOutline">@color/line</item>
-        <item name="colorOutlineVariant">@color/line</item>
-        <item name="colorSurfaceDim">#FFF7F8F6</item>
-        <item name="colorSurfaceBright">@color/white</item>
-        <item name="colorSurfaceContainerLowest">@color/dialog_surface</item>
-        <item name="colorSurfaceContainerLow">@color/dialog_surface</item>
-        <item name="colorSurfaceContainer">@color/dialog_surface</item>
-        <item name="colorSurfaceContainerHigh">@color/dialog_surface</item>
-        <item name="colorSurfaceContainerHighest">@color/dialog_surface</item>
-        <item name="android:colorBackgroundFloating">@color/dialog_surface</item>
-        <item name="android:windowBackground">@color/surface</item>
     </style>
 </resources>

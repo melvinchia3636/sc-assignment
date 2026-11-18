@@ -1,7 +1,6 @@
 package dev.melvinchia3636.airngreen.services;
 
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -106,8 +105,8 @@ public class TabService {
 
     private void updateIcons() {
         int selected = navigation.getSelectedItemId();
-        int active = Color.parseColor("#1B5E20");
-        int inactive = Color.parseColor("#5F665F");
+        int active = ContextCompat.getColor(navigation.getContext(), R.color.green_700);
+        int inactive = ContextCompat.getColor(navigation.getContext(), R.color.muted);
         for (NavTab tab : NavTabs.ALL) {
             navigation.getMenu().findItem(tab.menuId).setIcon(
                     AppIcons.drawable(navigation.getContext(), tab.icon,
