@@ -1,5 +1,7 @@
 package dev.melvinchia3636.airngreen.ui.map;
 
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -8,11 +10,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.databinding.TabStationMapBinding;
-import dev.melvinchia3636.airngreen.guidance.AqiLevel;
-import dev.melvinchia3636.airngreen.guidance.AqiLevelStrategy;
+import dev.melvinchia3636.airngreen.repositories.model.AqiLevel;
+import dev.melvinchia3636.airngreen.strategies.AqiLevelStrategy;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
 import dev.melvinchia3636.airngreen.ui.MainViewModel;
 import dev.melvinchia3636.airngreen.ui.common.AqiScale;
@@ -20,7 +23,6 @@ import dev.melvinchia3636.airngreen.ui.common.AppIcons;
 import dev.melvinchia3636.airngreen.ui.common.BaseTab;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
@@ -49,7 +51,10 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
         viewModel = sharedViewModel();
         map = binding.mapView;
 
-        map.setTileSource(TileSourceFactory.MAPNIK);
+        boolean nightMode = (getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        map.setTileSource(nightMode ? MapTiles.DARK : MapTiles.LIGHT);
+        map.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.surface));
         map.setMultiTouchControls(true);
         map.setBuiltInZoomControls(false);
         map.getController().setZoom(11.0);
@@ -57,10 +62,11 @@ public class StationMapTab extends BaseTab<TabStationMapBinding> {
                 new GeoPoint(viewModel.getLocationService().getLatitude(),
                         viewModel.getLocationService().getLongitude()));
 
+        int zoomIconColour = ContextCompat.getColor(requireContext(), R.color.ink);
         binding.mapZoomIn.setImageDrawable(AppIcons.drawable(
-                requireContext(), GoogleMaterial.Icon.gmd_add, "#1A1C19", 18));
+                requireContext(), GoogleMaterial.Icon.gmd_add, zoomIconColour, 18));
         binding.mapZoomOut.setImageDrawable(AppIcons.drawable(
-                requireContext(), GoogleMaterial.Icon.gmd_remove, "#1A1C19", 18));
+                requireContext(), GoogleMaterial.Icon.gmd_remove, zoomIconColour, 18));
         binding.mapZoomIn.setOnClickListener(click -> map.getController().zoomIn());
         binding.mapZoomOut.setOnClickListener(click -> map.getController().zoomOut());
 

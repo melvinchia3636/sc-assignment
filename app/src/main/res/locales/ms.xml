@@ -35,7 +35,7 @@
     <string name="settings_air_quality">Kualiti udara</string>
     <string name="settings_air_quality_value">WAQI / aqicn.org</string>
     <string name="settings_map">Peta</string>
-    <string name="settings_map_value">OpenStreetMap</string>
+    <string name="settings_map_value">OpenStreetMap, Esri</string>
     <string name="settings_language">Bahasa</string>
     <string name="settings_appearance">Penampilan</string>
     <string name="settings_audience">Kumpulan kesihatan</string>
