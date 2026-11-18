@@ -3,6 +3,9 @@ package dev.melvinchia3636.airngreen.ui.common;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -11,6 +14,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+
+import dev.melvinchia3636.airngreen.R;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -23,10 +28,6 @@ import java.util.Locale;
  * Configures an MPAndroidChart LineChart as a sparkline or a trend chart.
  */
 public final class SparklineChart {
-
-    private static final int LINE_COLOUR = Color.parseColor("#1B5E20");
-    private static final int AXIS_COLOUR = Color.parseColor("#5F665F");
-    private static final int GRID_COLOUR = Color.parseColor("#E0E4DE");
 
     /** WAQI caps the AQI scale at 500, so the trend axis never goes above it. */
     private static final float AQI_MAXIMUM = 500f;
@@ -43,7 +44,8 @@ public final class SparklineChart {
             return;
         }
 
-        chart.setData(new LineData(dataSet(entries, compact ? 1.3f : 2.5f)));
+        chart.setData(new LineData(dataSet(entries, compact ? 1.3f : 2.5f,
+                ContextCompat.getColor(chart.getContext(), R.color.green_700))));
         chart.notifyDataSetChanged();
 
         baseStyle(chart);
@@ -67,12 +69,16 @@ public final class SparklineChart {
             return;
         }
 
-        chart.setData(new LineData(dataSet(entries, 2f)));
+        chart.setData(new LineData(dataSet(entries, 2f,
+                ContextCompat.getColor(chart.getContext(), R.color.green_700))));
         chart.notifyDataSetChanged();
 
         baseStyle(chart);
         chart.setMinOffset(4f);
         chart.setExtraOffsets(4f, 4f, 4f, 4f);
+
+        int axisColour = ContextCompat.getColor(chart.getContext(), R.color.muted);
+        int gridColour = ContextCompat.getColor(chart.getContext(), R.color.line);
 
         int lastIndex = Math.max(1, values.size() - 1);
         int step = Math.max(1, stepSeconds);
@@ -81,11 +87,11 @@ public final class SparklineChart {
         XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(AXIS_COLOUR);
+        xAxis.setTextColor(axisColour);
         xAxis.setTextSize(9f);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
-        xAxis.setAxisLineColor(GRID_COLOUR);
+        xAxis.setAxisLineColor(gridColour);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(4);
         xAxis.setAxisMinimum(0f);
@@ -100,11 +106,11 @@ public final class SparklineChart {
 
         YAxis left = chart.getAxisLeft();
         left.setEnabled(true);
-        left.setTextColor(AXIS_COLOUR);
+        left.setTextColor(axisColour);
         left.setTextSize(9f);
         left.setDrawAxisLine(false);
         left.setDrawGridLines(true);
-        left.setGridColor(GRID_COLOUR);
+        left.setGridColor(gridColour);
         left.setGridLineWidth(0.5f);
         left.setLabelCount(4);
         float[] bounds = trendBounds(entries);
@@ -172,9 +178,9 @@ public final class SparklineChart {
         return entries;
     }
 
-    private static LineDataSet dataSet(List<Entry> entries, float lineWidth) {
+    private static LineDataSet dataSet(List<Entry> entries, float lineWidth, int lineColour) {
         LineDataSet dataSet = new LineDataSet(entries, "");
-        dataSet.setColor(LINE_COLOUR);
+        dataSet.setColor(lineColour);
         dataSet.setLineWidth(lineWidth);
         dataSet.setMode(LineDataSet.Mode.LINEAR);
         dataSet.setDrawCircles(false);
@@ -183,7 +189,8 @@ public final class SparklineChart {
         dataSet.setDrawFilled(true);
         dataSet.setFillDrawable(new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{0x331B5E20, 0x001B5E20}));
+                new int[]{ColorUtils.setAlphaComponent(lineColour, 0x33),
+                        ColorUtils.setAlphaComponent(lineColour, 0x00)}));
         return dataSet;
     }
 

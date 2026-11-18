@@ -2,6 +2,8 @@
 <resources>
     <color name="white">#FFFFFFFF</color>
     <color name="surface">#FFF4F7F2</color>
+    <color name="surface_dim">#FFF7F8F6</color>
+    <color name="surface_bright">#FFFFFFFF</color>
     <color name="card">#FFFFFFFF</color>
     <color name="ink">#FF1A1C19</color>
     <color name="muted">#FF5F665F</color>

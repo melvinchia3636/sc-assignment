@@ -37,6 +37,7 @@
     <string name="settings_map">Peta</string>
     <string name="settings_map_value">OpenStreetMap</string>
     <string name="settings_language">Bahasa</string>
+    <string name="settings_appearance">Penampilan</string>
     <string name="settings_audience">Kumpulan kesihatan</string>
     <string name="audience_general">Orang awam</string>
     <string name="audience_children">Kanak-kanak</string>
@@ -56,6 +57,10 @@
     <string name="language_malay">Bahasa Melayu</string>
     <string name="language_chinese">Cina (Ringkas)</string>
     <string name="language_japanese">Bahasa Jepun</string>
+
+    <string name="appearance_system">Lalai sistem</string>
+    <string name="appearance_light">Cerah</string>
+    <string name="appearance_dark">Gelap</string>
 
     <string name="weather_label">CUACA</string>
     <string name="weather_temperature">SUHU</string>

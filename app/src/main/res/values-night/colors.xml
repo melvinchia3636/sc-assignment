@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFFFF</color>
+    <color name="surface">#FF101410</color>
+    <color name="surface_dim">#FF0B0F0B</color>
+    <color name="surface_bright">#FF232823</color>
+    <color name="card">#FF1A1F1A</color>
+    <color name="ink">#FFE6EAE3</color>
+    <color name="muted">#FFA5AEA4</color>
+    <color name="green_700">#FF86D98F</color>
+    <color name="green_50">#FF1B3220</color>
+    <color name="green_100">#FF27492E</color>
+    <color name="line">#FF2C332C</color>
+    <color name="ripple_green">#3386D98F</color>
+    <color name="dialog_surface">#FF1F251F</color>
+
+    <color name="air_good">#FF1B5E20</color>
+</resources>

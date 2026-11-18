@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.databinding.ActivityMainBinding;
+import dev.melvinchia3636.airngreen.services.AppearanceService;
 import dev.melvinchia3636.airngreen.services.BootstrapService;
 import dev.melvinchia3636.airngreen.services.LocationPermissionService;
 import dev.melvinchia3636.airngreen.services.LocationService;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppearanceService.INSTANCE.restore(this);
         super.onCreate(savedInstanceState);
         BootstrapService bootstrap = new BootstrapService(this);
         bootstrap.configure();
