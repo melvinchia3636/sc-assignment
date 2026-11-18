@@ -72,6 +72,16 @@
     <string name="language_japanese">日本語</string>
     <string name="language_korean">韓国語</string>
     <string name="language_hindi">ヒンディー語</string>
+    <string name="language_french">フランス語</string>
+    <string name="language_german">ドイツ語</string>
+    <string name="language_italian">イタリア語</string>
+    <string name="language_thai">タイ語</string>
+    <string name="language_polish">ポーランド語</string>
+    <string name="language_russian">ロシア語</string>
+    <string name="language_spanish">スペイン語</string>
+    <string name="language_swedish">スウェーデン語</string>
+    <string name="language_tamil">タミル語</string>
+    <string name="language_turkish">トルコ語</string>
 
     <string name="appearance_system">システム既定</string>
     <string name="appearance_light">ライト</string>

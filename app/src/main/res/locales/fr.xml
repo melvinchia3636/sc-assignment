@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Air &amp; Green</string>
+    <string name="city_name">Kuala Lumpur</string>
+
+    <string name="tab_aqi">Qualité de l\'air</string>
+    <string name="tab_map">Carte</string>
+    <string name="tab_green">Espaces verts</string>
+    <string name="tab_settings">Paramètres</string>
+
+    <string name="map_title">Carte des stations</string>
+    <string name="map_subtitle">Stations de surveillance WAQI à proximité</string>
+    <string name="map_station_count">%1$d stations</string>
+    <string name="map_empty">Aucune station chargée pour le moment.</string>
+    <string name="map_zoom_in">Zoom avant</string>
+    <string name="map_zoom_out">Zoom arrière</string>
+
+    <string name="dash">--</string>
+    <string name="pollutants_label">SOUS-INDICES DE POLLUANTS (AQI)</string>
+    <string name="green_spaces_title">Espaces verts à proximité</string>
+    <string name="green_spaces_subtitle">Bientôt disponible</string>
+    <string name="empty_green_spaces">La surveillance des espaces verts arrive bientôt.</string>
+    <string name="retry">Réessayer</string>
+    <string name="trend_label">TENDANCE AQI SUR 24 HEURES</string>
+    <string name="not_enough_history">Pas encore assez d\'historique.</string>
+    <string name="aqi_range">Plage AQI %1$d-%2$d sur les %3$d dernières heures</string>
+    <string name="updated_at">Mis à jour %1$s</string>
+    <string name="not_updated">Non mis à jour</string>
+    <string name="unavailable">Indisponible</string>
+    <string name="connection_advice">Vérifiez votre connexion et réessayez.</string>
+
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_sources_label">SOURCES DE DONNÉES</string>
+    <string name="settings_personalization_label">PERSONNALISATION</string>
+    <string name="settings_air_quality">Qualité de l\'air</string>
+    <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_map">Carte</string>
+    <string name="settings_map_value">OpenStreetMap, Esri</string>
+    <string name="settings_map_label">CARTE</string>
+    <string name="settings_map_provider">Fournisseur de carte</string>
+    <string name="settings_google_key">Clé API Google</string>
+    <string name="map_provider_osm">OpenStreetMap</string>
+    <string name="map_provider_google">Google Maps</string>
+    <string name="api_key_saved">Enregistrée</string>
+    <string name="api_key_missing">Non définie</string>
+    <string name="api_key_hint">Clé API</string>
+    <string name="save">Enregistrer</string>
+    <string name="map_google_key_missing">Ajoutez une clé API Google Maps dans les paramètres.</string>
+    <string name="map_google_session_failed">Impossible de démarrer une session Google Maps.</string>
+    <string name="map_google_key_rejected">Google a refusé cette clé API. Vérifiez que l\'API Map Tiles est activée et que la clé est sans restriction.</string>
+    <string name="map_attribution_google">Google</string>
+    <string name="settings_language">Langue</string>
+    <string name="settings_appearance">Apparence</string>
+    <string name="settings_audience">Groupe de santé</string>
+    <string name="audience_general">Grand public</string>
+    <string name="audience_children">Enfants</string>
+    <string name="audience_elderly">Personnes âgées</string>
+    <string name="guidance_prefix">CONSEILS POUR</string>
+    <string name="guidance_suffix"></string>
+    <string name="audience_note_children_good">Excellentes conditions pour jouer dehors.</string>
+    <string name="audience_note_children_fair">Jouer dehors est possible, mais faites des pauses fréquentes.</string>
+    <string name="audience_note_children_poor">Limitez le temps de jeu en extérieur et évitez les efforts intenses.</string>
+    <string name="audience_note_elderly_good">Une belle journée pour se promener.</string>
+    <string name="audience_note_elderly_fair">Allez-y doucement et faites des pauses en extérieur.</string>
+    <string name="audience_note_elderly_poor">Évitez les efforts prolongés en extérieur.</string>
+    <string name="audience_outdoor_limit">Temps en extérieur conseillé : jusqu\'à %1$d min</string>
+    <string name="audience_outdoor_avoid">Temps en extérieur conseillé : évitez les activités en extérieur</string>
+    <string name="language_system">Par défaut du système</string>
+    <string name="language_english">English</string>
+    <string name="language_malay">Bahasa Melayu</string>
+    <string name="language_chinese">简体中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_french">Français</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_thai">ไทย</string>
+    <string name="language_polish">Polski</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_swedish">Svenska</string>
+    <string name="language_tamil">தமிழ்</string>
+    <string name="language_turkish">Türkçe</string>
+
+    <string name="appearance_system">Par défaut du système</string>
+    <string name="appearance_light">Clair</string>
+    <string name="appearance_dark">Sombre</string>
+
+    <string name="weather_label">MÉTÉO</string>
+    <string name="weather_temperature">TEMPÉRATURE</string>
+    <string name="weather_humidity">HUMIDITÉ</string>
+    <string name="weather_pressure">PRESSION</string>
+    <string name="weather_wind">VITESSE DU VENT</string>
+
+    <string name="your_location">Votre position</string>
+    <string name="location_permission_denied">Autorisation de localisation refusée. Affichage de Kuala Lumpur.</string>
+    <string name="location_unavailable">Impossible d\'obtenir votre position. Affichage de Kuala Lumpur.</string>
+
+    <string name="aqi_unknown">Inconnu</string>
+    <string name="aqi_unknown_advice">Les données de qualité de l\'air ne sont pas disponibles pour le moment.</string>
+    <string name="aqi_good">Bon</string>
+    <string name="aqi_good_advice">La qualité de l\'air est satisfaisante. Une bonne journée pour être dehors.</string>
+    <string name="aqi_moderate">Moyen</string>
+    <string name="aqi_moderate_advice">Qualité de l\'air acceptable. Les personnes très sensibles devraient réduire les efforts prolongés.</string>
+    <string name="aqi_sensitive">Mauvais pour les groupes sensibles</string>
+    <string name="aqi_sensitive_advice">Les groupes sensibles peuvent ressentir des effets. Limitez les longues activités en extérieur.</string>
+    <string name="aqi_unhealthy">Mauvais</string>
+    <string name="aqi_unhealthy_advice">Tout le monde peut commencer à ressentir des effets. Réduisez les efforts en extérieur.</string>
+    <string name="aqi_very_unhealthy">Très mauvais</string>
+    <string name="aqi_very_unhealthy_advice">Alerte sanitaire. Évitez les activités en extérieur si possible.</string>
+    <string name="aqi_hazardous">Dangereux</string>
+    <string name="aqi_hazardous_advice">Situation d\'urgence. Restez à l\'intérieur, fenêtres fermées.</string>
+
+    <string name="error_offline">Vous êtes hors ligne. Vérifiez votre connexion et réessayez.</string>
+    <string name="error_no_data">Aucune donnée disponible pour cet emplacement.</string>
+    <string name="error_too_many">Trop de requêtes pour le moment. Réessayez dans un instant.</string>
+    <string name="error_unavailable">Le service est temporairement indisponible. Réessayez plus tard.</string>
+    <string name="error_unexpected">Réponse inattendue du service (HTTP %1$d).</string>
+    <string name="error_no_station">Aucune station de surveillance ne signale à proximité.</string>
+    <string name="error_station_list">La liste des stations n\'a pas pu être lue.</string>
+    <string name="error_station_data">Les données de la station n\'ont pas pu être lues.</string>
+    <string name="error_station_token">Impossible d\'obtenir le jeton de la station.</string>
+    <string name="error_airnet_key">Impossible d\'obtenir la clé de qualité de l\'air.</string>
+    <string name="error_request_prepare">La requête n\'a pas pu être préparée.</string>
+</resources>

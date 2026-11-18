@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Air &amp; Green</string>
+    <string name="city_name">Kuala Lumpur</string>
+
+    <string name="tab_aqi">Qualità dell\'aria</string>
+    <string name="tab_map">Mappa</string>
+    <string name="tab_green">Aree verdi</string>
+    <string name="tab_settings">Impostazioni</string>
+
+    <string name="map_title">Mappa delle stazioni</string>
+    <string name="map_subtitle">Stazioni di monitoraggio WAQI vicine</string>
+    <string name="map_station_count">%1$d stazioni</string>
+    <string name="map_empty">Nessuna stazione ancora caricata.</string>
+    <string name="map_zoom_in">Ingrandisci</string>
+    <string name="map_zoom_out">Riduci</string>
+
+    <string name="dash">--</string>
+    <string name="pollutants_label">SOTTOINDICI DEGLI INQUINANTI (AQI)</string>
+    <string name="green_spaces_title">Aree verdi vicine</string>
+    <string name="green_spaces_subtitle">In arrivo</string>
+    <string name="empty_green_spaces">Il monitoraggio delle aree verdi arriverà presto.</string>
+    <string name="retry">Riprova</string>
+    <string name="trend_label">ANDAMENTO AQI 24 ORE</string>
+    <string name="not_enough_history">Storico ancora insufficiente.</string>
+    <string name="aqi_range">Intervallo AQI %1$d-%2$d nelle ultime %3$d ore</string>
+    <string name="updated_at">Aggiornato %1$s</string>
+    <string name="not_updated">Non aggiornato</string>
+    <string name="unavailable">Non disponibile</string>
+    <string name="connection_advice">Controlla la connessione e riprova.</string>
+
+    <string name="settings_title">Impostazioni</string>
+    <string name="settings_sources_label">FONTI DEI DATI</string>
+    <string name="settings_personalization_label">PERSONALIZZAZIONE</string>
+    <string name="settings_air_quality">Qualità dell\'aria</string>
+    <string name="settings_air_quality_value">WAQI / aqicn.org</string>
+    <string name="settings_map">Mappa</string>
+    <string name="settings_map_value">OpenStreetMap, Esri</string>
+    <string name="settings_map_label">MAPPA</string>
+    <string name="settings_map_provider">Fornitore mappa</string>
+    <string name="settings_google_key">Chiave API Google</string>
+    <string name="map_provider_osm">OpenStreetMap</string>
+    <string name="map_provider_google">Google Maps</string>
+    <string name="api_key_saved">Salvata</string>
+    <string name="api_key_missing">Non impostata</string>
+    <string name="api_key_hint">Chiave API</string>
+    <string name="save">Salva</string>
+    <string name="map_google_key_missing">Aggiungi una chiave API Google Maps nelle impostazioni.</string>
+    <string name="map_google_session_failed">Impossibile avviare una sessione Google Maps.</string>
+    <string name="map_google_key_rejected">Google ha rifiutato questa chiave API. Verifica che l\'API Map Tiles sia attiva e che la chiave non abbia restrizioni.</string>
+    <string name="map_attribution_google">Google</string>
+    <string name="settings_language">Lingua</string>
+    <string name="settings_appearance">Aspetto</string>
+    <string name="settings_audience">Gruppo di salute</string>
+    <string name="audience_general">Pubblico generale</string>
+    <string name="audience_children">Bambini</string>
+    <string name="audience_elderly">Anziani</string>
+    <string name="guidance_prefix">CONSIGLI PER</string>
+    <string name="guidance_suffix"></string>
+    <string name="audience_note_children_good">Condizioni ottime per giocare all\'aperto.</string>
+    <string name="audience_note_children_fair">Giocare all\'aperto va bene, ma fai pause frequenti.</string>
+    <string name="audience_note_children_poor">Limita il gioco all\'aperto ed evita attività intense.</string>
+    <string name="audience_note_elderly_good">Una buona giornata per una passeggiata.</string>
+    <string name="audience_note_elderly_fair">Vai piano e fai pause all\'aperto.</string>
+    <string name="audience_note_elderly_poor">Evita sforzi prolungati all\'aperto.</string>
+    <string name="audience_outdoor_limit">Tempo consigliato all\'aperto: fino a %1$d min</string>
+    <string name="audience_outdoor_avoid">Tempo consigliato all\'aperto: evita attività all\'aperto</string>
+    <string name="language_system">Predefinito di sistema</string>
+    <string name="language_english">English</string>
+    <string name="language_malay">Bahasa Melayu</string>
+    <string name="language_chinese">简体中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_french">Français</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_thai">ไทย</string>
+    <string name="language_polish">Polski</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_swedish">Svenska</string>
+    <string name="language_tamil">தமிழ்</string>
+    <string name="language_turkish">Türkçe</string>
+
+    <string name="appearance_system">Predefinito di sistema</string>
+    <string name="appearance_light">Chiaro</string>
+    <string name="appearance_dark">Scuro</string>
+
+    <string name="weather_label">METEO</string>
+    <string name="weather_temperature">TEMPERATURA</string>
+    <string name="weather_humidity">UMIDITÀ</string>
+    <string name="weather_pressure">PRESSIONE</string>
+    <string name="weather_wind">VELOCITÀ DEL VENTO</string>
+
+    <string name="your_location">La tua posizione</string>
+    <string name="location_permission_denied">Autorizzazione alla posizione negata. Mostro Kuala Lumpur.</string>
+    <string name="location_unavailable">Impossibile ottenere la posizione. Mostro Kuala Lumpur.</string>
+
+    <string name="aqi_unknown">Sconosciuto</string>
+    <string name="aqi_unknown_advice">I dati sulla qualità dell\'aria non sono disponibili ora.</string>
+    <string name="aqi_good">Buona</string>
+    <string name="aqi_good_advice">La qualità dell\'aria è soddisfacente. Una buona giornata da passare all\'aperto.</string>
+    <string name="aqi_moderate">Moderata</string>
+    <string name="aqi_moderate_advice">Qualità dell\'aria accettabile. Le persone molto sensibili dovrebbero ridurre gli sforzi prolungati.</string>
+    <string name="aqi_sensitive">Nociva per i gruppi sensibili</string>
+    <string name="aqi_sensitive_advice">I gruppi sensibili possono avvertire effetti. Limita le attività prolungate all\'aperto.</string>
+    <string name="aqi_unhealthy">Nociva</string>
+    <string name="aqi_unhealthy_advice">Tutti possono iniziare ad avvertire effetti. Riduci gli sforzi all\'aperto.</string>
+    <string name="aqi_very_unhealthy">Molto nociva</string>
+    <string name="aqi_very_unhealthy_advice">Allarme sanitario. Evita le attività all\'aperto quando possibile.</string>
+    <string name="aqi_hazardous">Pericolosa</string>
+    <string name="aqi_hazardous_advice">Emergenza. Resta in casa con le finestre chiuse.</string>
+
+    <string name="error_offline">Sei offline. Controlla la connessione e riprova.</string>
+    <string name="error_no_data">Nessun dato disponibile per questa posizione.</string>
+    <string name="error_too_many">Troppe richieste. Riprova tra poco.</string>
+    <string name="error_unavailable">Il servizio è temporaneamente non disponibile. Riprova più tardi.</string>
+    <string name="error_unexpected">Risposta imprevista dal servizio (HTTP %1$d).</string>
+    <string name="error_no_station">Nessuna stazione di monitoraggio segnala dati vicino a te.</string>
+    <string name="error_station_list">Impossibile leggere l\'elenco delle stazioni.</string>
+    <string name="error_station_data">Impossibile leggere i dati della stazione.</string>
+    <string name="error_station_token">Impossibile ottenere il token della stazione.</string>
+    <string name="error_airnet_key">Impossibile ottenere la chiave della qualità dell\'aria.</string>
+    <string name="error_request_prepare">Impossibile preparare la richiesta.</string>
+</resources>

@@ -72,6 +72,16 @@
     <string name="language_japanese">Bahasa Jepun</string>
     <string name="language_korean">Bahasa Korea</string>
     <string name="language_hindi">Bahasa Hindi</string>
+    <string name="language_french">Bahasa Perancis</string>
+    <string name="language_german">Bahasa Jerman</string>
+    <string name="language_italian">Bahasa Itali</string>
+    <string name="language_thai">Bahasa Thai</string>
+    <string name="language_polish">Bahasa Poland</string>
+    <string name="language_russian">Bahasa Rusia</string>
+    <string name="language_spanish">Bahasa Sepanyol</string>
+    <string name="language_swedish">Bahasa Sweden</string>
+    <string name="language_tamil">Bahasa Tamil</string>
+    <string name="language_turkish">Bahasa Turki</string>
 
     <string name="appearance_system">Lalai sistem</string>
     <string name="appearance_light">Cerah</string>
