@@ -2,8 +2,8 @@ package dev.melvinchia3636.airngreen.ui.map;
 
 import android.content.Context;
 
-import dev.melvinchia3636.airngreen.repositories.ApiException;
-import dev.melvinchia3636.airngreen.repositories.remote.GoogleTilesRepository;
+import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
+import dev.melvinchia3636.airngreen.repositories.GoogleTilesRepository;
 import dev.melvinchia3636.airngreen.services.AppSigning;
 
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;

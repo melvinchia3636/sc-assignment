@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories;
+package dev.melvinchia3636.airngreen.scrapers.lib;
 
 import android.content.Context;
 

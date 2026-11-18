@@ -1,7 +1,5 @@
 package dev.melvinchia3636.airngreen.scrapers.lib;
 
-import dev.melvinchia3636.airngreen.repositories.ApiException;
-
 import java.util.HashMap;
 import java.util.Map;
 

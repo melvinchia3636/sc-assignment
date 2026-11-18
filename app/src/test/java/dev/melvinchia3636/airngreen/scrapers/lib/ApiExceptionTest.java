@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories;
+package dev.melvinchia3636.airngreen.scrapers.lib;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories.model;
+package dev.melvinchia3636.airngreen.repositories.policy;
 
 import androidx.annotation.StringRes;
 

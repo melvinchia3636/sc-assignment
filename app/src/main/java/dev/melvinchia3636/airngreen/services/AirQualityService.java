@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import dev.melvinchia3636.airngreen.repositories.AirQualityRepository;
-import dev.melvinchia3636.airngreen.repositories.ApiException;
+import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 
 import java.util.concurrent.ExecutorService;

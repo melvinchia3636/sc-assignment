@@ -1,6 +1,6 @@
 package dev.melvinchia3636.airngreen.scrapers.sources;
 
-import dev.melvinchia3636.airngreen.repositories.ApiException;
+import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 
 /**

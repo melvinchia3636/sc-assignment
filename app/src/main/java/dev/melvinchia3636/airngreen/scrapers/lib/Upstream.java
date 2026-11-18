@@ -3,7 +3,6 @@ package dev.melvinchia3636.airngreen.scrapers.lib;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import dev.melvinchia3636.airngreen.R;
-import dev.melvinchia3636.airngreen.repositories.ApiException;
 
 import java.io.IOException;
 import java.util.Collections;
