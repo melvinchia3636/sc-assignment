@@ -6,7 +6,7 @@ import org.osmdroid.tileprovider.tilesource.ITileSource;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
-import dev.melvinchia3636.airngreen.repositories.model.MapProvider;
+import dev.melvinchia3636.airngreen.repositories.options.MapProvider;
 import dev.melvinchia3636.airngreen.repositories.strategies.MapProviderStrategy;
 
 /**

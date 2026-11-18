@@ -3,7 +3,7 @@ package dev.melvinchia3636.airngreen.services;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import dev.melvinchia3636.airngreen.repositories.model.MapProvider;
+import dev.melvinchia3636.airngreen.repositories.options.MapProvider;
 
 /**
  * Owns the selected map provider.

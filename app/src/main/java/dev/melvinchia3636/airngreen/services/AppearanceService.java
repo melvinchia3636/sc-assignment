@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
-import dev.melvinchia3636.airngreen.repositories.model.Appearance;
+import dev.melvinchia3636.airngreen.repositories.options.Appearance;
 
 /**
  * Owns the selected appearance and applies it to the whole app.
