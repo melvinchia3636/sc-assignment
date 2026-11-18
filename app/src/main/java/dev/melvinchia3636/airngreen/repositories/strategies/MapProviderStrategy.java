@@ -6,7 +6,7 @@ import androidx.annotation.StringRes;
 
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 
-import dev.melvinchia3636.airngreen.repositories.ApiException;
+import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
 
 /**
  * Strategy for one map provider: how its tiles are built and attributed, and

@@ -7,6 +7,7 @@ import dev.melvinchia3636.airngreen.repositories.model.Coordinates;
 import dev.melvinchia3636.airngreen.repositories.model.Station;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 import dev.melvinchia3636.airngreen.scrapers.WaqiClient;
+import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
 
 import java.util.List;
 

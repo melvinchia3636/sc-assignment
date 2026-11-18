@@ -1,10 +1,10 @@
-package dev.melvinchia3636.airngreen.repositories.remote;
+package dev.melvinchia3636.airngreen.repositories;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import dev.melvinchia3636.airngreen.R;
-import dev.melvinchia3636.airngreen.repositories.ApiException;
+import dev.melvinchia3636.airngreen.scrapers.lib.ApiException;
 import dev.melvinchia3636.airngreen.scrapers.lib.Upstream;
 
 import okhttp3.HttpUrl;

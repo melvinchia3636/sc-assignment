@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.repositories.model;
+package dev.melvinchia3636.airngreen.repositories.policy;
 
 import dev.melvinchia3636.airngreen.R;
 import dev.melvinchia3636.airngreen.repositories.strategies.AqiLevelStrategy;

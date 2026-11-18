@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import dev.melvinchia3636.airngreen.R;
-import dev.melvinchia3636.airngreen.repositories.model.Audience;
+import dev.melvinchia3636.airngreen.repositories.policy.Audience;
 import dev.melvinchia3636.airngreen.repositories.model.StationDetail;
 
 /**
