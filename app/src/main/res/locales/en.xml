@@ -35,7 +35,7 @@
     <string name="settings_air_quality">Air quality</string>
     <string name="settings_air_quality_value">WAQI / aqicn.org</string>
     <string name="settings_map">Map</string>
-    <string name="settings_map_value">OpenStreetMap</string>
+    <string name="settings_map_value">OpenStreetMap, Esri</string>
     <string name="settings_language">Language</string>
     <string name="settings_appearance">Appearance</string>
     <string name="settings_audience">Health group</string>
