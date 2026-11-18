@@ -47,23 +47,23 @@ public class TabService {
 
     private final NavController navController;
     private final BottomNavigationView navigation;
-    private final View hostView;
+    private final NavHostFragment host;
     private int pendingDirection;
 
     private TabService(NavController navController, BottomNavigationView navigation,
-                       View hostView) {
+                       NavHostFragment host) {
         this.navController = navController;
         this.navigation = navigation;
-        this.hostView = hostView;
+        this.host = host;
     }
 
     public static void attach(AppCompatActivity activity, BottomNavigationView navigation) {
         NavHostFragment host = (NavHostFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
-        if (host == null || host.getView() == null) {
+        if (host == null) {
             return;
         }
-        new TabService(host.getNavController(), navigation, host.getView()).wire();
+        new TabService(host.getNavController(), navigation, host).wire();
     }
 
     private void wire() {
@@ -108,6 +108,10 @@ public class TabService {
         int direction = pendingDirection;
         pendingDirection = 0;
 
+        View hostView = host.getView();
+        if (hostView == null) {
+            return;
+        }
         hostView.post(() -> {
             float width = hostView.getWidth() == 0
                     ? hostView.getResources().getDisplayMetrics().widthPixels
