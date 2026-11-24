@@ -87,6 +87,21 @@ classDiagram
         +distanceKm(lat1: double, lon1: double, lat2: double, lon2: double) double
     }
 
+    class Park {
+        <<record>>
+        +String name
+        +District district
+        +double latitude
+        +double longitude
+        +String facilities
+    }
+
+    class NearbyPark {
+        <<record>>
+        +Park park
+        +double distanceKm
+    }
+
     HttpTransport <|.. JdkHttpTransport
     AirQualityService "1" --> "1" AqiApiClient : uses
     AirQualityService "1" --> "1" LocalStore : caches
@@ -95,3 +110,6 @@ classDiagram
     AqiApiClient ..> ApiException : throws
     SettingsStore "1" --> "1" LocalStore : persists
     ReportService "1" --> "1" LocalStore : persists
+    ParksService "1" o-- "0..*" Park : loads
+    ParksService ..> NearbyPark : returns
+    NearbyPark "1" --> "1" Park : ranks
