@@ -14,85 +14,90 @@ import dev.melvinchia3636.airngreen.ui.StatusBar;
  */
 public final class StationsController {
 
-    private final StationsPanel view;
-    private final AirQualityService airQuality;
-    private final SettingsStore settings;
-    private final StatusBar status;
+    private final StationsPanel stationsPanel;
+    private final AirQualityService airQualityService;
+    private final SettingsStore settingsStore;
+    private final StatusBar statusBar;
 
     /**
      * Creates the controller.
      *
-     * @param view       station directory view
-     * @param airQuality reading source
-     * @param settings   saved preferences, used for the district
-     * @param status     window status line
+     * @param stationsPanel    station directory view
+     * @param airQualityService reading source
+     * @param settingsStore    saved preferences, used for the district
+     * @param statusBar        window status line
      */
-    public StationsController(StationsPanel view, AirQualityService airQuality,
-                              SettingsStore settings, StatusBar status) {
-        this.view = view;
-        this.airQuality = airQuality;
-        this.settings = settings;
-        this.status = status;
+    public StationsController(StationsPanel stationsPanel,
+                              AirQualityService airQualityService,
+                              SettingsStore settingsStore,
+                              StatusBar statusBar) {
+        this.stationsPanel = stationsPanel;
+        this.airQualityService = airQualityService;
+        this.settingsStore = settingsStore;
+        this.statusBar = statusBar;
     }
 
     /**
      * Wires the view and refreshes the directory from the service.
      */
     public void start() {
-        view.onReload(this::loadAll);
-        view.onLoadSelected(this::open);
-        settings.onDistrictChange(district -> loadAll());
-        view.setDistrict(settings.getDistrict());
+        stationsPanel.onReload(this::loadAll);
+        stationsPanel.onLoadSelected(this::open);
+        settingsStore.onDistrictChange(district -> loadAll());
+        stationsPanel.setDistrict(settingsStore.getDistrict());
         loadAll();
     }
 
     private void loadAll() {
-        District district = settings.getDistrict();
-        view.setLoading(true);
-        view.showMessage("Loading stations near " + district.label() + "...", false);
-        status.show("Loading stations near " + district.label() + "...");
+        District district = settingsStore.getDistrict();
+        stationsPanel.setLoading(true);
+        stationsPanel.showMessage(
+                "Loading stations near " + district.label() + "...", false);
+        statusBar.show("Loading stations near " + district.label() + "...");
 
-        Async.run(() -> airQuality.stations(district),
+        Async.run(() -> airQualityService.stations(district),
                 stations -> {
-                    view.setLoading(false);
-                    view.setDistrict(district);
-                    view.setStations(stations);
-                    view.showMessage("Loaded " + stations.size()
+                    stationsPanel.setLoading(false);
+                    stationsPanel.setDistrict(district);
+                    stationsPanel.setStations(stations);
+                    stationsPanel.showMessage("Loaded " + stations.size()
                             + " stations.",
                             false);
-                    status.show("Station directory loaded.");
+                    statusBar.show("Station directory loaded.");
                 },
                 failure -> {
-                    view.setLoading(false);
-                    List<StationSummary> cached = airQuality.getCachedStations();
-                    if (!cached.isEmpty()) {
-                        view.setDistrict(settings.getDistrict());
-                        view.setStations(cached);
-                        view.showMessage("Offline: showing cached stations. "
-                                + failure.getMessage(), true);
+                    stationsPanel.setLoading(false);
+                    List<StationSummary> cachedStations =
+                            airQualityService.getCachedStations();
+                    if (!cachedStations.isEmpty()) {
+                        stationsPanel.setDistrict(settingsStore.getDistrict());
+                        stationsPanel.setStations(cachedStations);
+                        stationsPanel.showMessage(
+                                "Offline: showing cached stations. "
+                                        + failure.getMessage(), true);
                     } else {
-                        view.showMessage(failure.getMessage(), true);
+                        stationsPanel.showMessage(failure.getMessage(), true);
                     }
-                    status.show("Could not load stations.");
+                    statusBar.show("Could not load stations.");
                 });
     }
 
     private void open(String idx) {
-        view.showDetailLoading(idx);
-        view.setDetailLoading(true);
-        status.show("Loading station " + idx + "...");
+        stationsPanel.showDetailLoading(idx);
+        stationsPanel.setDetailLoading(true);
+        statusBar.show("Loading station " + idx + "...");
 
-        Async.run(() -> airQuality.byIdx(idx),
+        Async.run(() -> airQualityService.byIdx(idx),
                 reading -> {
-                    view.setDetailLoading(false);
-                    view.showDetail(reading);
-                    status.show("Loaded station " + reading.idx() + ".");
+                    stationsPanel.setDetailLoading(false);
+                    stationsPanel.showDetail(reading);
+                    statusBar.show("Loaded station " + reading.idx() + ".");
                 },
                 failure -> {
-                    view.setDetailLoading(false);
-                    view.showDetailError(failure.getMessage());
-                    view.showMessage(failure.getMessage(), true);
-                    status.show("Could not load station " + idx + ".");
+                    stationsPanel.setDetailLoading(false);
+                    stationsPanel.showDetailError(failure.getMessage());
+                    stationsPanel.showMessage(failure.getMessage(), true);
+                    statusBar.show("Could not load station " + idx + ".");
                 });
     }
 }

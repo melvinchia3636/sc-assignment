@@ -19,105 +19,109 @@ import dev.melvinchia3636.airngreen.ui.StatusBar;
  */
 public final class DashboardController {
 
-    private final DashboardPanel view;
-    private final AirQualityService airQuality;
-    private final ParksService parks;
-    private final SettingsStore settings;
-    private final PollutionAlertService alerts;
-    private final StatusBar status;
+    private final DashboardPanel dashboardPanel;
+    private final AirQualityService airQualityService;
+    private final ParksService parksService;
+    private final SettingsStore settingsStore;
+    private final PollutionAlertService pollutionAlertService;
+    private final StatusBar statusBar;
 
-    private StationReading current;
+    private StationReading currentReading;
 
     /**
      * Creates the controller.
      *
-     * @param view       dashboard view
-     * @param airQuality reading source
-     * @param parks      park recommendations
-     * @param settings   saved preferences
-     * @param alerts     observer subject
-     * @param status     window status line
+     * @param dashboardPanel       dashboard view
+     * @param airQualityService    reading source
+     * @param parksService         park recommendations
+     * @param settingsStore        saved preferences
+     * @param pollutionAlertService observer subject
+     * @param statusBar            window status line
      */
-    public DashboardController(DashboardPanel view, AirQualityService airQuality,
-                               ParksService parks, SettingsStore settings,
-                               PollutionAlertService alerts, StatusBar status) {
-        this.view = view;
-        this.airQuality = airQuality;
-        this.parks = parks;
-        this.settings = settings;
-        this.alerts = alerts;
-        this.status = status;
+    public DashboardController(DashboardPanel dashboardPanel,
+                               AirQualityService airQualityService,
+                               ParksService parksService,
+                               SettingsStore settingsStore,
+                               PollutionAlertService pollutionAlertService,
+                               StatusBar statusBar) {
+        this.dashboardPanel = dashboardPanel;
+        this.airQualityService = airQualityService;
+        this.parksService = parksService;
+        this.settingsStore = settingsStore;
+        this.pollutionAlertService = pollutionAlertService;
+        this.statusBar = statusBar;
     }
 
     /**
      * Wires the view and performs the first load.
      */
     public void start() {
-        view.onRefresh(this::refresh);
-        view.onDistrictChange(this::changeDistrict);
-        view.onAudienceChange(this::changeAudience);
+        dashboardPanel.onRefresh(this::refresh);
+        dashboardPanel.onDistrictChange(this::changeDistrict);
+        dashboardPanel.onAudienceChange(this::changeAudience);
         refresh();
     }
 
     private void changeDistrict(District district) {
-        settings.setDistrict(district);
+        settingsStore.setDistrict(district);
         refresh();
     }
 
     private void changeAudience(AdviceStrategy strategy) {
-        settings.setAudienceStrategy(strategy);
-        if (current != null) {
-            render(current);
+        settingsStore.setAudienceStrategy(strategy);
+        if (currentReading != null) {
+            render(currentReading);
         }
     }
 
     private void refresh() {
-        District district = view.getSelectedDistrict();
-        view.setLoading(true);
-        view.clearMessage();
-        status.show("Loading air quality for " + district.label() + "...");
+        District district = dashboardPanel.getSelectedDistrict();
+        dashboardPanel.setLoading(true);
+        dashboardPanel.clearMessage();
+        statusBar.show("Loading air quality for " + district.label() + "...");
 
-        Async.run(() -> airQuality.nearest(district),
+        Async.run(() -> airQualityService.nearest(district),
                 reading -> onReading(district, reading),
                 failure -> onFailure(district, failure));
     }
 
     private void onReading(District district, StationReading reading) {
-        view.setLoading(false);
-        current = reading;
+        dashboardPanel.setLoading(false);
+        currentReading = reading;
         render(reading);
-        alerts.evaluate(reading);
-        status.show("Loaded " + district.label() + " at "
+        pollutionAlertService.evaluate(reading);
+        statusBar.show("Loaded " + district.label() + " at "
                 + reading.level().label() + ".");
     }
 
     private void onFailure(District district, Exception failure) {
-        view.setLoading(false);
-        view.showParks(parks.nearest(district));
+        dashboardPanel.setLoading(false);
+        dashboardPanel.showParks(parksService.nearest(district));
 
         // A client error (for example an unknown station) should not be hidden
         // behind stale data; only a service or network failure falls back.
         Optional<StationReading> cached = failure instanceof ApiException api
                 && !api.isServiceFailure()
                 ? Optional.empty()
-                : airQuality.getCachedReading();
+                : airQualityService.getCachedReading();
 
         if (cached.isPresent()) {
-            current = cached.get();
-            render(current);
-            view.showMessage("Offline: showing the last saved reading. "
+            currentReading = cached.get();
+            render(currentReading);
+            dashboardPanel.showMessage("Offline: showing the last saved reading. "
                     + failure.getMessage(), true);
         } else {
-            view.showMessage(failure.getMessage(), true);
+            dashboardPanel.showMessage(failure.getMessage(), true);
         }
-        status.show("Could not refresh: " + failure.getMessage());
+        statusBar.show("Could not refresh: " + failure.getMessage());
     }
 
     private void render(StationReading reading) {
-        AdviceStrategy strategy = settings.getAudienceStrategy();
-        view.showReading(reading,
+        AdviceStrategy strategy = settingsStore.getAudienceStrategy();
+        dashboardPanel.showReading(reading,
                 strategy.advice(reading.level()),
                 strategy.outdoorMinutes(reading.level()));
-        view.showParks(parks.nearest(view.getSelectedDistrict()));
+        dashboardPanel.showParks(
+                parksService.nearest(dashboardPanel.getSelectedDistrict()));
     }
 }

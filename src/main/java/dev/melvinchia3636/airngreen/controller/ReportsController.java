@@ -10,44 +10,48 @@ import dev.melvinchia3636.airngreen.ui.StatusBar;
  */
 public final class ReportsController {
 
-    private final ReportsPanel view;
-    private final ReportService reports;
-    private final StatusBar status;
+    private final ReportsPanel reportsPanel;
+    private final ReportService reportService;
+    private final StatusBar statusBar;
 
     /**
      * Creates the controller.
      *
-     * @param view    report view
-     * @param reports report service
-     * @param status  window status line
+     * @param reportsPanel  report view
+     * @param reportService report service
+     * @param statusBar     window status line
      */
-    public ReportsController(ReportsPanel view, ReportService reports,
-                             StatusBar status) {
-        this.view = view;
-        this.reports = reports;
-        this.status = status;
+    public ReportsController(ReportsPanel reportsPanel,
+                             ReportService reportService,
+                             StatusBar statusBar) {
+        this.reportsPanel = reportsPanel;
+        this.reportService = reportService;
+        this.statusBar = statusBar;
     }
 
     /**
      * Wires the view and shows stored reports.
      */
     public void start() {
-        view.onSubmit(this::submit);
-        view.showReports(reports.getAll());
+        reportsPanel.onSubmit(this::submit);
+        reportsPanel.showReports(reportService.getAll());
     }
 
     private void submit() {
         try {
-            CitizenReport report = reports.add(
-                    view.getDistrict(), view.getCategory(), view.getNote());
-            view.clearNote();
-            view.showReports(reports.getAll());
-            view.showMessage("Report saved for " + report.district().label() + ".",
+            CitizenReport savedReport = reportService.add(
+                    reportsPanel.getDistrict(),
+                    reportsPanel.getCategory(),
+                    reportsPanel.getNote());
+            reportsPanel.clearNote();
+            reportsPanel.showReports(reportService.getAll());
+            reportsPanel.showMessage(
+                    "Report saved for " + savedReport.district().label() + ".",
                     false);
-            status.show("Citizen report saved.");
+            statusBar.show("Citizen report saved.");
         } catch (IllegalArgumentException invalid) {
-            view.showMessage(invalid.getMessage(), true);
-            status.show("Report not saved: " + invalid.getMessage());
+            reportsPanel.showMessage(invalid.getMessage(), true);
+            statusBar.show("Report not saved: " + invalid.getMessage());
         }
     }
 }

@@ -19,6 +19,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.model.AqiAlert;
@@ -64,9 +65,17 @@ public final class AlertsPanel extends JPanel {
     /**
      * Replaces the alert history list.
      *
+     * <p>Safe to call from any thread; the model is updated on the
+     * event-dispatch thread.</p>
+     *
      * @param alerts alerts ordered newest first
      */
     public void showHistory(List<AqiAlert> alerts) {
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(() -> showHistory(alerts));
+            return;
+        }
+
         historyModel.clear();
         for (AqiAlert alert : alerts) {
             historyModel.addElement(String.format(Locale.ENGLISH,
