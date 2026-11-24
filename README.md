@@ -1,153 +1,104 @@
-# sc-assignment
+# Air & Green
 
-**Urban Air Quality and Green Space Monitor** -- an Android app (Java) built for
-Scenario 5 of the Software Construction group assignment (SDG 11: Sustainable
-Cities and Communities).
+A desktop monitor for urban air quality and nearby green space, built for
+**SDG 11 (Sustainable Cities and Communities)** — targets 11.6 (urban air
+quality) and 11.7 (safe, inclusive public spaces).
 
-The app asks for location permission, finds the nearest WAQI monitoring station,
-explains the health impact of its US AQI reading, and shows a 24-hour AQI trend
-with weather. Data is cached so the last good reading stays visible when the
-network is unavailable. The green spaces tab is a placeholder for now.
+The application reads live station data from the
+[AQI service](https://aqi-api-melvin.fly.dev), turns it into advice for a chosen
+audience, recommends parks near the selected district, records citizen
+pollution reports, and raises a threshold alert when air quality worsens.
 
 ## Features
 
-- Nearest reporting WAQI station via a runtime location permission request
-- US AQI reading with colour-coded category, contrast-aware text and health advice
-- Pollutant sub-indices: PM2.5, PM10, PM1, O₃, NO₂, SO₂, CO
-- 72-hour WAQI series with a 24-hour AQI sparkline
-- Weather from the station's CWOP feed (temperature, humidity, pressure, wind)
-- Green spaces tab placeholder
-- Pull-to-refresh and a manual refresh button
-- Pollution-threshold alerts via a small observer pattern, with an in-app banner and a system notification
-- Graceful degradation: cached data plus an "offline" banner on failure
-- Human-readable error messages for 404, 429, 5xx and network failures
-- No stack traces are ever shown to the user
+- Current AQI, pollutant breakdown and the station's recent history
+- Audience-specific advice and safe outdoor time (general public, children,
+  older adults)
+- Nearby parks ranked by distance
+- Citizen pollution reports stored locally
+- Threshold alerts with an in-window banner and a history list
+- Offline fallback to the last saved reading
+- Station directory with search and per-station lookup
 
-## Stack
+## Design
 
-| Layer | Choice |
-| --- | --- |
-| Language | Java 17 |
-| UI | Android Views + Material 3 |
-| Typeface | DM Sans (bundled, SIL Open Font License) |
-| Icons | Android-Iconics + Google Material typeface |
-| Networking | OkHttp + Gson |
-| Charts | MPAndroidChart |
-| Location | Google Play Services Fused Location Provider |
-| Tests | JUnit 5 (Jupiter) + JaCoCo |
-| Build | Gradle 8.14.3, Android Gradle Plugin 8.11 |
-| SDK | compileSdk 36, minSdk 24, targetSdk 36 |
+| Layer | Package | Responsibility |
+|---|---|---|
+| Model | `model` | `AqiLevel`, `StationReading`, `District`, `Park`, `CitizenReport` |
+| API | `api` | HTTP transport, JSON parsing, status handling |
+| Service | `service` | Caching, settings, parks, reports, alerts |
+| View | `ui` | Swing panels and the main window |
+| Controller | `controller` | Event handling and background work |
 
-## Requirements
+Two design patterns carry the assignment requirements:
 
-- JDK 17
-- Android SDK with platform 36 and build-tools 36
-- `local.properties` pointing at the SDK:
+- **Strategy** — `AdviceStrategy` with `GeneralAdvice`, `ChildrenAdvice` and
+  `ElderlyAdvice`. A new audience is added by writing another class; the
+  dashboard does not change.
+- **Observer** — `PollutionAlertService` is the subject. `BannerObserver` shows
+  the alert and `AlertLogObserver` records it. A reading is announced once per
+  band, and cleaner air re-arms the alert.
 
-```properties
-sdk.dir=/Users/<you>/Library/Android/sdk
-```
+## Data source
 
-No `local.properties` is committed; Android Studio generates it, or create it
-manually as above.
+| Endpoint | Use |
+|---|---|
+| `GET /Index/liveness` | service probe (204) |
+| `GET /nearest-station?lat=&lon=` | nearest reporting station with current readings and a 72-hour series |
+| `GET /stations` | public station directory |
+| `GET /station/:idx` | one station by WAQI id |
+
+Successful readings are cached in `~/.airngreen/last-reading.json`. If the
+service is down, the dashboard shows that reading with an offline notice.
 
 ## Build and run
 
-```bash
-# debug APK
-./gradlew assembleDebug
-
-# install on a connected device or emulator
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
-
-Or open the project root in Android Studio and press Run.
-
-First build downloads the Gradle wrapper and Android dependencies.
-
-## Localization
-
-- English is the default (`res/locales/en.xml` → `values/`); Malay, Simplified Chinese,
-  Japanese and Korean are generated into `values-ms`, `values-zh-rCN`, `values-ja` and
-  `values-ko`.
-- Settings → Language opens a single-choice dialog (System default plus every language)
-  and applies the choice via `AppCompatDelegate.setApplicationLocales(...)`.
-- `xml/locales_config.xml` is generated at build time from the files in `res/locales/`
-  and wired through `android:localeConfig`, so Android 13+ also lists the app under
-  Settings → System → Languages → App languages.
-- To add a language, drop `res/locales/<code>.xml` in place and add a constant to
-  `Language`; the Gradle sync derives the `values-*` folder and the locale config from
-  the file name (`zh_CN` → `zh-CN`).
-
-## Pollution alerts
-
-A deliberately small observer demo:
-
-- `PollutionAlertService` is the subject. `AirQualityService` passes it every fresh reading.
-- It compares the reading's `AqiLevel` with the `AlertThreshold` chosen in Settings. Only
-  upward band changes fire, so repeated refreshes do not repeat an alert; dropping below
-  the threshold re-arms it.
-- Observers: `NotificationAlertObserver` posts a system notification, and the subject also
-  exposes `LiveData<AqiAlert>` which the AQI tab shows as a snackbar.
-- `OFF` in Settings disables alerts; enabling one asks for `POST_NOTIFICATIONS` on
-  Android 13+.
-
-## Tests and coverage
+Requires JDK 17 or newer and Maven 3.9+.
 
 ```bash
-./gradlew testDebugUnitTest     # 33 JUnit 5 tests
-./gradlew jacocoTestReport      # HTML report
-open app/build/reports/jacoco/jacocoTestReport/html/index.html
-open app/build/reports/tests/testDebugUnitTest/index.html
+mvn verify
+java -jar target/airngreen.jar
 ```
 
-## Data sources
+For development, `mvn exec:java` runs the application directly.
 
-- **Air quality** -- the app scrapes WAQI / [aqicn.org](https://aqicn.org)
-  directly, finding the nearest reporting station with its current sub-indices
-  and 72-hour series:
-  - `https://mapq.waqi.info/mapq2/bounds` for nearby stations
-  - `https://api2.waqi.info/api/token/{idx}` and `/api/feed/@{idx}/aqi.json` for
-    numeric station ids
-  - `https://airnet.waqi.info/airnet/feed/hourly/{id}` and
-    `/feed/cwop/{id}` for `A`-prefixed stations
+## Tests
 
-The WAQI endpoints are unofficial and can change.
-
-## Project structure
-
-```
-sc-assignment/
-├── app/
-│   └── src/
-│       ├── main/
-│       │   ├── AndroidManifest.xml
-│       │   ├── java/dev/melvinchia3636/airngreen/
-│       │   │   ├── services/     # bootstrap, location, alerts, localization, navigation
-│       │   │   ├── repositories/# data models, options, policy, strategies, cache, clients
-│       │   │   ├── scrapers/    # WaqiClient, parsers, sources and lib helpers
-│       │   │   ├── ui/
-│       │   │   │   ├── MainActivity.java
-│       │   │   │   ├── MainViewModel.java
-│       │   │   │   ├── aqi/     # AqiFragment, AqiScale, PollutantCard, WeatherItem
-│       │   │   │   ├── green/   # green space placeholder screen
-│       │   │   │   └── common/  # Base fragments, icon helpers, chart setup
-│       │   └── res/             # layouts, colours, theme, strings
-│       └── test/java/dev/melvinchia3636/airngreen/
-├── docs/                        # Typst report, cover, TOC
-├── build.gradle
-├── settings.gradle
-└── gradlew
+```bash
+mvn test        # unit tests; 78 test cases, JaCoCo line coverage above 80%
+mvn verify      # also writes target/site/jacoco/index.html
 ```
 
-## Report
+Coverage is measured on the model, API and service layers. The Swing views and
+controllers are covered by the system integration tests in the report.
 
-The written report source is in `docs/` (`report.typ`, `cover.typ`, `toc.typ`,
-`setup.typ`) and compiles to `docs/report.pdf` with Typst.
+Live tests call the deployed service and are excluded from the default build:
 
-## License
+```bash
+mvn test -Dgroups=live -DexcludedGroups=
+```
 
-App code: [MIT](LICENSE). Bundled **DM Sans** typeface: SIL Open Font License 1.1,
-see [`licenses/DM-Sans-OFL.txt`](licenses/DM-Sans-OFL.txt). Icons are from
-**Google Material Icons** (Apache 2.0), see
-[`licenses/Material-Icons-Apache-2.0.txt`](licenses/Material-Icons-Apache-2.0.txt).
+One of those tests fails on purpose. The API promises a 72-hour series, but
+WAQI omits intervals a station did not report, so the application cannot assume
+a fixed number of samples. The failure is documented in the report as a known
+limitation.
+
+## Layout
+
+```
+src/main/java/dev/melvinchia3636/airngreen/
+├── App.java
+├── api/          AqiApiClient, AqiJsonParser, HttpTransport, ApiException
+├── controller/   one controller per screen, plus Async
+├── model/        domain records and enums
+├── service/      AirQualityService, ParksService, ReportService, LocalStore
+│   ├── advice/   AdviceStrategy and its three implementations
+│   └── alerts/   PollutionAlertService, observers, AqiAlert
+└── ui/           MainFrame, four panels, StatusBar
+src/main/resources/parks.json
+src/test/java/...  JUnit 5 tests
+```
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
