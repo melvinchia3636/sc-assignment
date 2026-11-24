@@ -95,6 +95,11 @@ classDiagram
         +alerts() List~AqiAlert~
     }
 
+    class AlertArchiveObserver {
+        -LocalStore store
+        +onThresholdExceeded(alert: AqiAlert) void
+    }
+
     class AqiAlert {
         <<dataType>>
         +AqiLevel level
@@ -118,6 +123,7 @@ classDiagram
 
     AlertObserver <|.. BannerObserver
     AlertObserver <|.. AlertLogObserver
+    AlertObserver <|.. AlertArchiveObserver
 
     StationReading "1" ..> "1" AqiLevel : classifies
     Park "0..*" --> "1" District : locatedIn

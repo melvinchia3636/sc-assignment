@@ -18,6 +18,7 @@ import dev.melvinchia3636.airngreen.service.LocalStore;
 import dev.melvinchia3636.airngreen.service.ParksService;
 import dev.melvinchia3636.airngreen.service.ReportService;
 import dev.melvinchia3636.airngreen.service.SettingsStore;
+import dev.melvinchia3636.airngreen.service.alerts.AlertArchiveObserver;
 import dev.melvinchia3636.airngreen.service.alerts.AlertLogObserver;
 import dev.melvinchia3636.airngreen.service.alerts.BannerObserver;
 import dev.melvinchia3636.airngreen.service.alerts.PollutionAlertService;
@@ -58,10 +59,11 @@ public final class App {
         ParksService parks = loadParks();
 
         StatusBar status = new StatusBar();
-        AlertLogObserver history = new AlertLogObserver();
+        AlertLogObserver history = new AlertLogObserver(store.loadAlerts());
         PollutionAlertService alerts =
                 new PollutionAlertService(settings::threshold);
         alerts.register(history);
+        alerts.register(new AlertArchiveObserver(store));
         alerts.register(new BannerObserver(status::showAlert));
 
         DashboardPanel dashboard =

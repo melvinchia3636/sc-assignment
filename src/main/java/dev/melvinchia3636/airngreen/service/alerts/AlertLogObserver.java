@@ -18,6 +18,21 @@ public final class AlertLogObserver implements AlertObserver {
     private final CopyOnWriteArrayList<Consumer<AqiAlert>> listeners =
             new CopyOnWriteArrayList<>();
 
+    /**
+     * Creates an empty log.
+     */
+    public AlertLogObserver() {
+    }
+
+    /**
+     * Creates a log seeded with archived alerts.
+     *
+     * @param initial archived alerts, newest first
+     */
+    public AlertLogObserver(List<AqiAlert> initial) {
+        alerts.addAll(initial);
+    }
+
     @Override
     public void onThresholdExceeded(AqiAlert alert) {
         alerts.add(0, alert);

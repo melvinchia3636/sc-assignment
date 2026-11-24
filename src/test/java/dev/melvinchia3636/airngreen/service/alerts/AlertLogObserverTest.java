@@ -70,6 +70,15 @@ class AlertLogObserverTest {
         assertTrue(observer.alerts().isEmpty());
     }
 
+    @Test
+    void seededLog_showsArchivedAlerts() {
+        AlertLogObserver seeded = new AlertLogObserver(List.of(alert(90, 1)));
+
+        assertAll(
+                () -> assertEquals(1, seeded.alerts().size()),
+                () -> assertEquals(90, seeded.alerts().get(0).aqi()));
+    }
+
     private static AqiAlert alert(double aqi, long createdAt) {
         return new AqiAlert(AqiLevel.classify(aqi), aqi, "Kapit", createdAt);
     }

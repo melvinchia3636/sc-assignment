@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import dev.melvinchia3636.airngreen.model.AqiAlert;
 import dev.melvinchia3636.airngreen.model.CitizenReport;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
@@ -33,11 +34,14 @@ public final class LocalStore {
     private static final String READING_FILE = "last-reading.json";
     private static final String REPORTS_FILE = "reports.json";
     private static final String STATIONS_FILE = "stations.json";
+    private static final String ALERTS_FILE = "alerts.json";
 
     private static final Type REPORT_LIST =
             new TypeToken<List<CitizenReport>>() { }.getType();
     private static final Type STATION_LIST =
             new TypeToken<List<StationSummary>>() { }.getType();
+    private static final Type ALERT_LIST =
+            new TypeToken<List<AqiAlert>>() { }.getType();
 
     private final Path directory;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -112,6 +116,25 @@ public final class LocalStore {
      */
     public void saveStations(List<StationSummary> stations) {
         write(STATIONS_FILE, stations);
+    }
+
+    /**
+     * Loads archived pollution alerts.
+     *
+     * @return alerts in stored order, or an empty list
+     */
+    public List<AqiAlert> loadAlerts() {
+        List<AqiAlert> alerts = read(ALERTS_FILE, ALERT_LIST);
+        return alerts == null ? List.of() : List.copyOf(alerts);
+    }
+
+    /**
+     * Saves archived pollution alerts.
+     *
+     * @param alerts alerts to persist
+     */
+    public void saveAlerts(List<AqiAlert> alerts) {
+        write(ALERTS_FILE, alerts);
     }
 
     /**

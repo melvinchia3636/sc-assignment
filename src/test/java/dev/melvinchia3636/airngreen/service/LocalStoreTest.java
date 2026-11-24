@@ -14,6 +14,8 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+import dev.melvinchia3636.airngreen.model.AqiLevel;
 import dev.melvinchia3636.airngreen.model.CitizenReport;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.SeriesPoint;
@@ -68,6 +70,21 @@ class LocalStoreTest {
                 () -> assertEquals(1, loaded.size()),
                 () -> assertEquals("One", loaded.get(0).name()),
                 () -> assertEquals(42.0, loaded.get(0).aqi()));
+    }
+
+    @Test
+    void alerts_roundTripThroughDisk() {
+        LocalStore store = new LocalStore(directory);
+        store.saveAlerts(List.of(
+                new AqiAlert(AqiLevel.MODERATE, 90, "Kapit", 10)));
+
+        List<AqiAlert> loaded = store.loadAlerts();
+
+        assertAll(
+                () -> assertEquals(1, loaded.size()),
+                () -> assertEquals(AqiLevel.MODERATE, loaded.get(0).level()),
+                () -> assertEquals(90, loaded.get(0).aqi()),
+                () -> assertEquals("Kapit", loaded.get(0).stationName()));
     }
 
     @Test
