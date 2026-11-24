@@ -1,0 +1,35 @@
+---
+config:
+  theme: default
+  flowchart:
+    curve: linear
+    nodeSpacing: 35
+    rankSpacing: 45
+    wrappingWidth: 480
+---
+flowchart TB
+    UI["GUI layer (View)<br/>MainFrame · DashboardPanel · StationsPanel<br/>ReportsPanel · AlertsPanel · StatusBar"]
+    C["Controller layer<br/>Dashboard / Stations / Reports / Alerts controllers<br/>Async (SwingWorker)"]
+    S["Service layer<br/>AirQualityService · ParksService · ReportService<br/>SettingsStore · LocalStore<br/>PollutionAlertService (subject + observers)"]
+    API["API layer<br/>AqiApiClient · JdkHttpTransport<br/>AqiJsonParser · ApiException"]
+    M["Domain model<br/>StationReading · AqiLevel · District · Park<br/>CitizenReport · AqiAlert · AlertThreshold"]
+
+    EXT[("AQI API<br/>aqi-api-melvin.fly.dev")]
+    DISK[("~/.airngreen<br/>last-reading · reports · stations · settings")]
+
+    UI -- "1 user action: district / refresh / submit" --> C
+    C -- "2 call service; Async runs off the EDT" --> S
+    S -- "3 nearestStation(lat, lon)" --> API
+    API -- "4 HTTPS GET /nearest-station" --> EXT
+    EXT -- "5 JSON: 200 / 404 / 5xx" --> API
+    API -- "6 StationReading" --> S
+    S -- "7 save / load" --> DISK
+    S -. "8 reading + advice + parks" .-> C
+    C -. "9 showReading() / showParks()" .-> UI
+    S -. "uses" .-> M
+    API -. "parses into" .-> M
+
+    classDef store fill:#FFF4E5,stroke:#B45309,color:#3F2D1A
+    classDef external fill:#E8F5E9,stroke:#047857,color:#064E3B
+    class DISK store
+    class EXT external
