@@ -70,6 +70,23 @@ class AqiApiClientTest {
     }
 
     @Test
+    void boundedStations_sendTheBoundingBox() throws ApiException {
+        AtomicReference<String> requested = new AtomicReference<>();
+        AqiApiClient client = client(url -> {
+            requested.set(url);
+            return new HttpTransport.Response(200, "{\"stations\":[]}");
+        });
+
+        client.stations(0.85, 99.6, 7.5, 119.3);
+
+        assertAll(
+                () -> assertTrue(requested.get().contains("south=0.8500")),
+                () -> assertTrue(requested.get().contains("west=99.6000")),
+                () -> assertTrue(requested.get().contains("north=7.5000")),
+                () -> assertTrue(requested.get().contains("east=119.3000")));
+    }
+
+    @Test
     void notFound_usesTheApiMessage() {
         String body = "{\"error\":{\"code\":\"station_not_found\","
                 + "\"message\":\"Station 9 did not return a reading.\"}}";

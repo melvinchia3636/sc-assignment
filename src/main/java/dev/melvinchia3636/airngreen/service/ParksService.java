@@ -24,8 +24,6 @@ import dev.melvinchia3636.airngreen.model.Park;
 public final class ParksService {
 
     private static final String RESOURCE = "/parks.json";
-    private static final double EARTH_RADIUS_KM = 6371.0088;
-    private static final double HALF = 0.5;
     private static final int DEFAULT_LIMIT = 5;
 
     private final List<Park> parks;
@@ -109,13 +107,7 @@ public final class ParksService {
      */
     public static double distanceKm(double lat1, double lon1,
                                     double lat2, double lon2) {
-        double deltaLat = Math.toRadians(lat2 - lat1);
-        double deltaLon = Math.toRadians(lon2 - lon1);
-        double a = Math.pow(Math.sin(deltaLat * HALF), 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2))
-                * Math.pow(Math.sin(deltaLon * HALF), 2);
-        return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
+        return GeoDistance.kmBetween(lat1, lon1, lat2, lon2);
     }
 
     private static List<Park> toParks(ParkEntry[] entries) {

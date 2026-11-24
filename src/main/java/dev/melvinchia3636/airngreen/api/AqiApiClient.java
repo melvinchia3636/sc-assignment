@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 
 import dev.melvinchia3636.airngreen.model.StationReading;
@@ -87,6 +88,25 @@ public final class AqiApiClient {
      */
     public List<StationSummary> stations() throws ApiException {
         return fetch(baseUrl + "/stations", parser::parseStations);
+    }
+
+    /**
+     * Loads stations inside a map bounding box.
+     *
+     * @param south southern latitude in degrees
+     * @param west  western longitude in degrees
+     * @param north northern latitude in degrees
+     * @param east  eastern longitude in degrees
+     * @return stations inside the box
+     * @throws ApiException when the service cannot answer
+     */
+    public List<StationSummary> stations(double south, double west,
+                                         double north, double east)
+            throws ApiException {
+        String url = String.format(Locale.ROOT,
+                "%s/stations?south=%.4f&west=%.4f&north=%.4f&east=%.4f",
+                baseUrl, south, west, north, east);
+        return fetch(url, parser::parseStations);
     }
 
     /**

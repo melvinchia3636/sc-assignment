@@ -2,8 +2,10 @@ package dev.melvinchia3636.airngreen.controller;
 
 import java.util.List;
 
+import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationSummary;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
+import dev.melvinchia3636.airngreen.service.SettingsStore;
 import dev.melvinchia3636.airngreen.ui.StationsPanel;
 import dev.melvinchia3636.airngreen.ui.StatusBar;
 
@@ -14,6 +16,7 @@ public final class StationsController {
 
     private final StationsPanel view;
     private final AirQualityService airQuality;
+    private final SettingsStore settings;
     private final StatusBar status;
 
     /**
@@ -21,12 +24,14 @@ public final class StationsController {
      *
      * @param view       station directory view
      * @param airQuality reading source
+     * @param settings   saved preferences, used for the district
      * @param status     window status line
      */
     public StationsController(StationsPanel view, AirQualityService airQuality,
-                              StatusBar status) {
+                              SettingsStore settings, StatusBar status) {
         this.view = view;
         this.airQuality = airQuality;
+        this.settings = settings;
         this.status = status;
     }
 
@@ -36,6 +41,7 @@ public final class StationsController {
     public void start() {
         view.onReload(this::loadAll);
         view.onLoadSelected(this::open);
+        view.setDistrict(settings.district());
 
         List<StationSummary> cached = airQuality.cachedStations();
         if (!cached.isEmpty()) {
@@ -46,15 +52,19 @@ public final class StationsController {
     }
 
     private void loadAll() {
+        District district = settings.district();
         view.setLoading(true);
         view.showMessage("Loading stations...", false);
-        status.show("Loading the station directory...");
+        status.show("Loading stations including " + district.label() + "...");
 
-        Async.run(airQuality::stations,
+        Async.run(() -> airQuality.stations(district),
                 stations -> {
                     view.setLoading(false);
+                    view.setDistrict(district);
                     view.setStations(stations);
-                    view.showMessage("Loaded " + stations.size() + " stations.", false);
+                    view.showMessage("Loaded " + stations.size()
+                            + " stations, including " + district.label() + ".",
+                            false);
                     status.show("Station directory loaded.");
                 },
                 failure -> {

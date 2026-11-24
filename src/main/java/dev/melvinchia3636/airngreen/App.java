@@ -74,7 +74,7 @@ public final class App {
 
         new DashboardController(dashboard, airQuality, parks, settings, alerts, status)
                 .start();
-        new StationsController(stations, airQuality, status).start();
+        new StationsController(stations, airQuality, settings, status).start();
         new ReportsController(reportPanel, reports, status).start();
         new AlertsController(alertsPanel, settings, airQuality, history, status).start();
 

@@ -12,7 +12,7 @@ classDiagram
         -LocalStore store
         +nearest(district: District) StationReading
         +byIdx(idx: String) StationReading
-        +stations() List~StationSummary~
+        +stations(district: District) List~StationSummary~
         +cachedReading() Optional~StationReading~
         +cachedStations() List~StationSummary~
         +isServiceAlive() boolean
@@ -25,6 +25,7 @@ classDiagram
         +nearestStation(latitude: double, longitude: double) StationReading
         +station(idx: String) StationReading
         +stations() List~StationSummary~
+        +stations(south: double, west: double, north: double, east: double) List~StationSummary~
         +isAlive() boolean
     }
 

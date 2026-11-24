@@ -33,8 +33,10 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import dev.melvinchia3636.airngreen.model.AqiLevel;
+import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
+import dev.melvinchia3636.airngreen.service.GeoDistance;
 
 /**
  * Station directory view: filter the public list and open one station.
@@ -48,7 +50,7 @@ public final class StationsPanel extends JPanel {
     private final JTextField search = new JTextField();
     private final JButton reloadButton = new JButton("Load station list");
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[] { "ID", "Station", "AQI" }, 0) {
+            new Object[] { "ID", "Station", "AQI", "Distance" }, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -60,6 +62,7 @@ public final class StationsPanel extends JPanel {
     private final JButton loadButton = new JButton("Open selected station");
     private final JLabel notice = new JLabel(" ");
     private boolean detailLoading;
+    private District district = District.KUALA_LUMPUR;
 
     /**
      * Creates the station directory view.
@@ -122,6 +125,15 @@ public final class StationsPanel extends JPanel {
     }
 
     /**
+     * Sets the district used to compute station distances.
+     *
+     * @param district current district
+     */
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+
+    /**
      * Replaces the table rows.
      *
      * @param stations station directory
@@ -130,7 +142,10 @@ public final class StationsPanel extends JPanel {
         model.setRowCount(0);
         for (StationSummary station : stations) {
             model.addRow(new Object[] {
-                    station.idx(), station.name(), formatAqi(station.aqi())
+                    station.idx(),
+                    station.name(),
+                    formatAqi(station.aqi()),
+                    formatDistance(station)
             });
         }
     }
@@ -260,6 +275,13 @@ public final class StationsPanel extends JPanel {
 
     private String formatAqi(Double aqi) {
         return aqi == null || aqi.isNaN() ? "-" : String.valueOf(Math.round(aqi));
+    }
+
+    private String formatDistance(StationSummary station) {
+        double km = GeoDistance.kmBetween(
+                district.latitude(), district.longitude(),
+                station.latitude(), station.longitude());
+        return String.format(Locale.ENGLISH, "%.1f km", km);
     }
 
     private String pollutants(StationReading reading) {
