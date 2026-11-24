@@ -30,7 +30,7 @@ classDiagram
 
     class HttpTransport {
         <<interface>>
-        +get(url: String) Response
+        +get(url: String) Response*
     }
 
     class JdkHttpTransport {
@@ -44,10 +44,11 @@ classDiagram
     }
 
     class ApiException {
+        <<exception>>
         -int statusCode
         +statusCode() int
         +isServiceFailure() boolean
-        +messageFor(statusCode: int) String
+        +messageFor(statusCode: int) String$
     }
 
     class LocalStore {
@@ -84,11 +85,11 @@ classDiagram
         -List~Park~ parks
         +nearest(district: District) List~NearbyPark~
         +nearest(district: District, limit: int) List~NearbyPark~
-        +distanceKm(lat1: double, lon1: double, lat2: double, lon2: double) double
+        +distanceKm(lat1: double, lon1: double, lat2: double, lon2: double) double$
     }
 
     class Park {
-        <<record>>
+        <<dataType>>
         +String name
         +District district
         +double latitude
@@ -97,7 +98,7 @@ classDiagram
     }
 
     class NearbyPark {
-        <<record>>
+        <<dataType>>
         +Park park
         +double distanceKm
     }

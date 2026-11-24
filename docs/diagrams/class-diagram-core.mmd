@@ -12,7 +12,7 @@ classDiagram
         -String label
         -double latitude
         -double longitude
-        +fromName(name: String) District
+        +fromName(name: String) District$
         +label() String
         +latitude() double
         +longitude() double
@@ -22,14 +22,14 @@ classDiagram
         <<enumeration>>
         -String label
         -int floor
-        +classify(aqi: double) AqiLevel
+        +classify(aqi: double) AqiLevel$
         +label() String
         +isWorseThan(other: AqiLevel) boolean
         +isAtLeast(other: AqiLevel) boolean
     }
 
     class StationReading {
-        <<record>>
+        <<dataType>>
         +String idx
         +String name
         +double aqi
@@ -41,7 +41,7 @@ classDiagram
     }
 
     class Park {
-        <<record>>
+        <<dataType>>
         +String name
         +District district
         +double latitude
@@ -50,7 +50,7 @@ classDiagram
     }
 
     class CitizenReport {
-        <<record>>
+        <<dataType>>
         +String id
         +District district
         +String category
@@ -64,15 +64,15 @@ classDiagram
         -AqiLevel level
         +level() Optional~AqiLevel~
         +isEnabled() boolean
-        +fromName(name: String) AlertThreshold
+        +fromName(name: String) AlertThreshold$
     }
 
     class AdviceStrategy {
         <<interface>>
-        +key() String
-        +name() String
-        +advice(level: AqiLevel) String
-        +outdoorMinutes(level: AqiLevel) int
+        +key() String*
+        +name() String*
+        +advice(level: AqiLevel) String*
+        +outdoorMinutes(level: AqiLevel) int*
     }
 
     class GeneralAdvice
@@ -81,7 +81,7 @@ classDiagram
 
     class AlertObserver {
         <<interface>>
-        +onThresholdExceeded(alert: AqiAlert) void
+        +onThresholdExceeded(alert: AqiAlert) void*
     }
 
     class BannerObserver {
@@ -96,7 +96,7 @@ classDiagram
     }
 
     class AqiAlert {
-        <<record>>
+        <<dataType>>
         +AqiLevel level
         +double aqi
         +String stationName
@@ -120,8 +120,8 @@ classDiagram
     AlertObserver <|.. AlertLogObserver
 
     StationReading "1" ..> "1" AqiLevel : classifies
-    Park "0..*" --> "1" District
-    CitizenReport "0..*" --> "1" District
+    Park "0..*" --> "1" District : locatedIn
+    CitizenReport "0..*" --> "1" District : concerns
     AlertThreshold "1" --> "1" AqiLevel : requires
     AqiAlert "1" --> "1" AqiLevel : reports
     PollutionAlertService "1" o-- "0..*" AlertObserver : notifies
