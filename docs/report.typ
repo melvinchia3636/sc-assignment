@@ -82,7 +82,7 @@ The data flow of a refresh operation is shown in the sequence diagram below. Due
   caption: [Refresh data flow across the layers.],
 )
 
-As shown in the diagram above, When the user clicks the refresh button, `DashboardController` will reads the selected district, then `AirQualityService.nearest` will be called as a backend thread by `Async`. The `AqiApiClient` will then assemble the URL that will be used by `JdkHttpTransport` for the GET request. The result JSON will be converted in to `StationReading` by `AqiJsonParser` and written into `LocalStore` cache. The controller will then go back to the event delegation thread and call `DashboardPanel.showReading` while providing the AQI reading to `PollutionAlertService.evaluate`, where the topic will be notified to the observers only when the reading exceeds the threshold.
+As shown in the diagram above, When the user clicks the refresh button, `DashboardController` will reads the selected district, then `AirQualityService.nearest` will be called as a backend thread by `Async`. The `AqiApiClient` will then assemble the URL that will be used by `JdkHttpTransport` for the GET request. The result JSON will be converted in to `StationReading` by `AqiJsonParser` and written into `LocalStore` cache. The controller will then go back to the event delegation thread and call `DashboardPanel.showReading` while providing the AQI reading to `PollutionAlertService.evaluate`, where the subject notifies the observers only when the reading exceeds the threshold.
 
 == UML Class Diagram
 
@@ -96,7 +96,7 @@ As shown in the diagram above, When the user clicks the refresh button, `Dashboa
   caption: [Service and API layer class diagram.],
 )
 
-Figure 2 above shows the core diagram covering the domain model and the two design patterns implemented, while figure 3 presents the relationship between the service layer and the API layer. The core diagram includes `District`、`AqiLevel`、`StationReading`、`Park`、`CitizenReport`、`AlertThreshold`、`AdviceStrategy` and its three implementations、`AlertObserver` and its two implementations, `PollutionAlertService`, as well as `AqiAlert`. Field types, method signatures including parameters and return types, as well as their visibilities are annotated in the diagram. Standard UML class diagram notation is adopted.
+Figure 2 above shows the core diagram covering the domain model and the two design patterns implemented, while figure 3 presents the relationship between the service layer and the API layer. The core diagram includes `District`、`AqiLevel`、`StationReading`、`Park`、`CitizenReport`、`AlertThreshold`、`AdviceStrategy` and its three implementations、`AlertObserver` and its three implementations, `PollutionAlertService`, as well as `AqiAlert`. Field types, method signatures including parameters and return types, as well as their visibilities are annotated in the diagram. Standard UML class diagram notation is adopted.
 
 Some examples of the key relationships between classes is as follows:
 
@@ -204,9 +204,9 @@ The subject only knows about the observer interface.
 
 *SOLID Principle Demonstrated*
 
-*Dependency Inversion Principle (DIP)* and *OCP*. The subject depends on abstract `AlertObserver` while having no dependency on Swing. If new observer (e.g., writing log into file, send email or notification, etc.) needs to be created in the future, the subject doesn't have to be changed.
+*Dependency Inversion Principle (DIP)* and *OCP*. The subject depends on abstract `AlertObserver` while having no dependency on Swing. For example, `AlertArchiveObserver` demonstrates this by persisting every alert to `alerts.json` without changing `PollutionAlertService`, and a future observer (e.g., sending email, etc.) can be added the same way.
 
-Meanwhile, the *SRP* is also retained, where the subject is only responsible for checking whether the threshold is exceeded, while the two observers take charges of displaying and recording respectively.
+Meanwhile, the *SRP* is also retained, where the subject is only responsible for checking whether the threshold is exceeded, while the three observers take charge of displaying, recording, and archiving respectively.
 
 
 == CRC Cards
@@ -235,6 +235,10 @@ Meanwhile, the *SRP* is also retained, where the subject is only responsible for
   [`AqiApiClient`],
   [Http requires construction; Status code checking; Response parsing.],
   [`HttpTransport`、`AqiJsonParser`、`ApiException`],
+
+  [`AlertArchiveObserver`],
+  [Persist every alert to `alerts.json`, newest first, keeping at most 50 entries.],
+  [`LocalStore`、`PollutionAlertService`],
 )
 
 = Implementation and Unit Testing
