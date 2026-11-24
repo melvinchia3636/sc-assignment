@@ -3,6 +3,7 @@ package dev.melvinchia3636.airngreen.controller;
 import java.util.List;
 
 import dev.melvinchia3636.airngreen.model.District;
+import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
 import dev.melvinchia3636.airngreen.storage.SettingsStore;
@@ -41,14 +42,14 @@ public final class StationsController {
      * Wires the view and refreshes the directory from the service.
      */
     public void start() {
-        stationsPanel.onReload(this::loadAll);
-        stationsPanel.onLoadSelected(this::open);
-        settingsStore.onDistrictChange(district -> loadAll());
+        stationsPanel.onReload(this::loadStations);
+        stationsPanel.onLoadSelected(this::loadStationDetail);
+        settingsStore.onDistrictChange(district -> loadStations());
         stationsPanel.setDistrict(settingsStore.getDistrict());
-        loadAll();
+        loadStations();
     }
 
-    private void loadAll() {
+    private void loadStations() {
         District district = settingsStore.getDistrict();
         stationsPanel.setLoading(true);
         stationsPanel.showMessage(
@@ -56,48 +57,57 @@ public final class StationsController {
         statusBar.show("Loading stations near " + district.label() + "...");
 
         Async.run(() -> airQualityService.stations(district),
-                stations -> {
-                    stationsPanel.setLoading(false);
-                    stationsPanel.setDistrict(district);
-                    stationsPanel.setStations(stations);
-                    stationsPanel.showMessage("Loaded " + stations.size()
-                            + " stations.",
-                            false);
-                    statusBar.show("Station directory loaded.");
-                },
-                failure -> {
-                    stationsPanel.setLoading(false);
-                    List<StationSummary> cachedStations =
-                            airQualityService.getCachedStations();
-                    if (!cachedStations.isEmpty()) {
-                        stationsPanel.setDistrict(settingsStore.getDistrict());
-                        stationsPanel.setStations(cachedStations);
-                        stationsPanel.showMessage(
-                                "Offline: showing cached stations. "
-                                        + failure.getMessage(), true);
-                    } else {
-                        stationsPanel.showMessage(failure.getMessage(), true);
-                    }
-                    statusBar.show("Could not load stations.");
-                });
+                stations -> onStationsLoaded(district, stations),
+                this::onStationsFailed);
     }
 
-    private void open(String idx) {
+    private void onStationsLoaded(District district,
+                                  List<StationSummary> stations) {
+        stationsPanel.setLoading(false);
+        stationsPanel.setDistrict(district);
+        stationsPanel.setStations(stations);
+        stationsPanel.showMessage(
+                "Loaded " + stations.size() + " stations.", false);
+        statusBar.show("Station directory loaded.");
+    }
+
+    private void onStationsFailed(Exception failure) {
+        stationsPanel.setLoading(false);
+
+        List<StationSummary> cachedStations =
+                airQualityService.getCachedStations();
+        if (cachedStations.isEmpty()) {
+            stationsPanel.showMessage(failure.getMessage(), true);
+        } else {
+            stationsPanel.setDistrict(settingsStore.getDistrict());
+            stationsPanel.setStations(cachedStations);
+            stationsPanel.showMessage(
+                    "Offline: showing cached stations. "
+                            + failure.getMessage(), true);
+        }
+        statusBar.show("Could not load stations.");
+    }
+
+    private void loadStationDetail(String idx) {
         stationsPanel.showDetailLoading(idx);
         stationsPanel.setDetailLoading(true);
         statusBar.show("Loading station " + idx + "...");
 
         Async.run(() -> airQualityService.byIdx(idx),
-                reading -> {
-                    stationsPanel.setDetailLoading(false);
-                    stationsPanel.showDetail(reading);
-                    statusBar.show("Loaded station " + reading.idx() + ".");
-                },
-                failure -> {
-                    stationsPanel.setDetailLoading(false);
-                    stationsPanel.showDetailError(failure.getMessage());
-                    stationsPanel.showMessage(failure.getMessage(), true);
-                    statusBar.show("Could not load station " + idx + ".");
-                });
+                this::onStationDetailLoaded,
+                failure -> onStationDetailFailed(idx, failure));
+    }
+
+    private void onStationDetailLoaded(StationReading reading) {
+        stationsPanel.setDetailLoading(false);
+        stationsPanel.showDetail(reading);
+        statusBar.show("Loaded station " + reading.idx() + ".");
+    }
+
+    private void onStationDetailFailed(String idx, Exception failure) {
+        stationsPanel.setDetailLoading(false);
+        stationsPanel.showDetailError(failure.getMessage());
+        stationsPanel.showMessage(failure.getMessage(), true);
+        statusBar.show("Could not load station " + idx + ".");
     }
 }

@@ -56,18 +56,19 @@ classDiagram
     class SettingsStore {
         -LocalStore store
         -Properties properties
-        +district() District
-        +district(district: District) void
-        +advice() AdviceStrategy
-        +advice(advice: AdviceStrategy) void
-        +threshold() AlertThreshold
-        +threshold(threshold: AlertThreshold) void
+        +getDistrict() District
+        +setDistrict(district: District) void
+        +onDistrictChange(listener: Consumer~District~) void
+        +getAudienceStrategy() AdviceStrategy
+        +setAudienceStrategy(strategy: AdviceStrategy) void
+        +getThreshold() AlertThreshold
+        +setThreshold(threshold: AlertThreshold) void
     }
 
     class ReportService {
         -LocalStore store
         +add(district: District, category: String, note: String) CitizenReport
-        +all() List~CitizenReport~
+        +getAll() List~CitizenReport~
     }
 
     class ParksService {

@@ -56,15 +56,15 @@ public final class DashboardController {
      * Wires the view and performs the first load.
      */
     public void start() {
-        dashboardPanel.onRefresh(this::refresh);
+        dashboardPanel.onRefresh(this::loadReading);
         dashboardPanel.onDistrictChange(this::changeDistrict);
         dashboardPanel.onAudienceChange(this::changeAudience);
-        refresh();
+        loadReading();
     }
 
     private void changeDistrict(District district) {
         settingsStore.setDistrict(district);
-        refresh();
+        loadReading();
     }
 
     private void changeAudience(AdviceStrategy strategy) {
@@ -74,18 +74,18 @@ public final class DashboardController {
         }
     }
 
-    private void refresh() {
+    private void loadReading() {
         District district = dashboardPanel.getSelectedDistrict();
         dashboardPanel.setLoading(true);
         dashboardPanel.clearMessage();
         statusBar.show("Loading air quality for " + district.label() + "...");
 
         Async.run(() -> airQualityService.nearest(district),
-                reading -> onReading(district, reading),
-                failure -> onFailure(district, failure));
+                reading -> onReadingLoaded(district, reading),
+                failure -> onReadingFailed(district, failure));
     }
 
-    private void onReading(District district, StationReading reading) {
+    private void onReadingLoaded(District district, StationReading reading) {
         dashboardPanel.setLoading(false);
         currentReading = reading;
         render(reading);
@@ -94,7 +94,7 @@ public final class DashboardController {
                 + reading.level().label() + ".");
     }
 
-    private void onFailure(District district, Exception failure) {
+    private void onReadingFailed(District district, Exception failure) {
         dashboardPanel.setLoading(false);
         dashboardPanel.showParks(parksService.nearest(district));
 
