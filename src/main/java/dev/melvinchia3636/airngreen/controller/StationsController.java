@@ -36,19 +36,13 @@ public final class StationsController {
     }
 
     /**
-     * Wires the view and shows a cached list when one exists.
+     * Wires the view and refreshes the directory from the service.
      */
     public void start() {
         view.onReload(this::loadAll);
         view.onLoadSelected(this::open);
         view.setDistrict(settings.district());
-
-        List<StationSummary> cached = airQuality.cachedStations();
-        if (!cached.isEmpty()) {
-            view.setStations(cached);
-            view.showMessage("Showing the cached station list. Reload for fresh data.",
-                    false);
-        }
+        loadAll();
     }
 
     private void loadAll() {
@@ -69,7 +63,15 @@ public final class StationsController {
                 },
                 failure -> {
                     view.setLoading(false);
-                    view.showMessage(failure.getMessage(), true);
+                    List<StationSummary> cached = airQuality.cachedStations();
+                    if (!cached.isEmpty()) {
+                        view.setDistrict(settings.district());
+                        view.setStations(cached);
+                        view.showMessage("Offline: showing cached stations. "
+                                + failure.getMessage(), true);
+                    } else {
+                        view.showMessage(failure.getMessage(), true);
+                    }
                     status.show("Could not load stations.");
                 });
     }
