@@ -1,0 +1,251 @@
+package dev.melvinchia3636.airngreen.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Consumer;
+import java.util.regex.Pattern;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import dev.melvinchia3636.airngreen.model.AqiLevel;
+import dev.melvinchia3636.airngreen.model.StationReading;
+import dev.melvinchia3636.airngreen.model.StationSummary;
+
+/**
+ * Station directory view: filter the public list and open one station.
+ */
+public final class StationsPanel extends JPanel {
+
+    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter
+            .ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)
+            .withZone(ZoneId.systemDefault());
+
+    private final JTextField search = new JTextField();
+    private final JButton reloadButton = new JButton("Load station list");
+    private final DefaultTableModel model = new DefaultTableModel(
+            new Object[] { "ID", "Station", "AQI" }, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    private final JTable table = new JTable(model);
+    private final TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+    private final JTextArea detail = new JTextArea(6, 40);
+    private final JButton loadButton = new JButton("Open selected station");
+    private final JLabel notice = new JLabel(" ");
+
+    /**
+     * Creates the station directory view.
+     */
+    public StationsPanel() {
+        super(new BorderLayout(12, 12));
+        setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+
+        table.setRowSorter(sorter);
+        table.setFillsViewportHeight(true);
+        detail.setEditable(false);
+        detail.setLineWrap(true);
+        detail.setWrapStyleWord(true);
+        notice.setVisible(false);
+        loadButton.setEnabled(false);
+
+        add(toolbar(), BorderLayout.NORTH);
+        add(split(), BorderLayout.CENTER);
+        add(actions(), BorderLayout.SOUTH);
+
+        search.getDocument().addDocumentListener(new SearchListener());
+        table.getSelectionModel().addListSelectionListener(
+                event -> loadButton.setEnabled(!event.getValueIsAdjusting()
+                        && table.getSelectedRow() >= 0));
+    }
+
+    /**
+     * Registers the reload action.
+     *
+     * @param action callback that fetches the station list
+     */
+    public void onReload(Runnable action) {
+        reloadButton.addActionListener(event -> action.run());
+    }
+
+    /**
+     * Registers the open-station action.
+     *
+     * @param action callback receiving the station id
+     */
+    public void onLoadSelected(Consumer<String> action) {
+        Runnable run = () -> {
+            String idx = selectedIdx();
+            if (idx != null && !idx.isBlank()) {
+                action.accept(idx);
+            }
+        };
+        loadButton.addActionListener(event -> run.run());
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+                if (event.getClickCount() == 2) {
+                    run.run();
+                }
+            }
+        });
+    }
+
+    /**
+     * Replaces the table rows.
+     *
+     * @param stations station directory
+     */
+    public void setStations(List<StationSummary> stations) {
+        model.setRowCount(0);
+        for (StationSummary station : stations) {
+            model.addRow(new Object[] {
+                    station.idx(), station.name(), formatAqi(station.aqi())
+            });
+        }
+    }
+
+    /**
+     * Selected station id.
+     *
+     * @return the id, or null when nothing is selected
+     */
+    public String selectedIdx() {
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            return null;
+        }
+        return String.valueOf(model.getValueAt(table.convertRowIndexToModel(row), 0));
+    }
+
+    /**
+     * Shows a station report under the table.
+     *
+     * @param reading loaded station report
+     */
+    public void showDetail(StationReading reading) {
+        detail.setText("""
+                %s (%s)
+                AQI %s - %s
+                Updated %s
+                Recent samples: %d
+                """.formatted(
+                reading.name(),
+                reading.idx(),
+                formatAqi(reading.aqi()),
+                reading.level().label(),
+                TIME_FORMAT.format(Instant.ofEpochSecond(reading.updatedAt())),
+                reading.series().size()));
+        detail.setCaretPosition(0);
+    }
+
+    /**
+     * Enables or disables the reload button.
+     *
+     * @param loading true while a request is running
+     */
+    public void setLoading(boolean loading) {
+        reloadButton.setEnabled(!loading);
+        reloadButton.setText(loading ? "Loading..." : "Load station list");
+    }
+
+    /**
+     * Shows a short notice above the table.
+     *
+     * @param message text to display
+     * @param warning true for an error
+     */
+    public void showMessage(String message, boolean warning) {
+        notice.setText(message);
+        notice.setForeground(AqiColors.forLevel(
+                warning ? AqiLevel.SENSITIVE : AqiLevel.GOOD));
+        notice.setVisible(true);
+    }
+
+    private JPanel toolbar() {
+        JPanel toolbar = new JPanel();
+        toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.X_AXIS));
+        toolbar.add(new JLabel("Search:"));
+        toolbar.add(Box.createHorizontalStrut(6));
+        toolbar.add(search);
+        toolbar.add(Box.createHorizontalStrut(12));
+        toolbar.add(reloadButton);
+        return toolbar;
+    }
+
+    private JSplitPane split() {
+        JScrollPane tableScroll = new JScrollPane(table);
+        tableScroll.setPreferredSize(new Dimension(600, 360));
+        JScrollPane detailScroll = new JScrollPane(detail);
+        detailScroll.setPreferredSize(new Dimension(600, 120));
+
+        JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                tableScroll, detailScroll);
+        split.setResizeWeight(0.8);
+        split.setBorder(null);
+        return split;
+    }
+
+    private JPanel actions() {
+        JPanel actions = new JPanel();
+        actions.setLayout(new BoxLayout(actions, BoxLayout.X_AXIS));
+        actions.add(notice);
+        actions.add(Box.createHorizontalGlue());
+        actions.add(loadButton);
+        return actions;
+    }
+
+    private String formatAqi(Double aqi) {
+        return aqi == null || aqi.isNaN() ? "-" : String.valueOf(Math.round(aqi));
+    }
+
+    private void applyFilter() {
+        String text = search.getText().trim();
+        sorter.setRowFilter(text.isEmpty()
+                ? null
+                : RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
+    }
+
+    /** Re-filters whenever the search box changes. */
+    private final class SearchListener implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent event) {
+            applyFilter();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent event) {
+            applyFilter();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent event) {
+            applyFilter();
+        }
+    }
+}
