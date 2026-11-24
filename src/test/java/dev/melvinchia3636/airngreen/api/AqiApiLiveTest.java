@@ -13,7 +13,7 @@ import dev.melvinchia3636.airngreen.model.StationReading;
  * Tests against the deployed service.
  *
  * <p>Tagged {@code live} and excluded from the default build. Run them with
- * {@code mvn test -Dgroups=live -DexcludedGroups=}.</p>
+ * {@code mvn test -Plive-tests}.</p>
  */
 @Tag("live")
 class AqiApiLiveTest {
