@@ -1,5 +1,7 @@
 package dev.melvinchia3636.airngreen.controller;
 
+import javax.swing.SwingUtilities;
+
 import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
 import dev.melvinchia3636.airngreen.service.SettingsStore;
@@ -43,6 +45,8 @@ public final class AlertsController {
     public void start() {
         view.onThresholdChange(this::changeThreshold);
         view.onCheckService(this::checkService);
+        history.onAlertRecorded(alert -> SwingUtilities.invokeLater(
+                () -> view.showHistory(history.alerts())));
         view.showHistory(history.alerts());
     }
 
