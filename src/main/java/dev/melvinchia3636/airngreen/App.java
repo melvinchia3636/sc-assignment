@@ -50,8 +50,10 @@ public final class App {
     private static void start() {
         LocalStore store = new LocalStore();
         SettingsStore settings = new SettingsStore(store);
+        String baseUrl = System.getProperty("airngreen.apiBase",
+                AqiApiClient.DEFAULT_BASE_URL);
         AirQualityService airQuality = new AirQualityService(
-                new AqiApiClient(new JdkHttpTransport()), store);
+                new AqiApiClient(new JdkHttpTransport(), baseUrl), store);
         ReportService reports = new ReportService(store);
         ParksService parks = loadParks();
 
