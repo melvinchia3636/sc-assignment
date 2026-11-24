@@ -69,7 +69,7 @@ The system utilizes a five layer structure as shown in the diagram in Figure 1 a
   [JSON and properties persistence, typed user preferences.],
 
   [API Layer],
-  [`AqiApiClient`、`OkHttpTransport`、`AqiJsonParser`、`ApiException`],
+  [`AqiApiClient`、`AqiJsonParser`、`ApiException`],
   [HTTP、JSON、Error normalization],
 
   [Model Layer],
@@ -86,7 +86,7 @@ The data flow of a refresh operation is shown in the sequence diagram below. Due
   caption: [Refresh data flow across the layers.],
 )
 
-As shown in the diagram above, When the user clicks the refresh button, `DashboardController` will reads the selected district, then `AirQualityService.nearest` will be called as a backend thread by `Async`. The `AqiApiClient` will then assemble the URL that will be used by `OkHttpTransport` for the GET request. The result JSON will be converted in to `StationReading` by `AqiJsonParser` and written into `LocalStore` cache. The controller will then go back to the event delegation thread and call `DashboardPanel.showReading` while providing the AQI reading to `PollutionAlertService.evaluate`, where the subject notifies the observers only when the reading exceeds the threshold.
+As shown in the diagram above, When the user clicks the refresh button, `DashboardController` will reads the selected district, then `AirQualityService.nearest` will be called as a backend thread by `Async`. The `AqiApiClient` will then assemble the URL and perform the GET request with OkHttp. The result JSON will be converted in to `StationReading` by `AqiJsonParser` and written into `LocalStore` cache. The controller will then go back to the event delegation thread and call `DashboardPanel.showReading` while providing the AQI reading to `PollutionAlertService.evaluate`, where the subject notifies the observers only when the reading exceeds the threshold.
 
 == UML Class Diagram
 
@@ -238,7 +238,7 @@ Meanwhile, the *SRP* is also retained, where the subject is only responsible for
 
   [`AqiApiClient`],
   [Http requires construction; Status code checking; Response parsing.],
-  [`HttpTransport`、`AqiJsonParser`、`ApiException`],
+  [`OkHttpClient`、`AqiJsonParser`、`ApiException`],
 
   [`AlertArchiveObserver`],
   [Persist every alert to `alerts.json`, newest first, keeping at most 50 entries.],

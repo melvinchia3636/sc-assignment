@@ -2,9 +2,13 @@ package dev.melvinchia3636.airngreen.api;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
@@ -23,28 +27,35 @@ public final class AqiApiClient {
             "https://aqi-api-melvin.fly.dev";
 
     private static final int NO_CONTENT = 204;
+    private static final long CONNECT_TIMEOUT_SECONDS = 5;
+    private static final long READ_TIMEOUT_SECONDS = 10;
+    private static final String USER_AGENT = "AirGreen/1.0";
+    private static final OkHttpClient DEFAULT_CLIENT = new OkHttpClient.Builder()
+            .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .build();
 
-    private final HttpTransport transport;
+    private final OkHttpClient client;
     private final AqiJsonParser parser;
     private final HttpUrl baseUrl;
 
     /**
-     * Creates a client for the default deployment.
+     * Creates a client for a deployment using default timeouts.
      *
-     * @param transport HTTP implementation, real or stubbed
+     * @param baseUrl service root such as {@code https://example.test}
      */
-    public AqiApiClient(HttpTransport transport) {
-        this(transport, DEFAULT_BASE_URL);
+    public AqiApiClient(String baseUrl) {
+        this(DEFAULT_CLIENT, baseUrl);
     }
 
     /**
-     * Creates a client for a specific deployment.
+     * Creates a client with an explicit HTTP client, used by tests.
      *
-     * @param transport HTTP implementation
-     * @param baseUrl   service root such as {@code https://example.test}
+     * @param client  OkHttp client
+     * @param baseUrl service root such as {@code https://example.test}
      */
-    public AqiApiClient(HttpTransport transport, String baseUrl) {
-        this.transport = transport;
+    public AqiApiClient(OkHttpClient client, String baseUrl) {
+        this.client = client;
         this.parser = new AqiJsonParser();
         this.baseUrl = HttpUrl.get(baseUrl);
     }
@@ -64,7 +75,7 @@ public final class AqiApiClient {
                 .addQueryParameter("lat", Double.toString(latitude))
                 .addQueryParameter("lon", Double.toString(longitude))
                 .build();
-        return fetch(url.toString(), parser::parseStation);
+        return fetch(url, parser::parseStation);
     }
 
     /**
@@ -79,7 +90,7 @@ public final class AqiApiClient {
                 .addPathSegment("station")
                 .addPathSegment(idx)
                 .build();
-        return fetch(url.toString(), parser::parseStation);
+        return fetch(url, parser::parseStation);
     }
 
     /**
@@ -92,7 +103,7 @@ public final class AqiApiClient {
         HttpUrl url = baseUrl.newBuilder()
                 .addPathSegment("stations")
                 .build();
-        return fetch(url.toString(), parser::parseStations);
+        return fetch(url, parser::parseStations);
     }
 
     /**
@@ -115,7 +126,7 @@ public final class AqiApiClient {
                 .addQueryParameter("north", Double.toString(north))
                 .addQueryParameter("east", Double.toString(east))
                 .build();
-        return fetch(url.toString(), parser::parseStations);
+        return fetch(url, parser::parseStations);
     }
 
     /**
@@ -128,14 +139,15 @@ public final class AqiApiClient {
                 .addPathSegment("Index")
                 .addPathSegment("liveness")
                 .build();
-        try {
-            return transport.get(url.toString()).statusCode() == NO_CONTENT;
+
+        try (Response response = client.newCall(request(url)).execute()) {
+            return response.code() == NO_CONTENT;
         } catch (IOException unreachable) {
             return false;
         }
     }
 
-    private <T> T fetch(String url, Function<String, T> reader)
+    private <T> T fetch(HttpUrl url, Function<String, T> reader)
             throws ApiException {
         String body = read(url);
 
@@ -146,25 +158,30 @@ public final class AqiApiClient {
         }
     }
 
-    private String read(String url) throws ApiException {
-        HttpTransport.Response response = send(url);
-        if (response.statusCode() / 100 != 2) {
-            throw failure(response);
-        }
-        return response.body();
-    }
-
-    private HttpTransport.Response send(String url) throws ApiException {
-        try {
-            return transport.get(url);
+    private String read(HttpUrl url) throws ApiException {
+        try (Response response = client.newCall(request(url)).execute()) {
+            String body = response.body() == null ? "" : response.body().string();
+            if (response.code() / 100 != 2) {
+                throw failure(response.code(), body);
+            }
+            return body;
         } catch (IOException unreachable) {
             throw new ApiException(0, ApiException.messageFor(0));
         }
     }
 
-    private ApiException failure(HttpTransport.Response response) {
-        String message = parser.errorMessage(response.body());
-        return new ApiException(response.statusCode(),
-                message == null ? ApiException.messageFor(response.statusCode()) : message);
+    private Request request(HttpUrl url) {
+        return new Request.Builder()
+                .url(url)
+                .header("Accept", "application/json")
+                .header("User-Agent", USER_AGENT)
+                .get()
+                .build();
+    }
+
+    private ApiException failure(int statusCode, String body) {
+        String message = parser.errorMessage(body);
+        return new ApiException(statusCode,
+                message == null ? ApiException.messageFor(statusCode) : message);
     }
 }

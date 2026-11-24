@@ -5,7 +5,6 @@ import javax.swing.SwingUtilities;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import dev.melvinchia3636.airngreen.api.AqiApiClient;
-import dev.melvinchia3636.airngreen.api.OkHttpTransport;
 import dev.melvinchia3636.airngreen.controller.AlertsController;
 import dev.melvinchia3636.airngreen.controller.DashboardController;
 import dev.melvinchia3636.airngreen.controller.ReportsController;
@@ -51,7 +50,7 @@ public final class App {
         String baseUrl = System.getProperty("airngreen.apiBase",
                 AqiApiClient.DEFAULT_BASE_URL);
         AirQualityService airQualityService = new AirQualityService(
-                new AqiApiClient(new OkHttpTransport(), baseUrl), localStore);
+                new AqiApiClient(baseUrl), localStore);
         ReportService reportService = new ReportService(localStore);
         ParksService parksService = ParksService.fromClasspathOrEmpty();
 

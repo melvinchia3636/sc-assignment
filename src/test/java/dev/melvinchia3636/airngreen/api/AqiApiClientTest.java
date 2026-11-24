@@ -8,8 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import dev.melvinchia3636.airngreen.model.StationReading;
@@ -22,35 +27,43 @@ class AqiApiClientTest {
              "current":{"pm25":13},"series":{"aqi":[{"t":1,"v":25}]}}}
             """;
 
-    @Test
-    void nearestStation_parsesResponseAndBuildsQuery() throws ApiException {
-        AtomicReference<String> requested = new AtomicReference<>();
-        AqiApiClient client = client(url -> {
-            requested.set(url);
-            return new HttpTransport.Response(200, STATION_JSON);
-        });
+    private MockWebServer server;
+    private AqiApiClient client;
 
-        StationReading reading = client.nearestStation(3.139, 101.6869);
+    @BeforeEach
+    void startServer() throws IOException {
+        server = new MockWebServer();
+        server.start();
+        client = new AqiApiClient(server.url("/").toString());
+    }
 
-        assertAll(
-                () -> assertEquals("2609", reading.idx()),
-                () -> assertTrue(requested.get().startsWith(
-                        "https://example.test/nearest-station?")),
-                () -> assertTrue(requested.get().contains("lat=3.139")),
-                () -> assertTrue(requested.get().contains("lon=101.6869")));
+    @AfterEach
+    void stopServer() throws IOException {
+        server.shutdown();
     }
 
     @Test
-    void station_requestsTheEncodedId() throws ApiException {
-        AtomicReference<String> requested = new AtomicReference<>();
-        AqiApiClient client = client(url -> {
-            requested.set(url);
-            return new HttpTransport.Response(200, STATION_JSON);
-        });
+    void nearestStation_parsesResponseAndBuildsQuery() throws Exception {
+        server.enqueue(new MockResponse().setBody(STATION_JSON));
+
+        StationReading reading = client.nearestStation(3.139, 101.6869);
+        RecordedRequest request = server.takeRequest();
+
+        assertAll(
+                () -> assertEquals("2609", reading.idx()),
+                () -> assertTrue(request.getPath().startsWith(
+                        "/nearest-station?")),
+                () -> assertTrue(request.getPath().contains("lat=3.139")),
+                () -> assertTrue(request.getPath().contains("lon=101.6869")));
+    }
+
+    @Test
+    void station_requestsTheEncodedId() throws Exception {
+        server.enqueue(new MockResponse().setBody(STATION_JSON));
 
         client.station("A2820325");
 
-        assertEquals("https://example.test/station/A2820325", requested.get());
+        assertEquals("/station/A2820325", server.takeRequest().getPath());
     }
 
     @Test
@@ -59,8 +72,7 @@ class AqiApiClientTest {
                 {"stations":[{"idx":"2609","name":"Kapit","latitude":2.0,
                  "longitude":112.9,"aqi":25}]}
                 """;
-        AqiApiClient client = client(
-                url -> new HttpTransport.Response(200, body));
+        server.enqueue(new MockResponse().setBody(body));
 
         List<StationSummary> stations = client.stations();
 
@@ -70,28 +82,24 @@ class AqiApiClientTest {
     }
 
     @Test
-    void boundedStations_sendTheBoundingBox() throws ApiException {
-        AtomicReference<String> requested = new AtomicReference<>();
-        AqiApiClient client = client(url -> {
-            requested.set(url);
-            return new HttpTransport.Response(200, "{\"stations\":[]}");
-        });
+    void boundedStations_sendTheBoundingBox() throws Exception {
+        server.enqueue(new MockResponse().setBody("{\"stations\":[]}"));
 
         client.stations(0.85, 99.6, 7.5, 119.3);
 
+        String path = server.takeRequest().getPath();
         assertAll(
-                () -> assertTrue(requested.get().contains("south=0.85")),
-                () -> assertTrue(requested.get().contains("west=99.6")),
-                () -> assertTrue(requested.get().contains("north=7.5")),
-                () -> assertTrue(requested.get().contains("east=119.3")));
+                () -> assertTrue(path.contains("south=0.85")),
+                () -> assertTrue(path.contains("west=99.6")),
+                () -> assertTrue(path.contains("north=7.5")),
+                () -> assertTrue(path.contains("east=119.3")));
     }
 
     @Test
     void notFound_usesTheApiMessage() {
         String body = "{\"error\":{\"code\":\"station_not_found\","
                 + "\"message\":\"Station 9 did not return a reading.\"}}";
-        AqiApiClient client = client(
-                url -> new HttpTransport.Response(404, body));
+        server.enqueue(new MockResponse().setResponseCode(404).setBody(body));
 
         ApiException failure = assertThrows(ApiException.class,
                 () -> client.station("9"));
@@ -105,8 +113,7 @@ class AqiApiClientTest {
 
     @Test
     void serverError_fallsBackToFriendlyMessage() {
-        AqiApiClient client = client(
-                url -> new HttpTransport.Response(503, ""));
+        server.enqueue(new MockResponse().setResponseCode(503));
 
         ApiException failure = assertThrows(ApiException.class,
                 () -> client.nearestStation(1, 2));
@@ -119,28 +126,28 @@ class AqiApiClientTest {
 
     @Test
     void unreadableBody_throwsApiException() {
-        AqiApiClient client = client(
-                url -> new HttpTransport.Response(200, "<html>nope</html>"));
+        server.enqueue(new MockResponse().setBody("<html>nope</html>"));
 
         assertThrows(ApiException.class, () -> client.nearestStation(1, 2));
     }
 
     @Test
     void responseWithoutStation_throwsApiException() {
-        AqiApiClient client = client(
-                url -> new HttpTransport.Response(200, "{}"));
+        server.enqueue(new MockResponse().setBody("{}"));
 
         assertThrows(ApiException.class, () -> client.nearestStation(1, 2));
     }
 
     @Test
-    void ioFailure_becomesNetworkFailure() {
-        AqiApiClient client = client(url -> {
-            throw new IOException("offline");
-        });
+    void ioFailure_becomesNetworkFailure() throws IOException {
+        MockWebServer dead = new MockWebServer();
+        dead.start();
+        String url = dead.url("/").toString();
+        dead.shutdown();
+        AqiApiClient offline = new AqiApiClient(url);
 
         ApiException failure = assertThrows(ApiException.class,
-                () -> client.station("2609"));
+                () -> offline.station("2609"));
 
         assertAll(
                 () -> assertEquals(0, failure.getStatusCode()),
@@ -150,30 +157,20 @@ class AqiApiClientTest {
 
     @Test
     void isAlive_trueOnlyForNoContent() {
-        AqiApiClient alive = client(
-                url -> new HttpTransport.Response(204, ""));
-        AqiApiClient down = client(
-                url -> new HttpTransport.Response(500, ""));
+        server.enqueue(new MockResponse().setResponseCode(204));
+        server.enqueue(new MockResponse().setResponseCode(500));
 
         assertAll(
-                () -> assertTrue(alive.isAlive()),
-                () -> assertFalse(down.isAlive()));
+                () -> assertTrue(client.isAlive()),
+                () -> assertFalse(client.isAlive()));
     }
 
     @Test
-    void baseUrl_trailingSlashIsNormalised() throws ApiException {
-        AtomicReference<String> requested = new AtomicReference<>();
-        AqiApiClient client = new AqiApiClient(url -> {
-            requested.set(url);
-            return new HttpTransport.Response(200, STATION_JSON);
-        }, "https://example.test/");
+    void baseUrl_trailingSlashIsNormalised() throws Exception {
+        server.enqueue(new MockResponse().setBody(STATION_JSON));
 
         client.station("2609");
 
-        assertEquals("https://example.test/station/2609", requested.get());
-    }
-
-    private AqiApiClient client(HttpTransport transport) {
-        return new AqiApiClient(transport, "https://example.test");
+        assertEquals("/station/2609", server.takeRequest().getPath());
     }
 }

@@ -23,7 +23,7 @@ class AqiApiLiveTest {
     private static final int EXPECTED_SERIES_SAMPLES = 72;
 
     private final AqiApiClient client =
-            new AqiApiClient(new OkHttpTransport());
+            new AqiApiClient(AqiApiClient.DEFAULT_BASE_URL);
 
     @Test
     void liveness_answersWithNoContent() {

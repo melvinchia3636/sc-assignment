@@ -19,7 +19,7 @@ classDiagram
     }
 
     class AqiApiClient {
-        -HttpTransport transport
+        -OkHttpClient client
         -AqiJsonParser parser
         -HttpUrl baseUrl
         +nearestStation(latitude: double, longitude: double) StationReading
@@ -27,15 +27,6 @@ classDiagram
         +stations() List~StationSummary~
         +stations(south: double, west: double, north: double, east: double) List~StationSummary~
         +isAlive() boolean
-    }
-
-    class HttpTransport {
-        <<interface>>
-        +get(url: String) Response*
-    }
-
-    class OkHttpTransport {
-        +get(url: String) Response
     }
 
     class AqiJsonParser {
@@ -103,10 +94,8 @@ classDiagram
         +double distanceKm
     }
 
-    HttpTransport <|.. OkHttpTransport
     AirQualityService "1" --> "1" AqiApiClient : uses
     AirQualityService "1" --> "1" LocalStore : caches
-    AqiApiClient "1" --> "1" HttpTransport : sends
     AqiApiClient "1" *-- "1" AqiJsonParser : parser
     AqiApiClient ..> ApiException : throws
     SettingsStore "1" --> "1" LocalStore : persists

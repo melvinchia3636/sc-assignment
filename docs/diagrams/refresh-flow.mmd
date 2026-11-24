@@ -13,7 +13,7 @@ sequenceDiagram
     participant A as Async
     participant S as AirQualityService
     participant API as AqiApiClient
-    participant T as JdkHttpTransport
+    participant H as OkHttpClient
     participant P as AqiJsonParser
     participant L as LocalStore
     participant V as DashboardPanel
@@ -25,8 +25,8 @@ sequenceDiagram
     activate A
     A->>S: nearest(district)
     S->>API: build request
-    API->>T: GET /nearest-station
-    T-->>API: HTTP response
+    API->>H: GET /nearest-station
+    H-->>API: HTTP response
     API->>P: parse JSON
     P-->>API: StationReading
     API-->>S: StationReading

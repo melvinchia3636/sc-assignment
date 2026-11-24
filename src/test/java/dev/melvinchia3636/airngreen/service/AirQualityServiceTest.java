@@ -5,17 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import dev.melvinchia3636.airngreen.api.AqiApiClient;
 import dev.melvinchia3636.airngreen.api.ApiException;
-import dev.melvinchia3636.airngreen.api.HttpTransport;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
@@ -40,21 +46,36 @@ class AirQualityServiceTest {
     Path directory;
 
     private final AtomicBoolean failing = new AtomicBoolean();
+    private MockWebServer server;
     private AirQualityService service;
 
     @BeforeEach
-    void createService() {
-        LocalStore store = new LocalStore(directory);
-        AqiApiClient client = new AqiApiClient(url -> {
-            if (failing.get()) {
-                return new HttpTransport.Response(503, "");
-            }
+    void createService() throws IOException {
+        server = new MockWebServer();
+        server.setDispatcher(new Dispatcher() {
+            @Override
+            public MockResponse dispatch(RecordedRequest request) {
+                if (failing.get()) {
+                    return new MockResponse().setResponseCode(503);
+                }
 
-            String body = url.contains("south=") ? LOCAL_STATIONS_JSON
-                    : url.contains("/stations") ? STATIONS_JSON : STATION_JSON;
-            return new HttpTransport.Response(200, body);
-        }, "https://example.test");
+                String path = request.getPath();
+                String body = path.contains("south=") ? LOCAL_STATIONS_JSON
+                        : path.startsWith("/stations") ? STATIONS_JSON : STATION_JSON;
+                return new MockResponse().setResponseCode(200).setBody(body);
+            }
+        });
+        server.start();
+
+        LocalStore store = new LocalStore(directory);
+        AqiApiClient client =
+                new AqiApiClient(server.url("/").toString());
         service = new AirQualityService(client, store);
+    }
+
+    @AfterEach
+    void stopServer() throws IOException {
+        server.shutdown();
     }
 
     @Test
