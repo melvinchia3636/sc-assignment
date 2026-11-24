@@ -108,7 +108,7 @@ public final class StationsPanel extends JPanel {
      */
     public void onLoadSelected(Consumer<String> action) {
         Runnable run = () -> {
-            String idx = selectedIdx();
+            String idx = getSelectedIdx();
             if (idx != null && !idx.isBlank()) {
                 action.accept(idx);
             }
@@ -155,7 +155,7 @@ public final class StationsPanel extends JPanel {
      *
      * @return the id, or null when nothing is selected
      */
-    public String selectedIdx() {
+    public String getSelectedIdx() {
         int row = table.getSelectedRow();
         if (row < 0) {
             return null;

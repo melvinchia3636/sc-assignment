@@ -97,7 +97,7 @@ class AqiApiClientTest {
                 () -> client.station("9"));
 
         assertAll(
-                () -> assertEquals(404, failure.statusCode()),
+                () -> assertEquals(404, failure.getStatusCode()),
                 () -> assertEquals("Station 9 did not return a reading.",
                         failure.getMessage()),
                 () -> assertFalse(failure.isServiceFailure()));
@@ -112,7 +112,7 @@ class AqiApiClientTest {
                 () -> client.nearestStation(1, 2));
 
         assertAll(
-                () -> assertEquals(503, failure.statusCode()),
+                () -> assertEquals(503, failure.getStatusCode()),
                 () -> assertTrue(failure.isServiceFailure()),
                 () -> assertTrue(failure.getMessage().contains("unavailable")));
     }
@@ -143,7 +143,7 @@ class AqiApiClientTest {
                 () -> client.station("2609"));
 
         assertAll(
-                () -> assertEquals(0, failure.statusCode()),
+                () -> assertEquals(0, failure.getStatusCode()),
                 () -> assertTrue(failure.isServiceFailure()),
                 () -> assertTrue(failure.getMessage().contains("Cannot reach")));
     }

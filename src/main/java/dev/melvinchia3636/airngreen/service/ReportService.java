@@ -66,7 +66,7 @@ public final class ReportService {
      *
      * @return an immutable list
      */
-    public List<CitizenReport> all() {
+    public List<CitizenReport> getAll() {
         return store.loadReports().stream()
                 .sorted(Comparator.comparingLong(CitizenReport::createdAt).reversed())
                 .toList();

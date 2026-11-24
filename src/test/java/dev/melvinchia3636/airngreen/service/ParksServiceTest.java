@@ -68,10 +68,10 @@ class ParksServiceTest {
         ParksService bundled = ParksService.fromClasspath();
 
         assertAll(
-                () -> assertTrue(bundled.all().size() >= 10),
-                () -> assertTrue(bundled.all().stream().anyMatch(
+                () -> assertTrue(bundled.getAll().size() >= 10),
+                () -> assertTrue(bundled.getAll().stream().anyMatch(
                         park -> park.district() == District.KUALA_LUMPUR)),
-                () -> assertTrue(bundled.all().stream().anyMatch(
+                () -> assertTrue(bundled.getAll().stream().anyMatch(
                         park -> park.district() == District.PUTRAJAYA)));
     }
 
@@ -80,7 +80,7 @@ class ParksServiceTest {
         ParksService bundled = ParksService.fromClasspath();
 
         for (District district : District.values()) {
-            assertTrue(bundled.all().stream()
+            assertTrue(bundled.getAll().stream()
                             .anyMatch(park -> park.district() == district),
                     () -> "No park for " + district);
         }
@@ -88,6 +88,6 @@ class ParksServiceTest {
 
     @Test
     void fromClasspathOrEmpty_loadsTheBundledDataset() {
-        assertTrue(ParksService.fromClasspathOrEmpty().all().size() >= 100);
+        assertTrue(ParksService.fromClasspathOrEmpty().getAll().size() >= 100);
     }
 }

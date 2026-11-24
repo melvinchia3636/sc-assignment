@@ -92,7 +92,7 @@ classDiagram
     class AlertLogObserver {
         -List~AqiAlert~ alerts
         +onThresholdExceeded(alert: AqiAlert) void
-        +alerts() List~AqiAlert~
+        +getAlerts() List~AqiAlert~
     }
 
     class AlertArchiveObserver {

@@ -62,9 +62,9 @@ class AirQualityServiceTest {
 
         assertAll(
                 () -> assertEquals("2609", reading.idx()),
-                () -> assertTrue(service.cachedReading().isPresent()),
+                () -> assertTrue(service.getCachedReading().isPresent()),
                 () -> assertEquals(25,
-                        service.cachedReading().orElseThrow().aqi()));
+                        service.getCachedReading().orElseThrow().aqi()));
     }
 
     @Test
@@ -74,7 +74,7 @@ class AirQualityServiceTest {
 
         assertThrows(ApiException.class,
                 () -> service.nearest(District.KUALA_LUMPUR));
-        assertTrue(service.cachedReading().isPresent());
+        assertTrue(service.getCachedReading().isPresent());
     }
 
     @Test
@@ -83,7 +83,7 @@ class AirQualityServiceTest {
 
         assertAll(
                 () -> assertEquals("2609", reading.idx()),
-                () -> assertTrue(service.cachedReading().isPresent()));
+                () -> assertTrue(service.getCachedReading().isPresent()));
     }
 
     @Test
@@ -94,11 +94,11 @@ class AirQualityServiceTest {
         assertAll(
                 () -> assertEquals(2, stations.size()),
                 () -> assertEquals("local", stations.get(0).idx()),
-                () -> assertEquals(2, service.cachedStations().size()));
+                () -> assertEquals(2, service.getCachedStations().size()));
     }
 
     @Test
     void cachedReading_isEmptyBeforeAnyLoad() {
-        assertTrue(service.cachedReading().isEmpty());
+        assertTrue(service.getCachedReading().isEmpty());
     }
 }

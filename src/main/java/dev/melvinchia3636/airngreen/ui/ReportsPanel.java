@@ -87,7 +87,7 @@ public final class ReportsPanel extends JPanel {
      *
      * @return the district
      */
-    public District district() {
+    public District getDistrict() {
         return (District) districtBox.getSelectedItem();
     }
 
@@ -96,7 +96,7 @@ public final class ReportsPanel extends JPanel {
      *
      * @return the category label
      */
-    public String category() {
+    public String getCategory() {
         return String.valueOf(categoryBox.getSelectedItem());
     }
 
@@ -105,7 +105,7 @@ public final class ReportsPanel extends JPanel {
      *
      * @return the raw note
      */
-    public String note() {
+    public String getNote() {
         return noteArea.getText();
     }
 

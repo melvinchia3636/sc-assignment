@@ -63,7 +63,7 @@ public final class StationsController {
                 },
                 failure -> {
                     view.setLoading(false);
-                    List<StationSummary> cached = airQuality.cachedStations();
+                    List<StationSummary> cached = airQuality.getCachedStations();
                     if (!cached.isEmpty()) {
                         view.setDistrict(settings.getDistrict());
                         view.setStations(cached);

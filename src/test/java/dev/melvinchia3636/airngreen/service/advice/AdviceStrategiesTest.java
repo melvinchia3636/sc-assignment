@@ -18,7 +18,7 @@ import dev.melvinchia3636.airngreen.model.AqiLevel;
 class AdviceStrategiesTest {
 
     static Stream<AdviceStrategy> strategies() {
-        return AdviceStrategies.all().stream();
+        return AdviceStrategies.getAll().stream();
     }
 
     @ParameterizedTest

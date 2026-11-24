@@ -55,7 +55,7 @@ public final class AlertLogObserver implements AlertObserver {
      *
      * @return an immutable snapshot
      */
-    public List<AqiAlert> alerts() {
+    public List<AqiAlert> getAlerts() {
         return List.copyOf(alerts);
     }
 }

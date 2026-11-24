@@ -79,7 +79,7 @@ public final class ParksService {
      *
      * @return an immutable list
      */
-    public List<Park> all() {
+    public List<Park> getAll() {
         return parks;
     }
 

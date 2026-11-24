@@ -46,8 +46,8 @@ public final class AlertsController {
         view.onThresholdChange(this::changeThreshold);
         view.onCheckService(this::checkService);
         history.onAlertRecorded(alert -> SwingUtilities.invokeLater(
-                () -> view.showHistory(history.alerts())));
-        view.showHistory(history.alerts());
+                () -> view.showHistory(history.getAlerts())));
+        view.showHistory(history.getAlerts());
     }
 
     private void changeThreshold(AlertThreshold threshold) {

@@ -29,7 +29,7 @@ public class ApiException extends Exception {
      *
      * @return the status code
      */
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 

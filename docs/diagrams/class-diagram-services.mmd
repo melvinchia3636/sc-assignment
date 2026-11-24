@@ -13,8 +13,8 @@ classDiagram
         +nearest(district: District) StationReading
         +byIdx(idx: String) StationReading
         +stations(district: District) List~StationSummary~
-        +cachedReading() Optional~StationReading~
-        +cachedStations() List~StationSummary~
+        +getCachedReading() Optional~StationReading~
+        +getCachedStations() List~StationSummary~
         +isServiceAlive() boolean
     }
 
@@ -47,7 +47,7 @@ classDiagram
     class ApiException {
         <<exception>>
         -int statusCode
-        +statusCode() int
+        +getStatusCode() int
         +isServiceFailure() boolean
         +messageFor(statusCode: int) String$
     }

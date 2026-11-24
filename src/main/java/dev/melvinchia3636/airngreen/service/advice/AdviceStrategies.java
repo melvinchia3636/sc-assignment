@@ -20,7 +20,7 @@ public final class AdviceStrategies {
      *
      * @return an immutable list
      */
-    public static List<AdviceStrategy> all() {
+    public static List<AdviceStrategy> getAll() {
         return ALL;
     }
 

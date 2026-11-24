@@ -33,15 +33,15 @@ public final class ReportsController {
      */
     public void start() {
         view.onSubmit(this::submit);
-        view.showReports(reports.all());
+        view.showReports(reports.getAll());
     }
 
     private void submit() {
         try {
             CitizenReport report = reports.add(
-                    view.district(), view.category(), view.note());
+                    view.getDistrict(), view.getCategory(), view.getNote());
             view.clearNote();
-            view.showReports(reports.all());
+            view.showReports(reports.getAll());
             view.showMessage("Report saved for " + report.district().label() + ".",
                     false);
             status.show("Citizen report saved.");

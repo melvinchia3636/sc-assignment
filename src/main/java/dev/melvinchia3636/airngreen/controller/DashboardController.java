@@ -72,7 +72,7 @@ public final class DashboardController {
     }
 
     private void refresh() {
-        District district = view.selectedDistrict();
+        District district = view.getSelectedDistrict();
         view.setLoading(true);
         view.clearMessage();
         status.show("Loading air quality for " + district.label() + "...");
@@ -100,7 +100,7 @@ public final class DashboardController {
         Optional<StationReading> cached = failure instanceof ApiException api
                 && !api.isServiceFailure()
                 ? Optional.empty()
-                : airQuality.cachedReading();
+                : airQuality.getCachedReading();
 
         if (cached.isPresent()) {
             current = cached.get();
@@ -118,6 +118,6 @@ public final class DashboardController {
         view.showReading(reading,
                 strategy.advice(reading.level()),
                 strategy.outdoorMinutes(reading.level()));
-        view.showParks(parks.nearest(view.selectedDistrict()));
+        view.showParks(parks.nearest(view.getSelectedDistrict()));
     }
 }

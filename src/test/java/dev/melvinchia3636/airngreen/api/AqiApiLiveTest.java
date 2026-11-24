@@ -35,7 +35,7 @@ class AqiApiLiveTest {
         ApiException failure = assertThrows(ApiException.class,
                 () -> client.station(UNKNOWN_STATION));
 
-        assertEquals(404, failure.statusCode());
+        assertEquals(404, failure.getStatusCode());
     }
 
     /**

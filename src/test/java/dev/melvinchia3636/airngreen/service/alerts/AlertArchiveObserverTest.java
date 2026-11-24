@@ -57,7 +57,7 @@ class AlertArchiveObserverTest {
 
         AlertLogObserver history = new AlertLogObserver(store.loadAlerts());
 
-        assertEquals(1, history.alerts().size());
+        assertEquals(1, history.getAlerts().size());
     }
 
     private static AqiAlert alert(double aqi, long createdAt) {

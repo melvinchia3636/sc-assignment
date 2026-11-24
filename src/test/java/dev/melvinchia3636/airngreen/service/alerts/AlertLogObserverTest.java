@@ -22,7 +22,7 @@ class AlertLogObserverTest {
         observer.onThresholdExceeded(alert(90, 1));
         observer.onThresholdExceeded(alert(130, 2));
 
-        List<AqiAlert> alerts = observer.alerts();
+        List<AqiAlert> alerts = observer.getAlerts();
 
         assertAll(
                 () -> assertEquals(2, alerts.size()),
@@ -60,14 +60,14 @@ class AlertLogObserverTest {
     void alerts_isAnImmutableSnapshot() {
         observer.onThresholdExceeded(alert(90, 1));
 
-        List<AqiAlert> snapshot = observer.alerts();
+        List<AqiAlert> snapshot = observer.getAlerts();
 
         assertThrows(UnsupportedOperationException.class, snapshot::clear);
     }
 
     @Test
     void alerts_isEmptyBeforeAnyAlert() {
-        assertTrue(observer.alerts().isEmpty());
+        assertTrue(observer.getAlerts().isEmpty());
     }
 
     @Test
@@ -75,8 +75,8 @@ class AlertLogObserverTest {
         AlertLogObserver seeded = new AlertLogObserver(List.of(alert(90, 1)));
 
         assertAll(
-                () -> assertEquals(1, seeded.alerts().size()),
-                () -> assertEquals(90, seeded.alerts().get(0).aqi()));
+                () -> assertEquals(1, seeded.getAlerts().size()),
+                () -> assertEquals(90, seeded.getAlerts().get(0).aqi()));
     }
 
     private static AqiAlert alert(double aqi, long createdAt) {

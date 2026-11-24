@@ -103,7 +103,7 @@ public final class AirQualityService {
      *
      * @return the cached reading, or empty when none exists
      */
-    public Optional<StationReading> cachedReading() {
+    public Optional<StationReading> getCachedReading() {
         return store.loadReading();
     }
 
@@ -112,7 +112,7 @@ public final class AirQualityService {
      *
      * @return the cached stations, or an empty list
      */
-    public List<StationSummary> cachedStations() {
+    public List<StationSummary> getCachedStations() {
         return store.loadStations();
     }
 

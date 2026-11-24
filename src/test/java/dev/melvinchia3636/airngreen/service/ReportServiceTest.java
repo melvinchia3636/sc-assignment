@@ -37,7 +37,7 @@ class ReportServiceTest {
                 () -> assertEquals(District.KUALA_LUMPUR, report.district()),
                 () -> assertEquals("Open burning", report.category()),
                 () -> assertEquals("Smoke behind the market.", report.note()),
-                () -> assertEquals(1, service.all().size()));
+                () -> assertEquals(1, service.getAll().size()));
     }
 
     @Test
@@ -82,7 +82,7 @@ class ReportServiceTest {
                 new CitizenReport("old", District.KUALA_LUMPUR, "Other", "old", 1),
                 new CitizenReport("new", District.KUALA_LUMPUR, "Other", "new", 2)));
 
-        assertEquals("new", service.all().get(0).id());
+        assertEquals("new", service.getAll().get(0).id());
     }
 
     @Test
@@ -91,6 +91,6 @@ class ReportServiceTest {
 
         ReportService reopened = new ReportService(new LocalStore(directory));
 
-        assertEquals(1, reopened.all().size());
+        assertEquals(1, reopened.getAll().size());
     }
 }

@@ -49,7 +49,7 @@ public final class DashboardPanel extends JPanel {
     private final JComboBox<District> districtBox =
             new JComboBox<>(District.values());
     private final JComboBox<AdviceStrategy> audienceBox =
-            new JComboBox<>(AdviceStrategies.all().toArray(new AdviceStrategy[0]));
+            new JComboBox<>(AdviceStrategies.getAll().toArray(new AdviceStrategy[0]));
     private final JButton refreshButton = new JButton("Refresh");
 
     private final JLabel aqiValue = new JLabel("--");
@@ -122,7 +122,7 @@ public final class DashboardPanel extends JPanel {
      *
      * @return the district
      */
-    public District selectedDistrict() {
+    public District getSelectedDistrict() {
         return (District) districtBox.getSelectedItem();
     }
 
