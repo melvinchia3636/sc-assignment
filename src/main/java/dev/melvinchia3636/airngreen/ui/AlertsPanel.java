@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
 
 import dev.melvinchia3636.airngreen.model.AqiLevel;
 import dev.melvinchia3636.airngreen.model.AlertThreshold;
-import dev.melvinchia3636.airngreen.service.alerts.AqiAlert;
+import dev.melvinchia3636.airngreen.model.AqiAlert;
 
 /**
  * Alert settings view: threshold, history and service status.

@@ -3,6 +3,8 @@ package dev.melvinchia3636.airngreen.service.alerts;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+
 /**
  * Observer that keeps the alerts shown on the Alerts screen.
  */

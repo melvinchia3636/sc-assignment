@@ -7,7 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import dev.melvinchia3636.airngreen.service.alerts.AqiAlert;
+import dev.melvinchia3636.airngreen.model.AqiAlert;
 
 /**
  * Window-wide status line and alert banner.

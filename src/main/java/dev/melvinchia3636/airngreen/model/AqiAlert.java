@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.service.alerts;
+package dev.melvinchia3636.airngreen.model;
 
 import dev.melvinchia3636.airngreen.model.AqiLevel;
 
