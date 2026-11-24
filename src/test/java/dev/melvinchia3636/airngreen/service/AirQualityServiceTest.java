@@ -33,10 +33,6 @@ class AirQualityServiceTest {
             {"station":{"idx":"2609","name":"Kapit","aqi":25,"updatedAt":10,
              "current":{"pm25":13},"series":{"aqi":[{"t":1,"v":25}]}}}
             """;
-    private static final String STATIONS_JSON = """
-            {"stations":[{"idx":"2609","name":"Kapit","latitude":2.0,
-             "longitude":112.9,"aqi":25}]}
-            """;
     private static final String LOCAL_STATIONS_JSON = """
             {"stations":[{"idx":"local","name":"Nearby","latitude":3.14,
              "longitude":101.69,"aqi":10}]}
@@ -61,7 +57,7 @@ class AirQualityServiceTest {
 
                 String path = request.getPath();
                 String body = path.contains("south=") ? LOCAL_STATIONS_JSON
-                        : path.startsWith("/stations") ? STATIONS_JSON : STATION_JSON;
+                        : STATION_JSON;
                 return new MockResponse().setResponseCode(200).setBody(body);
             }
         });
@@ -114,9 +110,9 @@ class AirQualityServiceTest {
                 service.stations(District.KUALA_LUMPUR);
 
         assertAll(
-                () -> assertEquals(2, stations.size()),
+                () -> assertEquals(1, stations.size()),
                 () -> assertEquals("local", stations.get(0).idx()),
-                () -> assertEquals(2, service.getCachedStations().size()));
+                () -> assertEquals(1, service.getCachedStations().size()));
     }
 
     @Test

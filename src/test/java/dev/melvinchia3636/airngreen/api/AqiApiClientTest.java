@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import dev.melvinchia3636.airngreen.model.StationReading;
-import dev.melvinchia3636.airngreen.model.StationSummary;
 
 class AqiApiClientTest {
 
@@ -64,21 +62,6 @@ class AqiApiClientTest {
         client.station("A2820325");
 
         assertEquals("/station/A2820325", server.takeRequest().getPath());
-    }
-
-    @Test
-    void stations_readsTheDirectory() throws ApiException {
-        String body = """
-                {"stations":[{"idx":"2609","name":"Kapit","latitude":2.0,
-                 "longitude":112.9,"aqi":25}]}
-                """;
-        server.enqueue(new MockResponse().setBody(body));
-
-        List<StationSummary> stations = client.stations();
-
-        assertAll(
-                () -> assertEquals(1, stations.size()),
-                () -> assertEquals("Kapit", stations.get(0).name()));
     }
 
     @Test

@@ -2,9 +2,7 @@ package dev.melvinchia3636.airngreen.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import dev.melvinchia3636.airngreen.api.AqiApiClient;
@@ -66,37 +64,24 @@ public final class AirQualityService {
     }
 
     /**
-     * Loads the station directory plus every station near a district.
+     * Loads stations near a district.
      *
-     * <p>The worldwide directory from WAQI omits some city stations, so the
-     * district-sized query is merged in by station id.</p>
-     *
-     * @param district district whose stations must be included
-     * @return the merged directory, nearest station to the district first
-     * @throws ApiException when either request fails
+     * @param district district providing the search centre
+     * @return stations nearest first
+     * @throws ApiException when the service cannot answer
      */
     public List<StationSummary> stations(District district) throws ApiException {
-        Map<String, StationSummary> byId = new LinkedHashMap<>();
-        for (StationSummary station : client.stations()) {
-            byId.put(station.idx(), station);
-        }
-
         double radius = STATION_RADIUS_DEGREES;
-        List<StationSummary> local = client.stations(
+        List<StationSummary> stations = new ArrayList<>(client.stations(
                 district.latitude() - radius,
                 district.longitude() - radius,
                 district.latitude() + radius,
-                district.longitude() + radius);
-        for (StationSummary station : local) {
-            byId.put(station.idx(), station);
-        }
-
-        List<StationSummary> merged = new ArrayList<>(byId.values());
-        merged.sort(Comparator.comparingDouble(station ->
+                district.longitude() + radius));
+        stations.sort(Comparator.comparingDouble(station ->
                 GeoDistance.kmBetween(district.latitude(), district.longitude(),
                         station.latitude(), station.longitude())));
-        store.saveStations(merged);
-        return merged;
+        store.saveStations(stations);
+        return stations;
     }
 
     /**

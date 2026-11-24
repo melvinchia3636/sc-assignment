@@ -94,19 +94,6 @@ public final class AqiApiClient {
     }
 
     /**
-     * Loads the public station directory.
-     *
-     * @return every station known to the service
-     * @throws ApiException when the service cannot answer
-     */
-    public List<StationSummary> stations() throws ApiException {
-        HttpUrl url = baseUrl.newBuilder()
-                .addPathSegment("stations")
-                .build();
-        return fetch(url, parser::parseStations);
-    }
-
-    /**
      * Loads stations inside a map bounding box.
      *
      * @param south southern latitude in degrees

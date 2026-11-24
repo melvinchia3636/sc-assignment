@@ -48,8 +48,8 @@ public final class StationsController {
     private void loadAll() {
         District district = settings.getDistrict();
         view.setLoading(true);
-        view.showMessage("Loading stations...", false);
-        status.show("Loading stations including " + district.label() + "...");
+        view.showMessage("Loading stations near " + district.label() + "...", false);
+        status.show("Loading stations near " + district.label() + "...");
 
         Async.run(() -> airQuality.stations(district),
                 stations -> {
@@ -57,7 +57,7 @@ public final class StationsController {
                     view.setDistrict(district);
                     view.setStations(stations);
                     view.showMessage("Loaded " + stations.size()
-                            + " stations, including " + district.label() + ".",
+                            + " stations.",
                             false);
                     status.show("Station directory loaded.");
                 },

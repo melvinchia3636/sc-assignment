@@ -24,7 +24,6 @@ classDiagram
         -HttpUrl baseUrl
         +nearestStation(latitude: double, longitude: double) StationReading
         +station(idx: String) StationReading
-        +stations() List~StationSummary~
         +stations(south: double, west: double, north: double, east: double) List~StationSummary~
         +isAlive() boolean
     }
