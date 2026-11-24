@@ -47,15 +47,15 @@ class ParksServiceTest {
 
     @Test
     void distance_isZeroForTheSamePoint() {
-        assertEquals(0, ParksService.distanceKm(3.139, 101.6869,
+        assertEquals(0, GeoDistance.kmBetween(3.139, 101.6869,
                 3.139, 101.6869), 0.000001);
     }
 
     @Test
     void distance_isSymmetric() {
-        double forward = ParksService.distanceKm(3.139, 101.6869,
+        double forward = GeoDistance.kmBetween(3.139, 101.6869,
                 2.9264, 101.6964);
-        double backward = ParksService.distanceKm(2.9264, 101.6964,
+        double backward = GeoDistance.kmBetween(2.9264, 101.6964,
                 3.139, 101.6869);
 
         assertAll(

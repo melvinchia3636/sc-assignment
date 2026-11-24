@@ -106,26 +106,12 @@ public final class ParksService {
         }
 
         return parks.stream()
-                .map(park -> new NearbyPark(park, distanceKm(
+                .map(park -> new NearbyPark(park, GeoDistance.kmBetween(
                         district.latitude(), district.longitude(),
                         park.latitude(), park.longitude())))
                 .sorted(Comparator.comparingDouble(NearbyPark::distanceKm))
                 .limit(limit)
                 .toList();
-    }
-
-    /**
-     * Great-circle distance between two points.
-     *
-     * @param lat1 first latitude in degrees
-     * @param lon1 first longitude in degrees
-     * @param lat2 second latitude in degrees
-     * @param lon2 second longitude in degrees
-     * @return distance in kilometres
-     */
-    public static double distanceKm(double lat1, double lon1,
-                                    double lat2, double lon2) {
-        return GeoDistance.kmBetween(lat1, lon1, lat2, lon2);
     }
 
     private static List<Park> toParks(ParkEntry[] entries) {
