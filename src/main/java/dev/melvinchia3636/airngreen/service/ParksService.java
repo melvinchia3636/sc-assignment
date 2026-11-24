@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.NearbyPark;
@@ -18,11 +19,13 @@ import dev.melvinchia3636.airngreen.model.Park;
 /**
  * Recommends green spaces near a district.
  *
- * <p>Parks come from a small curated dataset bundled with the application, so
- * the recommendation works without a second network service.</p>
+ * <p>Parks come from an OpenStreetMap-derived dataset bundled with the
+ * application, so the recommendation works without a second network service.</p>
  */
 public final class ParksService {
 
+    private static final Logger LOGGER =
+            Logger.getLogger(ParksService.class.getName());
     private static final String RESOURCE = "/parks.json";
     private static final int DEFAULT_LIMIT = 5;
 
@@ -53,6 +56,21 @@ public final class ParksService {
              Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
             ParkEntry[] entries = new Gson().fromJson(reader, ParkEntry[].class);
             return new ParksService(toParks(entries));
+        }
+    }
+
+    /**
+     * Loads the bundled park dataset, falling back to an empty service when the
+     * resource is missing from the packaged application.
+     *
+     * @return a service backed by {@code /parks.json}, or an empty service
+     */
+    public static ParksService fromClasspathOrEmpty() {
+        try {
+            return fromClasspath();
+        } catch (IOException missing) {
+            LOGGER.warning("Park dataset unavailable: " + missing.getMessage());
+            return new ParksService(List.of());
         }
     }
 

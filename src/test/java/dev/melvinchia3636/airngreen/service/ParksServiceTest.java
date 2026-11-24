@@ -85,4 +85,9 @@ class ParksServiceTest {
                     () -> "No park for " + district);
         }
     }
+
+    @Test
+    void fromClasspathOrEmpty_loadsTheBundledDataset() {
+        assertTrue(ParksService.fromClasspathOrEmpty().all().size() >= 100);
+    }
 }

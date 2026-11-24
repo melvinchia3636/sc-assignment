@@ -1,8 +1,5 @@
 package dev.melvinchia3636.airngreen;
 
-import java.io.IOException;
-import java.util.List;
-
 import javax.swing.SwingUtilities;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -56,7 +53,7 @@ public final class App {
         AirQualityService airQuality = new AirQualityService(
                 new AqiApiClient(new JdkHttpTransport(), baseUrl), store);
         ReportService reports = new ReportService(store);
-        ParksService parks = loadParks();
+        ParksService parks = ParksService.fromClasspathOrEmpty();
 
         StatusBar status = new StatusBar();
         AlertLogObserver history = new AlertLogObserver(store.loadAlerts());
@@ -80,14 +77,5 @@ public final class App {
 
         new MainFrame(dashboard, stations, reportPanel, alertsPanel, status)
                 .setVisible(true);
-    }
-
-    private static ParksService loadParks() {
-        try {
-            return ParksService.fromClasspath();
-        } catch (IOException missing) {
-            System.err.println("Park dataset unavailable: " + missing.getMessage());
-            return new ParksService(List.of());
-        }
     }
 }
