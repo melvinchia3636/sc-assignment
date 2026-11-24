@@ -1,121 +1,779 @@
 [
   {
+    "name": "Ain Arabia",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.147459,
+    "longitude": 101.710154,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Arcoris Plaza",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.167834,
+    "longitude": 101.652159,
+    "facilities": "Public park"
+  },
+  {
+    "name": "ASEAN Sculpture Garden",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.149088,
+    "longitude": 101.684751,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Bangsar South Lakeside Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.111678,
+    "longitude": 101.666557,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Bukit Bandaraya Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.137552,
+    "longitude": 101.670079,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Dinosaur Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.14733,
+    "longitude": 101.645384,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Duta Nusantara Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.167961,
+    "longitude": 101.665307,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Forest in the City",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.146561,
+    "longitude": 101.71164,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Herb & Spice Garden",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.145919,
+    "longitude": 101.682164,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "High Street Studios Pocket Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.148642,
+    "longitude": 101.69804,
+    "facilities": "Public garden"
+  },
+  {
     "name": "KLCC Park",
     "district": "KUALA_LUMPUR",
-    "latitude": 3.1555,
-    "longitude": 101.7140,
-    "facilities": "Jogging track, playground, water park"
+    "latitude": 3.155624,
+    "longitude": 101.71479,
+    "facilities": "Public park"
   },
   {
-    "name": "Perdana Botanical Garden",
+    "name": "Laman Heliconia",
     "district": "KUALA_LUMPUR",
-    "latitude": 3.1428,
-    "longitude": 101.6840,
-    "facilities": "Lake, gardens, walking paths"
+    "latitude": 3.143621,
+    "longitude": 101.68476,
+    "facilities": "Public garden"
   },
   {
-    "name": "Titiwangsa Lake Gardens",
+    "name": "Laman Jejak Pahlawan",
     "district": "KUALA_LUMPUR",
-    "latitude": 3.1785,
-    "longitude": 101.7055,
-    "facilities": "Lake, cycling track, playground"
+    "latitude": 3.149653,
+    "longitude": 101.687391,
+    "facilities": "Public park"
   },
   {
-    "name": "KL Forest Eco Park",
+    "name": "Laman Standard Chartered Kuala Lumpur",
     "district": "KUALA_LUMPUR",
-    "latitude": 3.1495,
-    "longitude": 101.6985,
-    "facilities": "Canopy walk, forest trails"
+    "latitude": 3.15647,
+    "longitude": 101.710456,
+    "facilities": "Public park"
   },
   {
-    "name": "Taman Tasik Permaisuri",
+    "name": "Lanai Seni",
     "district": "KUALA_LUMPUR",
-    "latitude": 3.0830,
-    "longitude": 101.7120,
-    "facilities": "Lake, jogging track, exercise stations"
+    "latitude": 3.153068,
+    "longitude": 101.696278,
+    "facilities": "Public garden"
   },
   {
-    "name": "Desa ParkCity Central Park",
+    "name": "Oasis Garden",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.14449,
+    "longitude": 101.684518,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Pantai Eco Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.10273,
+    "longitude": 101.673298,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Pudu Pocket Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.145822,
+    "longitude": 101.699025,
+    "facilities": "Public community garden"
+  },
+  {
+    "name": "Rizab Kawasan Lapang dan Rekreasi",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.136753,
+    "longitude": 101.714568,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Rumah Orkid",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.150167,
+    "longitude": 101.702073,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Serai Linear Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.139777,
+    "longitude": 101.660879,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Sri Hartamas Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.155862,
+    "longitude": 101.64798,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Sunken Garden",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.144799,
+    "longitude": 101.683277,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Taman Asean",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.150168,
+    "longitude": 101.702198,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Taman Botani Perdana",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.143805,
+    "longitude": 101.684347,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Bunga Raya",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.145335,
+    "longitude": 101.686249,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Taman Desa Recreational Ground",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.101184,
+    "longitude": 101.683771,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Dusun Bandar",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.129735,
+    "longitude": 101.694367,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Etnobotani",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.146955,
+    "longitude": 101.687637,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Taman Herba",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.150229,
+    "longitude": 101.702176,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Taman Orkid",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.143961,
+    "longitude": 101.687595,
+    "facilities": "Public botanical garden"
+  },
+  {
+    "name": "Taman Rusa",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.147853,
+    "longitude": 101.679752,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Taman Tasik Titiwangsa",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.177848,
+    "longitude": 101.706953,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Tasik Varsiti",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.119519,
+    "longitude": 101.656838,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Tiong Nam",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.164984,
+    "longitude": 101.69369,
+    "facilities": "Public park"
+  },
+  {
+    "name": "The Central Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.11208,
+    "longitude": 101.667768,
+    "facilities": "Public park"
+  },
+  {
+    "name": "The Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.171442,
+    "longitude": 101.664828,
+    "facilities": "Public park"
+  },
+  {
+    "name": "University of Malaya Crest",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.122001,
+    "longitude": 101.657019,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Velo Garden (V Park)",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.129287,
+    "longitude": 101.722502,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Backfield SS2",
     "district": "PETALING_JAYA",
-    "latitude": 3.1860,
-    "longitude": 101.6290,
-    "facilities": "Lake, dog park, walking paths"
+    "latitude": 3.111839,
+    "longitude": 101.617118,
+    "facilities": "Public park"
   },
   {
-    "name": "Taman Jaya Park",
+    "name": "BU4 Park",
     "district": "PETALING_JAYA",
-    "latitude": 3.1040,
-    "longitude": 101.6380,
-    "facilities": "Lake, jogging track, playground"
+    "latitude": 3.152405,
+    "longitude": 101.607826,
+    "facilities": "Public park"
   },
   {
-    "name": "Bukit Gasing Forest Park",
+    "name": "Bulatan Subang Airport",
     "district": "PETALING_JAYA",
-    "latitude": 3.0940,
-    "longitude": 101.6560,
-    "facilities": "Forest trails, hiking"
+    "latitude": 3.118176,
+    "longitude": 101.563187,
+    "facilities": "Public garden"
   },
   {
-    "name": "Shah Alam Lake Garden",
+    "name": "Central Park Bandar Utama",
+    "district": "PETALING_JAYA",
+    "latitude": 3.149977,
+    "longitude": 101.614075,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Grow Subang",
+    "district": "PETALING_JAYA",
+    "latitude": 3.081403,
+    "longitude": 101.601342,
+    "facilities": "Public community garden"
+  },
+  {
+    "name": "Kid's Playground & Family Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.075651,
+    "longitude": 101.601594,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Mayang Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.124611,
+    "longitude": 101.596511,
+    "facilities": "Public park"
+  },
+  {
+    "name": "PJS 10 Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.078965,
+    "longitude": 101.607472,
+    "facilities": "Public park"
+  },
+  {
+    "name": "SS 24 Gated Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.117057,
+    "longitude": 101.609485,
+    "facilities": "Public park"
+  },
+  {
+    "name": "SS 4/A6 Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.109829,
+    "longitude": 101.608631,
+    "facilities": "Public park"
+  },
+  {
+    "name": "SS 4D/5 Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.112254,
+    "longitude": 101.599753,
+    "facilities": "Public park"
+  },
+  {
+    "name": "SS5 Playground & Basketball Court",
+    "district": "PETALING_JAYA",
+    "latitude": 3.101555,
+    "longitude": 101.603433,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Starling Rooftop Garden",
+    "district": "PETALING_JAYA",
+    "latitude": 3.136422,
+    "longitude": 101.622576,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Starling Sky Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.13505,
+    "longitude": 101.623063,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Sterling Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.101627,
+    "longitude": 101.591379,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Ara Impian",
+    "district": "PETALING_JAYA",
+    "latitude": 3.123983,
+    "longitude": 101.580657,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Bandaran Kelana Jaya",
+    "district": "PETALING_JAYA",
+    "latitude": 3.09906,
+    "longitude": 101.596125,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Eko Ara Damansara",
+    "district": "PETALING_JAYA",
+    "latitude": 3.120387,
+    "longitude": 101.568998,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Subang Indah Kid's Playground & Family Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.07468,
+    "longitude": 101.599888,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Subang Ria",
+    "district": "PETALING_JAYA",
+    "latitude": 3.081553,
+    "longitude": 101.596115,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Zaaba",
+    "district": "PETALING_JAYA",
+    "latitude": 3.1439,
+    "longitude": 101.624388,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Tropicana Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.133464,
+    "longitude": 101.594851,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Bukit Jelutong Eco Community Park",
     "district": "SHAH_ALAM",
-    "latitude": 3.0730,
-    "longitude": 101.5060,
-    "facilities": "Lake, gardens, walking paths"
+    "latitude": 3.116863,
+    "longitude": 101.521301,
+    "facilities": "Public park"
   },
   {
-    "name": "Taman Botani Negara Shah Alam",
+    "name": "Bulatan Stadium",
     "district": "SHAH_ALAM",
-    "latitude": 3.2000,
-    "longitude": 101.5100,
-    "facilities": "Botanical gardens, cycling"
+    "latitude": 3.078575,
+    "longitude": 101.540814,
+    "facilities": "Public garden"
   },
   {
-    "name": "Taman Tasik Seksyen 7",
+    "name": "City of Digital Lights",
     "district": "SHAH_ALAM",
-    "latitude": 3.0700,
-    "longitude": 101.4870,
-    "facilities": "Lake, playground, jogging"
+    "latitude": 3.065075,
+    "longitude": 101.482571,
+    "facilities": "Public park"
   },
   {
-    "name": "Taman Tasik Klang",
+    "name": "Dahlia Park",
+    "district": "SHAH_ALAM",
+    "latitude": 3.10184,
+    "longitude": 101.527171,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Dataran Bunga Raya",
+    "district": "SHAH_ALAM",
+    "latitude": 3.076525,
+    "longitude": 101.521963,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Dataran Shah Alam Grand Stand",
+    "district": "SHAH_ALAM",
+    "latitude": 3.074003,
+    "longitude": 101.518716,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Laman Zingiberales",
+    "district": "SHAH_ALAM",
+    "latitude": 3.106288,
+    "longitude": 101.517069,
+    "facilities": "Public garden"
+  },
+  {
+    "name": "Menara Park Playground",
+    "district": "SHAH_ALAM",
+    "latitude": 3.096437,
+    "longitude": 101.528914,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Padang A",
+    "district": "SHAH_ALAM",
+    "latitude": 3.074954,
+    "longitude": 101.522561,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Padang B",
+    "district": "SHAH_ALAM",
+    "latitude": 3.07669,
+    "longitude": 101.523642,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Playground Jalan Belat Seksyen 19",
+    "district": "SHAH_ALAM",
+    "latitude": 3.056016,
+    "longitude": 101.532279,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Small Park",
+    "district": "SHAH_ALAM",
+    "latitude": 3.098427,
+    "longitude": 101.53492,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Awam",
+    "district": "SHAH_ALAM",
+    "latitude": 3.079763,
+    "longitude": 101.523643,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Lembah Bukit SUK Shah Alam",
+    "district": "SHAH_ALAM",
+    "latitude": 3.081133,
+    "longitude": 101.514458,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Permainan Seksyen 7",
+    "district": "SHAH_ALAM",
+    "latitude": 3.080644,
+    "longitude": 101.497945,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Persatuan Komuniti Seksyen 23",
+    "district": "SHAH_ALAM",
+    "latitude": 3.044833,
+    "longitude": 101.529909,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Rekreasi Indah",
+    "district": "SHAH_ALAM",
+    "latitude": 3.075849,
+    "longitude": 101.516154,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Rekreasi Permai",
+    "district": "SHAH_ALAM",
+    "latitude": 3.072087,
+    "longitude": 101.514065,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Rekreasi Raja Lumu",
+    "district": "SHAH_ALAM",
+    "latitude": 3.076271,
+    "longitude": 101.520602,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Tasik @ 7/1F Shah Alam",
+    "district": "SHAH_ALAM",
+    "latitude": 3.085094,
+    "longitude": 101.503662,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Tasik Seksyen 7",
+    "district": "SHAH_ALAM",
+    "latitude": 3.076967,
+    "longitude": 101.49214,
+    "facilities": "Public park"
+  },
+  {
+    "name": "BBR Sales Gallery Park",
     "district": "KLANG",
-    "latitude": 3.0450,
-    "longitude": 101.4520,
-    "facilities": "Lake, jogging track, playground"
+    "latitude": 3.085527,
+    "longitude": 101.432484,
+    "facilities": "Public park"
   },
   {
-    "name": "Taman Rekreasi Bandar Klang",
+    "name": "Jalan Patani Park",
     "district": "KLANG",
-    "latitude": 3.0330,
-    "longitude": 101.4480,
-    "facilities": "Playground, sports courts"
+    "latitude": 3.06399,
+    "longitude": 101.450212,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Bandar Diraja Klang",
+    "district": "KLANG",
+    "latitude": 3.036429,
+    "longitude": 101.445894,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Rakyat",
+    "district": "KLANG",
+    "latitude": 3.021092,
+    "longitude": 101.447969,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Seratus",
+    "district": "KLANG",
+    "latitude": 3.04971,
+    "longitude": 101.453797,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Blue Chair",
+    "district": "PUTRAJAYA",
+    "latitude": 2.95199,
+    "longitude": 101.72245,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Dataran Rakyat",
+    "district": "PUTRAJAYA",
+    "latitude": 2.910527,
+    "longitude": 101.682693,
+    "facilities": "Public park"
+  },
+  {
+    "name": "P15 Park",
+    "district": "PUTRAJAYA",
+    "latitude": 2.942406,
+    "longitude": 101.724985,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Padang P11D/14",
+    "district": "PUTRAJAYA",
+    "latitude": 2.964715,
+    "longitude": 101.672767,
+    "facilities": "Public park"
+  },
+  {
+    "name": "playground p11d/9",
+    "district": "PUTRAJAYA",
+    "latitude": 2.96513,
+    "longitude": 101.674094,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Presint 18 Playground",
+    "district": "PUTRAJAYA",
+    "latitude": 2.9232,
+    "longitude": 101.697914,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Presint 8 Skateboard Park",
+    "district": "PUTRAJAYA",
+    "latitude": 2.939322,
+    "longitude": 101.682872,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Skyrides Putrajaya",
+    "district": "PUTRAJAYA",
+    "latitude": 2.924422,
+    "longitude": 101.683354,
+    "facilities": "Public park"
   },
   {
     "name": "Taman Botani Putrajaya",
     "district": "PUTRAJAYA",
-    "latitude": 2.9430,
-    "longitude": 101.6930,
-    "facilities": "Gardens, walking paths, lake"
+    "latitude": 2.946429,
+    "longitude": 101.696775,
+    "facilities": "Public park"
   },
   {
-    "name": "Putrajaya Wetlands Park",
+    "name": "Taman Haruman Wawasan",
     "district": "PUTRAJAYA",
-    "latitude": 2.9440,
-    "longitude": 101.6780,
-    "facilities": "Wetlands, birdwatching, trails"
+    "latitude": 2.927299,
+    "longitude": 101.687045,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Pancarona",
+    "district": "PUTRAJAYA",
+    "latitude": 2.915126,
+    "longitude": 101.688673,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Persahabatan China-Malaysia",
+    "district": "PUTRAJAYA",
+    "latitude": 2.912404,
+    "longitude": 101.677621,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Putra Perdana",
+    "district": "PUTRAJAYA",
+    "latitude": 2.941961,
+    "longitude": 101.69871,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Rimba Alam",
+    "district": "PUTRAJAYA",
+    "latitude": 2.936931,
+    "longitude": 101.72108,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Saujana Hijau",
+    "district": "PUTRAJAYA",
+    "latitude": 2.961971,
+    "longitude": 101.674687,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Seri Empangan",
+    "district": "PUTRAJAYA",
+    "latitude": 2.8974,
+    "longitude": 101.679526,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Wawasan",
+    "district": "PUTRAJAYA",
+    "latitude": 2.927432,
+    "longitude": 101.69316,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Wetland Putrajaya",
+    "district": "PUTRAJAYA",
+    "latitude": 2.963819,
+    "longitude": 101.695287,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Cyberjaya Mini Park",
+    "district": "CYBERJAYA",
+    "latitude": 2.922802,
+    "longitude": 101.649377,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Obama Oval",
+    "district": "CYBERJAYA",
+    "latitude": 2.909318,
+    "longitude": 101.655488,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Cabaran",
+    "district": "CYBERJAYA",
+    "latitude": 2.886379,
+    "longitude": 101.668713,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Rekreasi Presint 9",
+    "district": "CYBERJAYA",
+    "latitude": 2.939303,
+    "longitude": 101.672712,
+    "facilities": "Public park"
+  },
+  {
+    "name": "Taman Seri Empangan",
+    "district": "CYBERJAYA",
+    "latitude": 2.899208,
+    "longitude": 101.678369,
+    "facilities": "Public park"
   },
   {
     "name": "Taman Tasik Cyberjaya",
     "district": "CYBERJAYA",
-    "latitude": 2.9220,
-    "longitude": 101.6420,
-    "facilities": "Lake, jogging track, playground"
-  },
-  {
-    "name": "Cyberjaya Community Park",
-    "district": "CYBERJAYA",
-    "latitude": 2.9180,
-    "longitude": 101.6530,
-    "facilities": "Playground, exercise stations"
+    "latitude": 2.937877,
+    "longitude": 101.642628,
+    "facilities": "Public park"
   }
 ]
