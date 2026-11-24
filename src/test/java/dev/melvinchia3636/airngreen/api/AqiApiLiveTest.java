@@ -23,7 +23,7 @@ class AqiApiLiveTest {
     private static final int EXPECTED_SERIES_SAMPLES = 72;
 
     private final AqiApiClient client =
-            new AqiApiClient(new JdkHttpTransport());
+            new AqiApiClient(new OkHttpTransport());
 
     @Test
     void liveness_answersWithNoContent() {

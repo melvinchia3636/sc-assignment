@@ -1,11 +1,10 @@
 package dev.melvinchia3636.airngreen.api;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Function;
+
+import okhttp3.HttpUrl;
 
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
@@ -23,12 +22,11 @@ public final class AqiApiClient {
     public static final String DEFAULT_BASE_URL =
             "https://aqi-api-melvin.fly.dev";
 
-    private static final String LIVENESS_PATH = "/Index/liveness";
     private static final int NO_CONTENT = 204;
 
     private final HttpTransport transport;
     private final AqiJsonParser parser;
-    private final String baseUrl;
+    private final HttpUrl baseUrl;
 
     /**
      * Creates a client for the default deployment.
@@ -48,7 +46,7 @@ public final class AqiApiClient {
     public AqiApiClient(HttpTransport transport, String baseUrl) {
         this.transport = transport;
         this.parser = new AqiJsonParser();
-        this.baseUrl = trimTrailingSlash(baseUrl);
+        this.baseUrl = HttpUrl.get(baseUrl);
     }
 
     /**
@@ -61,8 +59,12 @@ public final class AqiApiClient {
      */
     public StationReading nearestStation(double latitude, double longitude)
             throws ApiException {
-        String url = baseUrl + "/nearest-station?lat=" + latitude + "&lon=" + longitude;
-        return fetch(url, parser::parseStation);
+        HttpUrl url = baseUrl.newBuilder()
+                .addPathSegment("nearest-station")
+                .addQueryParameter("lat", Double.toString(latitude))
+                .addQueryParameter("lon", Double.toString(longitude))
+                .build();
+        return fetch(url.toString(), parser::parseStation);
     }
 
     /**
@@ -73,8 +75,11 @@ public final class AqiApiClient {
      * @throws ApiException when the station is unknown or the service fails
      */
     public StationReading station(String idx) throws ApiException {
-        String encoded = URLEncoder.encode(idx, StandardCharsets.UTF_8);
-        return fetch(baseUrl + "/station/" + encoded, parser::parseStation);
+        HttpUrl url = baseUrl.newBuilder()
+                .addPathSegment("station")
+                .addPathSegment(idx)
+                .build();
+        return fetch(url.toString(), parser::parseStation);
     }
 
     /**
@@ -84,7 +89,10 @@ public final class AqiApiClient {
      * @throws ApiException when the service cannot answer
      */
     public List<StationSummary> stations() throws ApiException {
-        return fetch(baseUrl + "/stations", parser::parseStations);
+        HttpUrl url = baseUrl.newBuilder()
+                .addPathSegment("stations")
+                .build();
+        return fetch(url.toString(), parser::parseStations);
     }
 
     /**
@@ -100,10 +108,14 @@ public final class AqiApiClient {
     public List<StationSummary> stations(double south, double west,
                                          double north, double east)
             throws ApiException {
-        String url = String.format(Locale.ROOT,
-                "%s/stations?south=%.4f&west=%.4f&north=%.4f&east=%.4f",
-                baseUrl, south, west, north, east);
-        return fetch(url, parser::parseStations);
+        HttpUrl url = baseUrl.newBuilder()
+                .addPathSegment("stations")
+                .addQueryParameter("south", Double.toString(south))
+                .addQueryParameter("west", Double.toString(west))
+                .addQueryParameter("north", Double.toString(north))
+                .addQueryParameter("east", Double.toString(east))
+                .build();
+        return fetch(url.toString(), parser::parseStations);
     }
 
     /**
@@ -112,8 +124,12 @@ public final class AqiApiClient {
      * @return true when the service answers with 204
      */
     public boolean isAlive() {
+        HttpUrl url = baseUrl.newBuilder()
+                .addPathSegment("Index")
+                .addPathSegment("liveness")
+                .build();
         try {
-            return transport.get(baseUrl + LIVENESS_PATH).statusCode() == NO_CONTENT;
+            return transport.get(url.toString()).statusCode() == NO_CONTENT;
         } catch (IOException unreachable) {
             return false;
         }
@@ -150,9 +166,5 @@ public final class AqiApiClient {
         String message = parser.errorMessage(response.body());
         return new ApiException(response.statusCode(),
                 message == null ? ApiException.messageFor(response.statusCode()) : message);
-    }
-
-    private String trimTrailingSlash(String url) {
-        return url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
     }
 }

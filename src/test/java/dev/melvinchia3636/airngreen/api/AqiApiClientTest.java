@@ -80,10 +80,10 @@ class AqiApiClientTest {
         client.stations(0.85, 99.6, 7.5, 119.3);
 
         assertAll(
-                () -> assertTrue(requested.get().contains("south=0.8500")),
-                () -> assertTrue(requested.get().contains("west=99.6000")),
-                () -> assertTrue(requested.get().contains("north=7.5000")),
-                () -> assertTrue(requested.get().contains("east=119.3000")));
+                () -> assertTrue(requested.get().contains("south=0.85")),
+                () -> assertTrue(requested.get().contains("west=99.6")),
+                () -> assertTrue(requested.get().contains("north=7.5")),
+                () -> assertTrue(requested.get().contains("east=119.3")));
     }
 
     @Test

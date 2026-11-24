@@ -12,7 +12,7 @@ flowchart TB
     C["Controller layer<br/>Dashboard / Stations / Reports / Alerts controllers<br/>Async (SwingWorker)"]
     S["Service layer<br/>AirQualityService · ParksService · ReportService<br/>PollutionAlertService (subject + observers)"]
     STORE["Storage layer<br/>LocalStore (JSON + properties)<br/>SettingsStore (typed preferences)"]
-    API["API layer<br/>AqiApiClient · JdkHttpTransport<br/>AqiJsonParser · ApiException"]
+    API["API layer<br/>AqiApiClient · OkHttpTransport<br/>AqiJsonParser · ApiException"]
     M["Domain model<br/>StationReading · AqiLevel · District · Park<br/>CitizenReport · AqiAlert · AlertThreshold"]
 
     EXT[("AQI API<br/>aqi-api-melvin.fly.dev")]
