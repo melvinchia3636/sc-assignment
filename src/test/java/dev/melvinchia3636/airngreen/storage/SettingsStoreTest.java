@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -50,5 +52,16 @@ class SettingsStoreTest {
                 () -> assertEquals(District.KLANG, reopened.getDistrict()),
                 () -> assertEquals(AlertThreshold.UNHEALTHY,
                         reopened.getThreshold()));
+    }
+
+    @Test
+    void setDistrict_notifiesListeners() {
+        SettingsStore settings = new SettingsStore(new LocalStore(directory));
+        List<District> seen = new ArrayList<>();
+        settings.onDistrictChange(seen::add);
+
+        settings.setDistrict(District.KLANG);
+
+        assertEquals(List.of(District.KLANG), seen);
     }
 }

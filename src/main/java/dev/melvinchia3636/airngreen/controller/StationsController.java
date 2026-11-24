@@ -41,6 +41,7 @@ public final class StationsController {
     public void start() {
         view.onReload(this::loadAll);
         view.onLoadSelected(this::open);
+        settings.onDistrictChange(district -> loadAll());
         view.setDistrict(settings.getDistrict());
         loadAll();
     }

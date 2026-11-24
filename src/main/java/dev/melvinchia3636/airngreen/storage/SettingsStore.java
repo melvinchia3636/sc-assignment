@@ -1,6 +1,8 @@
 package dev.melvinchia3636.airngreen.storage;
 
 import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.model.District;
@@ -18,6 +20,8 @@ public final class SettingsStore {
 
     private final LocalStore store;
     private final Properties properties;
+    private final CopyOnWriteArrayList<Consumer<District>> districtListeners =
+            new CopyOnWriteArrayList<>();
 
     /**
      * Loads settings from the given store.
@@ -46,6 +50,18 @@ public final class SettingsStore {
     public void setDistrict(District district) {
         properties.setProperty(DISTRICT_KEY, district.name());
         save();
+        for (Consumer<District> listener : districtListeners) {
+            listener.accept(district);
+        }
+    }
+
+    /**
+     * Registers a callback invoked after the district changes.
+     *
+     * @param listener callback receiving the new district
+     */
+    public void onDistrictChange(Consumer<District> listener) {
+        districtListeners.addIfAbsent(listener);
     }
 
     /**
