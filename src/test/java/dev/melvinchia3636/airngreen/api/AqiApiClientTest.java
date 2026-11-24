@@ -139,16 +139,6 @@ class AqiApiClientTest {
     }
 
     @Test
-    void isAlive_trueOnlyForNoContent() {
-        server.enqueue(new MockResponse().setResponseCode(204));
-        server.enqueue(new MockResponse().setResponseCode(500));
-
-        assertAll(
-                () -> assertTrue(client.isAlive()),
-                () -> assertFalse(client.isAlive()));
-    }
-
-    @Test
     void baseUrl_trailingSlashIsNormalised() throws Exception {
         server.enqueue(new MockResponse().setBody(STATION_JSON));
 

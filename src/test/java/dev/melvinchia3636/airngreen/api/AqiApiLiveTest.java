@@ -2,7 +2,6 @@ package dev.melvinchia3636.airngreen.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -24,11 +23,6 @@ class AqiApiLiveTest {
 
     private final AqiApiClient client =
             new AqiApiClient(AqiApiClient.DEFAULT_BASE_URL);
-
-    @Test
-    void liveness_answersWithNoContent() {
-        assertTrue(client.isAlive());
-    }
 
     @Test
     void unknownStation_reportsNotFound() {

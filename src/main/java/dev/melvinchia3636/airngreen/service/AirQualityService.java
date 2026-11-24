@@ -101,13 +101,4 @@ public final class AirQualityService {
     public List<StationSummary> getCachedStations() {
         return store.loadStations();
     }
-
-    /**
-     * Checks whether the service is reachable.
-     *
-     * @return true when the liveness endpoint answers
-     */
-    public boolean isServiceAlive() {
-        return client.isAlive();
-    }
 }

@@ -15,7 +15,6 @@ classDiagram
         +stations(district: District) List~StationSummary~
         +getCachedReading() Optional~StationReading~
         +getCachedStations() List~StationSummary~
-        +isServiceAlive() boolean
     }
 
     class AqiApiClient {
@@ -25,7 +24,6 @@ classDiagram
         +nearestStation(latitude: double, longitude: double) StationReading
         +station(idx: String) StationReading
         +stations(south: double, west: double, north: double, east: double) List~StationSummary~
-        +isAlive() boolean
     }
 
     class AqiJsonParser {

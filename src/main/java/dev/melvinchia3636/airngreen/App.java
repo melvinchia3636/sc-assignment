@@ -74,7 +74,7 @@ public final class App {
         new StationsController(stationsPanel, airQualityService,
                 settingsStore, statusBar).start();
         new ReportsController(reportsPanel, reportService, statusBar).start();
-        new AlertsController(alertsPanel, settingsStore, airQualityService,
+        new AlertsController(alertsPanel, settingsStore,
                 alertHistory, statusBar).start();
 
         new MainFrame(dashboardPanel, stationsPanel, reportsPanel, alertsPanel,

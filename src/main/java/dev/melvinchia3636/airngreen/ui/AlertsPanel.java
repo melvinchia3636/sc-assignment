@@ -13,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -21,12 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import dev.melvinchia3636.airngreen.model.AqiLevel;
 import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.model.AqiAlert;
 
 /**
- * Alert settings view: threshold, history and service status.
+ * Alert settings view: threshold and history.
  */
 public final class AlertsPanel extends JPanel {
 
@@ -36,8 +34,6 @@ public final class AlertsPanel extends JPanel {
 
     private final JComboBox<AlertThreshold> thresholdBox =
             new JComboBox<>(AlertThreshold.values());
-    private final JLabel serviceStatus = new JLabel("Service status unknown.");
-    private final JButton checkButton = new JButton("Check service");
     private final DefaultListModel<String> historyModel = new DefaultListModel<>();
     private final JList<String> historyList = new JList<>(historyModel);
 
@@ -53,7 +49,6 @@ public final class AlertsPanel extends JPanel {
         thresholdBox.setSelectedItem(threshold);
         add(settingsCard(), BorderLayout.NORTH);
         add(historyCard(), BorderLayout.CENTER);
-        add(statusRow(), BorderLayout.SOUTH);
     }
 
     /**
@@ -64,15 +59,6 @@ public final class AlertsPanel extends JPanel {
     public void onThresholdChange(Consumer<AlertThreshold> action) {
         thresholdBox.addActionListener(
                 event -> action.accept((AlertThreshold) thresholdBox.getSelectedItem()));
-    }
-
-    /**
-     * Registers the service-check action.
-     *
-     * @param action callback that probes the API
-     */
-    public void onCheckService(Runnable action) {
-        checkButton.addActionListener(event -> action.run());
     }
 
     /**
@@ -91,29 +77,6 @@ public final class AlertsPanel extends JPanel {
         if (alerts.isEmpty()) {
             historyModel.addElement("No alerts yet. Raise a reading above the threshold.");
         }
-    }
-
-    /**
-     * Shows the liveness probe result.
-     *
-     * @param alive true when the API answered
-     */
-    public void showServiceStatus(boolean alive) {
-        serviceStatus.setText(alive
-                ? "Service online: readings can be refreshed."
-                : "Service offline: cached readings are still available.");
-        serviceStatus.setForeground(AqiColors.forLevel(
-                alive ? AqiLevel.GOOD : AqiLevel.SENSITIVE));
-    }
-
-    /**
-     * Enables or disables the service-check button.
-     *
-     * @param checking true while the probe is running
-     */
-    public void setChecking(boolean checking) {
-        checkButton.setEnabled(!checking);
-        checkButton.setText(checking ? "Checking..." : "Check service");
     }
 
     private JPanel settingsCard() {
@@ -143,15 +106,6 @@ public final class AlertsPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(historyList);
         scroll.setPreferredSize(new Dimension(600, 240));
         return card("Alert history", scroll);
-    }
-
-    private JPanel statusRow() {
-        JPanel row = new JPanel();
-        row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-        row.add(serviceStatus);
-        row.add(Box.createHorizontalGlue());
-        row.add(checkButton);
-        return row;
     }
 
     private JPanel card(String title, java.awt.Component body) {

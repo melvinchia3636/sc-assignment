@@ -26,7 +26,6 @@ public final class AqiApiClient {
     public static final String DEFAULT_BASE_URL =
             "https://aqi-api-melvin.fly.dev";
 
-    private static final int NO_CONTENT = 204;
     private static final long CONNECT_TIMEOUT_SECONDS = 5;
     private static final long READ_TIMEOUT_SECONDS = 10;
     private static final String USER_AGENT = "AirGreen/1.0";
@@ -114,24 +113,6 @@ public final class AqiApiClient {
                 .addQueryParameter("east", Double.toString(east))
                 .build();
         return fetch(url, parser::parseStations);
-    }
-
-    /**
-     * Checks the service's liveness endpoint.
-     *
-     * @return true when the service answers with 204
-     */
-    public boolean isAlive() {
-        HttpUrl url = baseUrl.newBuilder()
-                .addPathSegment("Index")
-                .addPathSegment("liveness")
-                .build();
-
-        try (Response response = client.newCall(request(url)).execute()) {
-            return response.code() == NO_CONTENT;
-        } catch (IOException unreachable) {
-            return false;
-        }
     }
 
     private <T> T fetch(HttpUrl url, Function<String, T> reader)
