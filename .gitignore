@@ -1,9 +1,9 @@
-.gradle/
-build/
-local.properties
-*.iml
+target/
+out/
 .idea/
+*.iml
 .DS_Store
-captures/
-.externalNativeBuild/
-.cxx/
+*.log
+
+# Third-party assignment brief, not part of the submission.
+docs/assignment.pdf
