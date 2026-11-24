@@ -65,13 +65,19 @@ public final class StationsController {
     }
 
     private void open(String idx) {
+        view.showDetailLoading(idx);
+        view.setDetailLoading(true);
         status.show("Loading station " + idx + "...");
+
         Async.run(() -> airQuality.byIdx(idx),
                 reading -> {
+                    view.setDetailLoading(false);
                     view.showDetail(reading);
                     status.show("Loaded station " + reading.idx() + ".");
                 },
                 failure -> {
+                    view.setDetailLoading(false);
+                    view.showDetailError(failure.getMessage());
                     view.showMessage(failure.getMessage(), true);
                     status.show("Could not load station " + idx + ".");
                 });

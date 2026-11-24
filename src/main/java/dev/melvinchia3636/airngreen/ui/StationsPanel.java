@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -57,6 +59,7 @@ public final class StationsPanel extends JPanel {
     private final JTextArea detail = new JTextArea(6, 40);
     private final JButton loadButton = new JButton("Open selected station");
     private final JLabel notice = new JLabel(" ");
+    private boolean detailLoading;
 
     /**
      * Creates the station directory view.
@@ -79,8 +82,11 @@ public final class StationsPanel extends JPanel {
 
         search.getDocument().addDocumentListener(new SearchListener());
         table.getSelectionModel().addListSelectionListener(
-                event -> loadButton.setEnabled(!event.getValueIsAdjusting()
-                        && table.getSelectedRow() >= 0));
+                event -> {
+                    if (!event.getValueIsAdjusting()) {
+                        updateLoadButton();
+                    }
+                });
     }
 
     /**
@@ -152,15 +158,48 @@ public final class StationsPanel extends JPanel {
                 %s (%s)
                 AQI %s - %s
                 Updated %s
-                Recent samples: %d
+                %s
+                %s
                 """.formatted(
                 reading.name(),
                 reading.idx(),
                 formatAqi(reading.aqi()),
                 reading.level().label(),
                 TIME_FORMAT.format(Instant.ofEpochSecond(reading.updatedAt())),
-                reading.series().size()));
+                pollutants(reading),
+                seriesSummary(reading)));
         detail.setCaretPosition(0);
+    }
+
+    /**
+     * Shows that a station report is being fetched.
+     *
+     * @param idx station id being loaded
+     */
+    public void showDetailLoading(String idx) {
+        detail.setText("Loading station " + idx + "...");
+        detail.setCaretPosition(0);
+    }
+
+    /**
+     * Shows a failed station lookup under the table.
+     *
+     * @param message user-facing failure message
+     */
+    public void showDetailError(String message) {
+        detail.setText("Could not load this station.\n" + message);
+        detail.setCaretPosition(0);
+    }
+
+    /**
+     * Enables or disables the open button while a detail request runs.
+     *
+     * @param loading true while the detail request is running
+     */
+    public void setDetailLoading(boolean loading) {
+        detailLoading = loading;
+        loadButton.setText(loading ? "Loading..." : "Open selected station");
+        updateLoadButton();
     }
 
     /**
@@ -221,6 +260,36 @@ public final class StationsPanel extends JPanel {
 
     private String formatAqi(Double aqi) {
         return aqi == null || aqi.isNaN() ? "-" : String.valueOf(Math.round(aqi));
+    }
+
+    private String pollutants(StationReading reading) {
+        List<String> parts = new ArrayList<>();
+        for (String key : List.of("pm25", "pm10", "o3", "no2", "so2", "co")) {
+            reading.pollutant(key).ifPresent(value -> parts.add(
+                    key.toUpperCase(Locale.ROOT) + " "
+                            + String.format(Locale.ENGLISH, "%.1f", value)));
+        }
+        return parts.isEmpty()
+                ? "No pollutant breakdown reported."
+                : String.join("   ", parts);
+    }
+
+    private String seriesSummary(StationReading reading) {
+        if (reading.series().isEmpty()) {
+            return "Recent AQI: no samples reported.";
+        }
+
+        DoubleSummaryStatistics stats = reading.series().stream()
+                .mapToDouble(point -> point.value())
+                .summaryStatistics();
+        return String.format(Locale.ENGLISH,
+                "Recent AQI: %d samples, min %.0f, max %.0f, average %.0f",
+                stats.getCount(), stats.getMin(), stats.getMax(),
+                stats.getAverage());
+    }
+
+    private void updateLoadButton() {
+        loadButton.setEnabled(!detailLoading && table.getSelectedRow() >= 0);
     }
 
     private void applyFilter() {
