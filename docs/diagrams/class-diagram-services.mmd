@@ -1,0 +1,97 @@
+---
+config:
+  theme: default
+  class:
+    hideEmptyMembersBox: true
+---
+classDiagram
+    direction TB
+
+    class AirQualityService {
+        -AqiApiClient client
+        -LocalStore store
+        +nearest(district: District) StationReading
+        +byIdx(idx: String) StationReading
+        +stations() List~StationSummary~
+        +cachedReading() Optional~StationReading~
+        +cachedStations() List~StationSummary~
+        +isServiceAlive() boolean
+    }
+
+    class AqiApiClient {
+        -HttpTransport transport
+        -AqiJsonParser parser
+        -String baseUrl
+        +nearestStation(latitude: double, longitude: double) StationReading
+        +station(idx: String) StationReading
+        +stations() List~StationSummary~
+        +isAlive() boolean
+    }
+
+    class HttpTransport {
+        <<interface>>
+        +get(url: String) Response
+    }
+
+    class JdkHttpTransport {
+        +get(url: String) Response
+    }
+
+    class AqiJsonParser {
+        +parseStation(root: JsonObject) StationReading
+        +parseStations(root: JsonObject) List~StationSummary~
+        +errorMessage(body: String) String
+    }
+
+    class ApiException {
+        -int statusCode
+        +statusCode() int
+        +isServiceFailure() boolean
+        +messageFor(statusCode: int) String
+    }
+
+    class LocalStore {
+        -Path directory
+        -Gson gson
+        +loadReading() Optional~StationReading~
+        +saveReading(reading: StationReading) void
+        +loadReports() List~CitizenReport~
+        +saveReports(reports: List~CitizenReport~) void
+        +loadStations() List~StationSummary~
+        +saveStations(stations: List~StationSummary~) void
+        +loadSettings() Properties
+        +saveSettings(settings: Properties) void
+    }
+
+    class SettingsStore {
+        -LocalStore store
+        -Properties properties
+        +district() District
+        +district(district: District) void
+        +advice() AdviceStrategy
+        +advice(advice: AdviceStrategy) void
+        +threshold() AlertThreshold
+        +threshold(threshold: AlertThreshold) void
+    }
+
+    class ReportService {
+        -LocalStore store
+        +add(district: District, category: String, note: String) CitizenReport
+        +all() List~CitizenReport~
+    }
+
+    class ParksService {
+        -List~Park~ parks
+        +nearest(district: District) List~NearbyPark~
+        +nearest(district: District, limit: int) List~NearbyPark~
+        +distanceKm(lat1: double, lon1: double, lat2: double, lon2: double) double
+    }
+
+    HttpTransport <|.. JdkHttpTransport
+    AirQualityService "1" --> "1" AqiApiClient : uses
+    AirQualityService "1" --> "1" LocalStore : caches
+    AqiApiClient "1" --> "1" HttpTransport : sends
+    AqiApiClient "1" --> "1" AqiJsonParser : parses
+    AqiApiClient ..> ApiException : throws
+    SettingsStore "1" --> "1" LocalStore : persists
+    ReportService "1" --> "1" LocalStore : persists

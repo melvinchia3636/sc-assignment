@@ -1,0 +1,130 @@
+---
+config:
+  theme: default
+  class:
+    hideEmptyMembersBox: true
+---
+classDiagram
+    direction TB
+
+    class District {
+        <<enumeration>>
+        -String label
+        -double latitude
+        -double longitude
+        +fromName(name: String) District
+        +label() String
+        +latitude() double
+        +longitude() double
+    }
+
+    class AqiLevel {
+        <<enumeration>>
+        -String label
+        -int floor
+        +classify(aqi: double) AqiLevel
+        +label() String
+        +isWorseThan(other: AqiLevel) boolean
+        +isAtLeast(other: AqiLevel) boolean
+    }
+
+    class StationReading {
+        <<record>>
+        +String idx
+        +String name
+        +double aqi
+        +long updatedAt
+        +Map~String,Double~ pollutants
+        +List~SeriesPoint~ series
+        +level() AqiLevel
+        +pollutant(key: String) OptionalDouble
+    }
+
+    class Park {
+        <<record>>
+        +String name
+        +District district
+        +double latitude
+        +double longitude
+        +String facilities
+    }
+
+    class CitizenReport {
+        <<record>>
+        +String id
+        +District district
+        +String category
+        +String note
+        +long createdAt
+    }
+
+    class AlertThreshold {
+        <<enumeration>>
+        -String label
+        -AqiLevel level
+        +level() Optional~AqiLevel~
+        +isEnabled() boolean
+        +fromName(name: String) AlertThreshold
+    }
+
+    class AdviceStrategy {
+        <<interface>>
+        +key() String
+        +name() String
+        +advice(level: AqiLevel) String
+        +outdoorMinutes(level: AqiLevel) int
+    }
+
+    class GeneralAdvice
+    class ChildrenAdvice
+    class ElderlyAdvice
+
+    class AlertObserver {
+        <<interface>>
+        +onThresholdExceeded(alert: AqiAlert) void
+    }
+
+    class BannerObserver {
+        -Consumer~AqiAlert~ banner
+        +onThresholdExceeded(alert: AqiAlert) void
+    }
+
+    class AlertLogObserver {
+        -List~AqiAlert~ alerts
+        +onThresholdExceeded(alert: AqiAlert) void
+        +alerts() List~AqiAlert~
+    }
+
+    class AqiAlert {
+        <<record>>
+        +AqiLevel level
+        +double aqi
+        +String stationName
+        +long createdAt
+    }
+
+    class PollutionAlertService {
+        -List~AlertObserver~ observers
+        -Supplier~AlertThreshold~ threshold
+        -AqiLevel lastAnnounced
+        +register(observer: AlertObserver) void
+        +unregister(observer: AlertObserver) void
+        +evaluate(reading: StationReading) void
+    }
+
+    AdviceStrategy <|.. GeneralAdvice
+    AdviceStrategy <|.. ChildrenAdvice
+    AdviceStrategy <|.. ElderlyAdvice
+
+    AlertObserver <|.. BannerObserver
+    AlertObserver <|.. AlertLogObserver
+
+    StationReading "1" ..> "1" AqiLevel : classifies
+    Park "0..*" --> "1" District
+    CitizenReport "0..*" --> "1" District
+    AlertThreshold "1" --> "1" AqiLevel : requires
+    AqiAlert "1" --> "1" AqiLevel : reports
+    PollutionAlertService "1" o-- "0..*" AlertObserver : notifies
+    PollutionAlertService ..> AlertThreshold : reads
+    PollutionAlertService ..> StationReading : evaluates
+    PollutionAlertService ..> AqiAlert : creates
