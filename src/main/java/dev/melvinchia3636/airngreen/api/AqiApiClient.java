@@ -39,6 +39,14 @@ public final class AqiApiClient {
     private final HttpUrl baseUrl;
 
     /**
+     * Creates a client for the deployment selected by
+     * {@code -Dairngreen.apiBase}, falling back to the public deployment.
+     */
+    public AqiApiClient() {
+        this(System.getProperty("airngreen.apiBase", DEFAULT_BASE_URL));
+    }
+
+    /**
      * Creates a client for a deployment using default timeouts.
      *
      * @param baseUrl service root such as {@code https://example.test}

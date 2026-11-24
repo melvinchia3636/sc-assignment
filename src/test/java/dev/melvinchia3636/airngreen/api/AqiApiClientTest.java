@@ -65,6 +65,26 @@ class AqiApiClientTest {
     }
 
     @Test
+    void defaultConstructor_usesTheConfiguredBaseUrl() throws Exception {
+        String previous = System.getProperty("airngreen.apiBase");
+        try {
+            System.setProperty("airngreen.apiBase",
+                    server.url("/").toString());
+            server.enqueue(new MockResponse().setBody(STATION_JSON));
+
+            new AqiApiClient().station("2609");
+
+            assertEquals("/station/2609", server.takeRequest().getPath());
+        } finally {
+            if (previous == null) {
+                System.clearProperty("airngreen.apiBase");
+            } else {
+                System.setProperty("airngreen.apiBase", previous);
+            }
+        }
+    }
+
+    @Test
     void boundedStations_sendTheBoundingBox() throws Exception {
         server.enqueue(new MockResponse().setBody("{\"stations\":[]}"));
 

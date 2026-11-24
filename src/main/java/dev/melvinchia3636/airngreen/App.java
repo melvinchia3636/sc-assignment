@@ -1,5 +1,7 @@
 package dev.melvinchia3636.airngreen;
 
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -14,6 +16,7 @@ import dev.melvinchia3636.airngreen.service.ParksService;
 import dev.melvinchia3636.airngreen.service.ReportService;
 import dev.melvinchia3636.airngreen.service.alerts.AlertArchiveObserver;
 import dev.melvinchia3636.airngreen.service.alerts.AlertLogObserver;
+import dev.melvinchia3636.airngreen.service.alerts.AlertObserver;
 import dev.melvinchia3636.airngreen.service.alerts.BannerObserver;
 import dev.melvinchia3636.airngreen.service.alerts.PollutionAlertService;
 import dev.melvinchia3636.airngreen.storage.LocalStore;
@@ -47,27 +50,28 @@ public final class App {
     private static void start() {
         LocalStore localStore = new LocalStore();
         SettingsStore settingsStore = new SettingsStore(localStore);
-        String baseUrl = System.getProperty("airngreen.apiBase",
-                AqiApiClient.DEFAULT_BASE_URL);
+
         AirQualityService airQualityService = new AirQualityService(
-                new AqiApiClient(baseUrl), localStore);
+                new AqiApiClient(), localStore);
         ReportService reportService = new ReportService(localStore);
         ParksService parksService = ParksService.fromClasspath();
-
-        StatusBar statusBar = new StatusBar();
-        AlertLogObserver alertHistory =
-                new AlertLogObserver(localStore.loadAlerts());
         PollutionAlertService alertService =
                 new PollutionAlertService(settingsStore::getThreshold);
-        alertService.register(alertHistory);
-        alertService.register(new AlertArchiveObserver(localStore));
-        alertService.register(new BannerObserver(statusBar::showAlert));
 
+        StatusBar statusBar = new StatusBar();
         DashboardPanel dashboardPanel = new DashboardPanel(
                 settingsStore.getDistrict(), settingsStore.getAudienceStrategy());
         StationsPanel stationsPanel = new StationsPanel();
         ReportsPanel reportsPanel = new ReportsPanel();
         AlertsPanel alertsPanel = new AlertsPanel(settingsStore.getThreshold());
+
+        AlertLogObserver alertHistoryObserver =
+                new AlertLogObserver(localStore.loadAlerts());
+        List<AlertObserver> alertObservers = List.of(
+                alertHistoryObserver,
+                new AlertArchiveObserver(localStore),
+                new BannerObserver(statusBar::showAlert));
+        alertObservers.forEach(alertService::register);
 
         new DashboardController(dashboardPanel, airQualityService,
                 parksService, settingsStore, alertService, statusBar).start();
@@ -75,7 +79,7 @@ public final class App {
                 settingsStore, statusBar).start();
         new ReportsController(reportsPanel, reportService, statusBar).start();
         new AlertsController(alertsPanel, settingsStore,
-                alertHistory, statusBar).start();
+                alertHistoryObserver, statusBar).start();
 
         new MainFrame(dashboardPanel, stationsPanel, reportsPanel, alertsPanel,
                 statusBar).setVisible(true);
