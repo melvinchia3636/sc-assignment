@@ -107,10 +107,10 @@ classDiagram
     AirQualityService "1" --> "1" AqiApiClient : uses
     AirQualityService "1" --> "1" LocalStore : caches
     AqiApiClient "1" --> "1" HttpTransport : sends
-    AqiApiClient "1" --> "1" AqiJsonParser : parses
+    AqiApiClient "1" *-- "1" AqiJsonParser : parser
     AqiApiClient ..> ApiException : throws
     SettingsStore "1" --> "1" LocalStore : persists
     ReportService "1" --> "1" LocalStore : persists
-    ParksService "1" o-- "0..*" Park : loads
+    ParksService "1" --> "0..*" Park : loads
     ParksService ..> NearbyPark : returns
     NearbyPark "1" --> "1" Park : ranks

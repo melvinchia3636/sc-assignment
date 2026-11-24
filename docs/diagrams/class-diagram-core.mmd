@@ -124,7 +124,7 @@ classDiagram
     CitizenReport "0..*" --> "1" District : concerns
     AlertThreshold "1" --> "1" AqiLevel : requires
     AqiAlert "1" --> "1" AqiLevel : reports
-    PollutionAlertService "1" o-- "0..*" AlertObserver : notifies
+    PollutionAlertService "1" --> "0..*" AlertObserver : notifies
     PollutionAlertService ..> AlertThreshold : reads
     PollutionAlertService ..> StationReading : evaluates
     PollutionAlertService ..> AqiAlert : creates
