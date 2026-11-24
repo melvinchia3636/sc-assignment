@@ -46,36 +46,39 @@ public final class App {
     }
 
     private static void start() {
-        LocalStore store = new LocalStore();
-        SettingsStore settings = new SettingsStore(store);
+        LocalStore localStore = new LocalStore();
+        SettingsStore settingsStore = new SettingsStore(localStore);
         String baseUrl = System.getProperty("airngreen.apiBase",
                 AqiApiClient.DEFAULT_BASE_URL);
-        AirQualityService airQuality = new AirQualityService(
-                new AqiApiClient(new JdkHttpTransport(), baseUrl), store);
-        ReportService reports = new ReportService(store);
-        ParksService parks = ParksService.fromClasspathOrEmpty();
+        AirQualityService airQualityService = new AirQualityService(
+                new AqiApiClient(new JdkHttpTransport(), baseUrl), localStore);
+        ReportService reportService = new ReportService(localStore);
+        ParksService parksService = ParksService.fromClasspathOrEmpty();
 
-        StatusBar status = new StatusBar();
-        AlertLogObserver history = new AlertLogObserver(store.loadAlerts());
-        PollutionAlertService alerts =
-                new PollutionAlertService(settings::threshold);
-        alerts.register(history);
-        alerts.register(new AlertArchiveObserver(store));
-        alerts.register(new BannerObserver(status::showAlert));
+        StatusBar statusBar = new StatusBar();
+        AlertLogObserver alertHistory =
+                new AlertLogObserver(localStore.loadAlerts());
+        PollutionAlertService alertService =
+                new PollutionAlertService(settingsStore::threshold);
+        alertService.register(alertHistory);
+        alertService.register(new AlertArchiveObserver(localStore));
+        alertService.register(new BannerObserver(statusBar::showAlert));
 
-        DashboardPanel dashboard =
-                new DashboardPanel(settings.district(), settings.advice());
-        StationsPanel stations = new StationsPanel();
-        ReportsPanel reportPanel = new ReportsPanel();
-        AlertsPanel alertsPanel = new AlertsPanel(settings.threshold());
+        DashboardPanel dashboardPanel = new DashboardPanel(
+                settingsStore.district(), settingsStore.advice());
+        StationsPanel stationsPanel = new StationsPanel();
+        ReportsPanel reportsPanel = new ReportsPanel();
+        AlertsPanel alertsPanel = new AlertsPanel(settingsStore.threshold());
 
-        new DashboardController(dashboard, airQuality, parks, settings, alerts, status)
-                .start();
-        new StationsController(stations, airQuality, settings, status).start();
-        new ReportsController(reportPanel, reports, status).start();
-        new AlertsController(alertsPanel, settings, airQuality, history, status).start();
+        new DashboardController(dashboardPanel, airQualityService,
+                parksService, settingsStore, alertService, statusBar).start();
+        new StationsController(stationsPanel, airQualityService,
+                settingsStore, statusBar).start();
+        new ReportsController(reportsPanel, reportService, statusBar).start();
+        new AlertsController(alertsPanel, settingsStore, airQualityService,
+                alertHistory, statusBar).start();
 
-        new MainFrame(dashboard, stations, reportPanel, alertsPanel, status)
-                .setVisible(true);
+        new MainFrame(dashboardPanel, stationsPanel, reportsPanel, alertsPanel,
+                statusBar).setVisible(true);
     }
 }
