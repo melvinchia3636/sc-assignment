@@ -1,0 +1,121 @@
+[
+  {
+    "name": "KLCC Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.1555,
+    "longitude": 101.7140,
+    "facilities": "Jogging track, playground, water park"
+  },
+  {
+    "name": "Perdana Botanical Garden",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.1428,
+    "longitude": 101.6840,
+    "facilities": "Lake, gardens, walking paths"
+  },
+  {
+    "name": "Titiwangsa Lake Gardens",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.1785,
+    "longitude": 101.7055,
+    "facilities": "Lake, cycling track, playground"
+  },
+  {
+    "name": "KL Forest Eco Park",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.1495,
+    "longitude": 101.6985,
+    "facilities": "Canopy walk, forest trails"
+  },
+  {
+    "name": "Taman Tasik Permaisuri",
+    "district": "KUALA_LUMPUR",
+    "latitude": 3.0830,
+    "longitude": 101.7120,
+    "facilities": "Lake, jogging track, exercise stations"
+  },
+  {
+    "name": "Desa ParkCity Central Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.1860,
+    "longitude": 101.6290,
+    "facilities": "Lake, dog park, walking paths"
+  },
+  {
+    "name": "Taman Jaya Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.1040,
+    "longitude": 101.6380,
+    "facilities": "Lake, jogging track, playground"
+  },
+  {
+    "name": "Bukit Gasing Forest Park",
+    "district": "PETALING_JAYA",
+    "latitude": 3.0940,
+    "longitude": 101.6560,
+    "facilities": "Forest trails, hiking"
+  },
+  {
+    "name": "Shah Alam Lake Garden",
+    "district": "SHAH_ALAM",
+    "latitude": 3.0730,
+    "longitude": 101.5060,
+    "facilities": "Lake, gardens, walking paths"
+  },
+  {
+    "name": "Taman Botani Negara Shah Alam",
+    "district": "SHAH_ALAM",
+    "latitude": 3.2000,
+    "longitude": 101.5100,
+    "facilities": "Botanical gardens, cycling"
+  },
+  {
+    "name": "Taman Tasik Seksyen 7",
+    "district": "SHAH_ALAM",
+    "latitude": 3.0700,
+    "longitude": 101.4870,
+    "facilities": "Lake, playground, jogging"
+  },
+  {
+    "name": "Taman Tasik Klang",
+    "district": "KLANG",
+    "latitude": 3.0450,
+    "longitude": 101.4520,
+    "facilities": "Lake, jogging track, playground"
+  },
+  {
+    "name": "Taman Rekreasi Bandar Klang",
+    "district": "KLANG",
+    "latitude": 3.0330,
+    "longitude": 101.4480,
+    "facilities": "Playground, sports courts"
+  },
+  {
+    "name": "Taman Botani Putrajaya",
+    "district": "PUTRAJAYA",
+    "latitude": 2.9430,
+    "longitude": 101.6930,
+    "facilities": "Gardens, walking paths, lake"
+  },
+  {
+    "name": "Putrajaya Wetlands Park",
+    "district": "PUTRAJAYA",
+    "latitude": 2.9440,
+    "longitude": 101.6780,
+    "facilities": "Wetlands, birdwatching, trails"
+  },
+  {
+    "name": "Taman Tasik Cyberjaya",
+    "district": "CYBERJAYA",
+    "latitude": 2.9220,
+    "longitude": 101.6420,
+    "facilities": "Lake, jogging track, playground"
+  },
+  {
+    "name": "Cyberjaya Community Park",
+    "district": "CYBERJAYA",
+    "latitude": 2.9180,
+    "longitude": 101.6530,
+    "facilities": "Playground, exercise stations"
+  }
+]
