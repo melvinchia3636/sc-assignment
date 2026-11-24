@@ -59,6 +59,7 @@ public final class PollutionAlertService {
         AlertThreshold current = threshold.get();
         if (!current.isEnabled()) {
             lastAnnounced = null;
+
             return;
         }
 
@@ -66,6 +67,7 @@ public final class PollutionAlertService {
         AqiLevel required = current.level().orElseThrow();
         if (level == AqiLevel.UNKNOWN || !level.isAtLeast(required)) {
             lastAnnounced = null;
+
             return;
         }
         if (lastAnnounced != null && !level.isWorseThan(lastAnnounced)) {

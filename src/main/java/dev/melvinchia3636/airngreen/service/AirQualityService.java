@@ -47,6 +47,7 @@ public final class AirQualityService {
         StationReading reading =
                 client.nearestStation(district.latitude(), district.longitude());
         store.saveReading(reading);
+
         return reading;
     }
 
@@ -60,6 +61,7 @@ public final class AirQualityService {
     public StationReading byIdx(String idx) throws ApiException {
         StationReading reading = client.station(idx);
         store.saveReading(reading);
+
         return reading;
     }
 
@@ -81,6 +83,7 @@ public final class AirQualityService {
                 GeoDistance.kmBetween(district.latitude(), district.longitude(),
                         station.latitude(), station.longitude())));
         store.saveStations(stations);
+
         return stations;
     }
 

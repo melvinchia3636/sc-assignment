@@ -52,7 +52,7 @@ public final class App {
         AirQualityService airQualityService = new AirQualityService(
                 new AqiApiClient(baseUrl), localStore);
         ReportService reportService = new ReportService(localStore);
-        ParksService parksService = ParksService.fromClasspathOrEmpty();
+        ParksService parksService = ParksService.fromClasspath();
 
         StatusBar statusBar = new StatusBar();
         AlertLogObserver alertHistory =

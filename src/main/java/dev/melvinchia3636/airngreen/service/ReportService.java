@@ -59,6 +59,7 @@ public final class ReportService {
         List<CitizenReport> reports = new ArrayList<>(store.loadReports());
         reports.add(report);
         store.saveReports(reports);
+
         return report;
     }
 
@@ -77,6 +78,7 @@ public final class ReportService {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException(message);
         }
+
         return value.trim();
     }
 }

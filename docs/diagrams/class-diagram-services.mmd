@@ -74,7 +74,6 @@ classDiagram
     class ParksService {
         -List~Park~ parks
         +nearest(district: District) List~NearbyPark~
-        +nearest(district: District, limit: int) List~NearbyPark~
     }
 
     class Park {

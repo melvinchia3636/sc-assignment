@@ -62,6 +62,7 @@ public class ApiException extends Exception {
             return "The air-quality service is unavailable. "
                     + "Showing the last saved reading.";
         }
+
         return "Unexpected response from the air-quality service (HTTP "
                 + statusCode + ").";
     }

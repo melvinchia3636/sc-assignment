@@ -169,6 +169,7 @@ public final class ReportsPanel extends JPanel {
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         card.add(body, BorderLayout.CENTER);
         card.setPreferredSize(new Dimension(700, 190));
+
         return card;
     }
 
@@ -178,6 +179,7 @@ public final class ReportsPanel extends JPanel {
         actions.add(message);
         actions.add(Box.createHorizontalGlue());
         actions.add(submitButton);
+
         return actions;
     }
 
@@ -185,6 +187,7 @@ public final class ReportsPanel extends JPanel {
         JPanel hint = new JPanel(new BorderLayout());
         hint.add(new JLabel("Reports are stored locally in ~/.airngreen/reports.json."),
                 BorderLayout.WEST);
+
         return hint;
     }
 }

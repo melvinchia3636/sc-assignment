@@ -58,6 +58,7 @@ class AirQualityServiceTest {
                 String path = request.getPath();
                 String body = path.contains("south=") ? LOCAL_STATIONS_JSON
                         : STATION_JSON;
+
                 return new MockResponse().setResponseCode(200).setBody(body);
             }
         });

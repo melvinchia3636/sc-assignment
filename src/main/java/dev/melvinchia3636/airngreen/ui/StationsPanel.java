@@ -160,6 +160,7 @@ public final class StationsPanel extends JPanel {
         if (row < 0) {
             return null;
         }
+
         return String.valueOf(model.getValueAt(table.convertRowIndexToModel(row), 0));
     }
 
@@ -248,6 +249,7 @@ public final class StationsPanel extends JPanel {
         toolbar.add(search);
         toolbar.add(Box.createHorizontalStrut(12));
         toolbar.add(reloadButton);
+
         return toolbar;
     }
 
@@ -261,6 +263,7 @@ public final class StationsPanel extends JPanel {
                 tableScroll, detailScroll);
         split.setResizeWeight(0.8);
         split.setBorder(null);
+
         return split;
     }
 
@@ -270,6 +273,7 @@ public final class StationsPanel extends JPanel {
         actions.add(notice);
         actions.add(Box.createHorizontalGlue());
         actions.add(loadButton);
+
         return actions;
     }
 
@@ -281,6 +285,7 @@ public final class StationsPanel extends JPanel {
         double km = GeoDistance.kmBetween(
                 district.latitude(), district.longitude(),
                 station.latitude(), station.longitude());
+
         return String.format(Locale.ENGLISH, "%.1f km", km);
     }
 
@@ -291,6 +296,7 @@ public final class StationsPanel extends JPanel {
                     key.toUpperCase(Locale.ROOT) + " "
                             + String.format(Locale.ENGLISH, "%.1f", value)));
         }
+
         return parts.isEmpty()
                 ? "No pollutant breakdown reported."
                 : String.join("   ", parts);
@@ -304,6 +310,7 @@ public final class StationsPanel extends JPanel {
         DoubleSummaryStatistics stats = reading.series().stream()
                 .mapToDouble(point -> point.value())
                 .summaryStatistics();
+
         return String.format(Locale.ENGLISH,
                 "Recent AQI: %d samples, min %.0f, max %.0f, average %.0f",
                 stats.getCount(), stats.getMin(), stats.getMax(),

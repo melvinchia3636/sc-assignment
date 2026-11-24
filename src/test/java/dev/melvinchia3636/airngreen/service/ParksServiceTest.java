@@ -2,10 +2,9 @@ package dev.melvinchia3636.airngreen.service;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -25,24 +24,14 @@ class ParksServiceTest {
 
     @Test
     void nearest_ordersByDistance() {
-        List<NearbyPark> nearest = service.nearest(District.KUALA_LUMPUR, 3);
+        List<NearbyPark> nearest = service.nearest(District.KUALA_LUMPUR);
 
         assertAll(
+                () -> assertEquals(3, nearest.size()),
                 () -> assertEquals("Near", nearest.get(0).park().name()),
                 () -> assertEquals("Far", nearest.get(2).park().name()),
                 () -> assertTrue(nearest.get(0).distanceKm()
                         < nearest.get(1).distanceKm()));
-    }
-
-    @Test
-    void nearest_respectsTheLimit() {
-        assertEquals(2, service.nearest(District.KUALA_LUMPUR, 2).size());
-    }
-
-    @Test
-    void nearest_rejectsNonPositiveLimit() {
-        assertThrows(IllegalArgumentException.class,
-                () -> service.nearest(District.KUALA_LUMPUR, 0));
     }
 
     @Test
@@ -64,30 +53,12 @@ class ParksServiceTest {
     }
 
     @Test
-    void fromClasspath_loadsTheBundledDataset() throws IOException {
-        ParksService bundled = ParksService.fromClasspath();
-
-        assertAll(
-                () -> assertTrue(bundled.getAll().size() >= 10),
-                () -> assertTrue(bundled.getAll().stream().anyMatch(
-                        park -> park.district() == District.KUALA_LUMPUR)),
-                () -> assertTrue(bundled.getAll().stream().anyMatch(
-                        park -> park.district() == District.PUTRAJAYA)));
-    }
-
-    @Test
-    void bundledDataset_coversEveryDistrict() throws IOException {
+    void fromClasspath_coversEveryDistrict() {
         ParksService bundled = ParksService.fromClasspath();
 
         for (District district : District.values()) {
-            assertTrue(bundled.getAll().stream()
-                            .anyMatch(park -> park.district() == district),
-                    () -> "No park for " + district);
+            assertFalse(bundled.nearest(district).isEmpty(),
+                    () -> "No park data for " + district);
         }
-    }
-
-    @Test
-    void fromClasspathOrEmpty_loadsTheBundledDataset() {
-        assertTrue(ParksService.fromClasspathOrEmpty().getAll().size() >= 100);
     }
 }

@@ -73,6 +73,7 @@ public final class AlertsPanel extends JPanel {
     public void showHistory(List<AqiAlert> alerts) {
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> showHistory(alerts));
+
             return;
         }
 
@@ -108,12 +109,14 @@ public final class AlertsPanel extends JPanel {
         JPanel body = new JPanel(new BorderLayout(0, 8));
         body.add(row, BorderLayout.NORTH);
         body.add(explanation, BorderLayout.CENTER);
+
         return card("Pollution alerts", body);
     }
 
     private JPanel historyCard() {
         JScrollPane scroll = new JScrollPane(historyList);
         scroll.setPreferredSize(new Dimension(600, 240));
+
         return card("Alert history", scroll);
     }
 
@@ -123,6 +126,7 @@ public final class AlertsPanel extends JPanel {
                 BorderFactory.createTitledBorder(title),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         card.add(body, BorderLayout.CENTER);
+
         return card;
     }
 }

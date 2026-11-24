@@ -47,6 +47,7 @@ public final class Async {
 
     private static Exception unwrap(ExecutionException failed) {
         Throwable cause = failed.getCause();
+
         return cause instanceof Exception exception ? exception : failed;
     }
 }

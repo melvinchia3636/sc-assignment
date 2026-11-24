@@ -59,6 +59,7 @@ public enum AqiLevel {
                 result = level;
             }
         }
+
         return result;
     }
 

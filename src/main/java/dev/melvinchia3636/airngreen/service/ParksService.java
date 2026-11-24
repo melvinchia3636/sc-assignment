@@ -27,7 +27,7 @@ public final class ParksService {
     private static final Logger LOGGER =
             Logger.getLogger(ParksService.class.getName());
     private static final String RESOURCE = "/parks.json";
-    private static final int DEFAULT_LIMIT = 5;
+    private static final int MAX_NEARBY_PARKS = 10;
 
     private final List<Park> parks;
 
@@ -41,77 +41,47 @@ public final class ParksService {
     }
 
     /**
-     * Loads the bundled park dataset.
-     *
-     * @return a service backed by {@code /parks.json}
-     * @throws IOException when the resource is missing or unreadable
-     */
-    public static ParksService fromClasspath() throws IOException {
-        InputStream stream = ParksService.class.getResourceAsStream(RESOURCE);
-        if (stream == null) {
-            throw new IOException("Missing " + RESOURCE);
-        }
-
-        try (InputStream input = stream;
-             Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-            ParkEntry[] entries = new Gson().fromJson(reader, ParkEntry[].class);
-            return new ParksService(toParks(entries));
-        }
-    }
-
-    /**
      * Loads the bundled park dataset, falling back to an empty service when the
      * resource is missing from the packaged application.
      *
      * @return a service backed by {@code /parks.json}, or an empty service
      */
-    public static ParksService fromClasspathOrEmpty() {
-        try {
-            return fromClasspath();
+    public static ParksService fromClasspath() {
+        try (InputStream input = openResource();
+             Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
+            ParkEntry[] entries = new Gson().fromJson(reader, ParkEntry[].class);
+
+            return new ParksService(toParks(entries));
         } catch (IOException missing) {
             LOGGER.warning("Park dataset unavailable: " + missing.getMessage());
+
             return new ParksService(List.of());
         }
     }
 
     /**
-     * Every park in the dataset.
-     *
-     * @return an immutable list
-     */
-    public List<Park> getAll() {
-        return parks;
-    }
-
-    /**
      * The closest parks to a district, nearest first.
      *
      * @param district district providing the query point
-     * @return up to five parks
+     * @return the five closest parks
      */
     public List<NearbyPark> nearest(District district) {
-        return nearest(district, DEFAULT_LIMIT);
-    }
-
-    /**
-     * The closest parks to a district, nearest first.
-     *
-     * @param district district providing the query point
-     * @param limit    maximum number of results
-     * @return parks ordered by distance
-     */
-    public List<NearbyPark> nearest(District district, int limit) {
-        if (limit < 1) {
-            throw new IllegalArgumentException("Limit must be positive.");
-        }
-
         return parks.stream()
                 .map(park -> new NearbyPark(park, GeoDistance.kmBetween(
                         district.latitude(), district.longitude(),
                         park.latitude(), park.longitude())))
                 .sorted(Comparator.comparingDouble(NearbyPark::distanceKm))
-                .limit(limit)
+                .limit(MAX_NEARBY_PARKS)
                 .toList();
+    }
+
+    private static InputStream openResource() throws IOException {
+        InputStream stream = ParksService.class.getResourceAsStream(RESOURCE);
+        if (stream == null) {
+            throw new IOException("Missing " + RESOURCE);
+        }
+
+        return stream;
     }
 
     private static List<Park> toParks(ParkEntry[] entries) {
@@ -126,6 +96,7 @@ public final class ParksService {
                 result.add(park);
             }
         }
+
         return result;
     }
 

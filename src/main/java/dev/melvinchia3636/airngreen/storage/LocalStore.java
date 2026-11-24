@@ -87,6 +87,7 @@ public final class LocalStore {
      */
     public List<CitizenReport> loadReports() {
         List<CitizenReport> reports = read(REPORTS_FILE, REPORT_LIST);
+
         return reports == null ? List.of() : List.copyOf(reports);
     }
 
@@ -106,6 +107,7 @@ public final class LocalStore {
      */
     public List<StationSummary> loadStations() {
         List<StationSummary> stations = read(STATIONS_FILE, STATION_LIST);
+
         return stations == null ? List.of() : List.copyOf(stations);
     }
 
@@ -125,6 +127,7 @@ public final class LocalStore {
      */
     public List<AqiAlert> loadAlerts() {
         List<AqiAlert> alerts = read(ALERTS_FILE, ALERT_LIST);
+
         return alerts == null ? List.of() : List.copyOf(alerts);
     }
 
@@ -154,6 +157,7 @@ public final class LocalStore {
         } catch (IOException unreadable) {
             return new Properties();
         }
+
         return settings;
     }
 

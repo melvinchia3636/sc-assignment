@@ -63,6 +63,7 @@ public enum AlertThreshold {
                 return threshold;
             }
         }
+
         return OFF;
     }
 

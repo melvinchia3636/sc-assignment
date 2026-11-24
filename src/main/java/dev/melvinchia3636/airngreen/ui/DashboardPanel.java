@@ -206,6 +206,7 @@ public final class DashboardPanel extends JPanel {
         controls.add(audienceBox);
         controls.add(Box.createHorizontalGlue());
         controls.add(refreshButton);
+
         return controls;
     }
 
@@ -223,6 +224,7 @@ public final class DashboardPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(stack);
         scroll.setBorder(null);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
+
         return scroll;
     }
 
@@ -242,6 +244,7 @@ public final class DashboardPanel extends JPanel {
         hero.add(aqiValue);
         hero.add(Box.createHorizontalStrut(18));
         hero.add(meta);
+
         return card("Current air quality", hero);
     }
 
@@ -249,12 +252,14 @@ public final class DashboardPanel extends JPanel {
         JPanel body = new JPanel(new BorderLayout(0, 6));
         body.add(outdoorLabel, BorderLayout.NORTH);
         body.add(adviceArea, BorderLayout.CENTER);
+
         return card("Outdoor activity advice", body);
     }
 
     private JPanel parksCard() {
         JScrollPane scroll = new JScrollPane(parkList);
         scroll.setPreferredSize(new Dimension(400, 150));
+
         return card("Nearby green spaces", scroll);
     }
 
@@ -265,6 +270,7 @@ public final class DashboardPanel extends JPanel {
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         card.add(body, BorderLayout.CENTER);
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         return card;
     }
 
@@ -274,6 +280,7 @@ public final class DashboardPanel extends JPanel {
             reading.pollutant(key).ifPresent(value -> parts.add(
                     key.toUpperCase(Locale.ROOT) + " " + formatNumber(value)));
         }
+
         return parts.isEmpty()
                 ? "No pollutant breakdown reported."
                 : String.join("   ", parts);
@@ -297,6 +304,7 @@ public final class DashboardPanel extends JPanel {
             if (value instanceof AdviceStrategy strategy) {
                 setText(strategy.name());
             }
+
             return this;
         }
     }

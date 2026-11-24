@@ -74,6 +74,7 @@ public final class AqiApiClient {
                 .addQueryParameter("lat", Double.toString(latitude))
                 .addQueryParameter("lon", Double.toString(longitude))
                 .build();
+
         return fetch(url, parser::parseStation);
     }
 
@@ -89,6 +90,7 @@ public final class AqiApiClient {
                 .addPathSegment("station")
                 .addPathSegment(idx)
                 .build();
+
         return fetch(url, parser::parseStation);
     }
 
@@ -112,6 +114,7 @@ public final class AqiApiClient {
                 .addQueryParameter("north", Double.toString(north))
                 .addQueryParameter("east", Double.toString(east))
                 .build();
+
         return fetch(url, parser::parseStations);
     }
 
@@ -132,6 +135,7 @@ public final class AqiApiClient {
             if (response.code() / 100 != 2) {
                 throw failure(response.code(), body);
             }
+
             return body;
         } catch (IOException unreachable) {
             throw new ApiException(0, ApiException.messageFor(0));
@@ -149,6 +153,7 @@ public final class AqiApiClient {
 
     private ApiException failure(int statusCode, String body) {
         String message = parser.errorMessage(body);
+
         return new ApiException(statusCode,
                 message == null ? ApiException.messageFor(statusCode) : message);
     }

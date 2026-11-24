@@ -47,6 +47,7 @@ public record StationReading(
      */
     public OptionalDouble pollutant(String key) {
         Double value = pollutants.get(key);
+
         return value == null ? OptionalDouble.empty() : OptionalDouble.of(value);
     }
 }

@@ -35,6 +35,7 @@ public final class AqiJsonParser {
         if (envelope == null || envelope.station() == null) {
             throw new JsonParseException("Response has no station object");
         }
+
         return toReading(envelope.station());
     }
 
@@ -57,6 +58,7 @@ public final class AqiJsonParser {
                 stations.add(toSummary(dto));
             }
         }
+
         return List.copyOf(stations);
     }
 
@@ -69,6 +71,7 @@ public final class AqiJsonParser {
     public String errorMessage(String body) {
         try {
             ErrorEnvelope envelope = gson.fromJson(body, ErrorEnvelope.class);
+
             return envelope == null || envelope.error() == null
                     ? null
                     : envelope.error().message();
@@ -108,6 +111,7 @@ public final class AqiJsonParser {
                 values.put(entry.getKey(), value);
             }
         }
+
         return Map.copyOf(values);
     }
 
@@ -122,6 +126,7 @@ public final class AqiJsonParser {
                 points.add(new SeriesPoint(point.t(), point.v()));
             }
         }
+
         return List.copyOf(points);
     }
 
