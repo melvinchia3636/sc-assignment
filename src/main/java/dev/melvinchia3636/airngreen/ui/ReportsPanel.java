@@ -146,15 +146,6 @@ public final class ReportsPanel extends JPanel {
         message.setVisible(true);
     }
 
-    /**
-     * Enables or disables the submit button.
-     *
-     * @param loading true while a save is running
-     */
-    public void setLoading(boolean loading) {
-        submitButton.setEnabled(!loading);
-    }
-
     private JPanel form() {
         JPanel fields = new JPanel();
         fields.setLayout(new BoxLayout(fields, BoxLayout.X_AXIS));

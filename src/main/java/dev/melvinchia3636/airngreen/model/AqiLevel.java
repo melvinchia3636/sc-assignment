@@ -72,15 +72,6 @@ public enum AqiLevel {
     }
 
     /**
-     * Lowest AQI value inside this band.
-     *
-     * @return the inclusive lower bound, or -1 for {@link #UNKNOWN}
-     */
-    public int floor() {
-        return floor;
-    }
-
-    /**
      * Reports whether this band is worse than another band.
      *
      * @param other band to compare with

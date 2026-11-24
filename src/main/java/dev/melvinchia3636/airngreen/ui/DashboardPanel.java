@@ -127,15 +127,6 @@ public final class DashboardPanel extends JPanel {
     }
 
     /**
-     * Currently selected audience.
-     *
-     * @return the advice strategy
-     */
-    public AdviceStrategy selectedAudience() {
-        return (AdviceStrategy) audienceBox.getSelectedItem();
-    }
-
-    /**
      * Enables or disables the refresh button.
      *
      * @param loading true while a request is running

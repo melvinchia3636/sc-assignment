@@ -54,9 +54,4 @@ class AqiLevelTest {
                 () -> assertTrue(AqiLevel.HAZARDOUS.isAtLeast(AqiLevel.GOOD)),
                 () -> assertFalse(AqiLevel.GOOD.isAtLeast(AqiLevel.MODERATE)));
     }
-
-    @Test
-    void floor_matchesBandStart() {
-        assertEquals(151, AqiLevel.UNHEALTHY.floor());
-    }
 }

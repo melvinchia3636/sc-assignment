@@ -1,6 +1,5 @@
 package dev.melvinchia3636.airngreen.service.alerts;
 
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 

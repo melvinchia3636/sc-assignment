@@ -2,6 +2,7 @@ package dev.melvinchia3636.airngreen.controller;
 
 import java.util.Optional;
 
+import dev.melvinchia3636.airngreen.api.ApiException;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
@@ -93,7 +94,14 @@ public final class DashboardController {
     private void onFailure(District district, Exception failure) {
         view.setLoading(false);
         view.showParks(parks.nearest(district));
-        Optional<StationReading> cached = airQuality.cachedReading();
+
+        // A client error (for example an unknown station) should not be hidden
+        // behind stale data; only a service or network failure falls back.
+        Optional<StationReading> cached = failure instanceof ApiException api
+                && !api.isServiceFailure()
+                ? Optional.empty()
+                : airQuality.cachedReading();
+
         if (cached.isPresent()) {
             current = cached.get();
             render(current);

@@ -76,15 +76,6 @@ public final class AlertsPanel extends JPanel {
     }
 
     /**
-     * Currently selected threshold.
-     *
-     * @return the threshold
-     */
-    public AlertThreshold selectedThreshold() {
-        return (AlertThreshold) thresholdBox.getSelectedItem();
-    }
-
-    /**
      * Replaces the alert history list.
      *
      * @param alerts alerts ordered newest first
