@@ -5,7 +5,7 @@ import java.util.List;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationSummary;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
-import dev.melvinchia3636.airngreen.service.SettingsStore;
+import dev.melvinchia3636.airngreen.storage.SettingsStore;
 import dev.melvinchia3636.airngreen.ui.StationsPanel;
 import dev.melvinchia3636.airngreen.ui.StatusBar;
 

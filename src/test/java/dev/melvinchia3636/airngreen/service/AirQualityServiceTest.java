@@ -19,6 +19,7 @@ import dev.melvinchia3636.airngreen.api.HttpTransport;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
 
 class AirQualityServiceTest {
 

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import dev.melvinchia3636.airngreen.model.AqiAlert;
 import dev.melvinchia3636.airngreen.model.AqiLevel;
-import dev.melvinchia3636.airngreen.service.LocalStore;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
 
 class AlertArchiveObserverTest {
 

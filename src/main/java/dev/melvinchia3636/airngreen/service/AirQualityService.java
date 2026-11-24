@@ -12,6 +12,7 @@ import dev.melvinchia3636.airngreen.api.ApiException;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
 
 /**
  * Loads air-quality data and keeps the last good result for offline use.

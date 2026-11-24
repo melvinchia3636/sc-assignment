@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.service;
+package dev.melvinchia3636.airngreen.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

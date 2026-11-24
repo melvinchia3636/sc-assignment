@@ -10,7 +10,8 @@ config:
 flowchart TB
     UI["GUI layer (View)<br/>MainFrame · DashboardPanel · StationsPanel<br/>ReportsPanel · AlertsPanel · StatusBar"]
     C["Controller layer<br/>Dashboard / Stations / Reports / Alerts controllers<br/>Async (SwingWorker)"]
-    S["Service layer<br/>AirQualityService · ParksService · ReportService<br/>SettingsStore · LocalStore<br/>PollutionAlertService (subject + observers)"]
+    S["Service layer<br/>AirQualityService · ParksService · ReportService<br/>PollutionAlertService (subject + observers)"]
+    STORE["Storage layer<br/>LocalStore (JSON + properties)<br/>SettingsStore (typed preferences)"]
     API["API layer<br/>AqiApiClient · JdkHttpTransport<br/>AqiJsonParser · ApiException"]
     M["Domain model<br/>StationReading · AqiLevel · District · Park<br/>CitizenReport · AqiAlert · AlertThreshold"]
 
@@ -23,7 +24,8 @@ flowchart TB
     API -- "4 HTTPS GET /nearest-station" --> EXT
     EXT -- "5 JSON: 200 / 404 / 5xx" --> API
     API -- "6 StationReading" --> S
-    S -- "7 save / load" --> DISK
+    S -- "7 save / load" --> STORE
+    STORE -- "files" --> DISK
     S -. "8 reading + advice + parks" .-> C
     C -. "9 showReading() / showParks()" .-> UI
     S -. "uses" .-> M

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import dev.melvinchia3636.airngreen.model.CitizenReport;
 import dev.melvinchia3636.airngreen.model.District;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
 
 class ReportServiceTest {
 

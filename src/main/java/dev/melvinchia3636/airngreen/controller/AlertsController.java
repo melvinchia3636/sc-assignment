@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
-import dev.melvinchia3636.airngreen.service.SettingsStore;
+import dev.melvinchia3636.airngreen.storage.SettingsStore;
 import dev.melvinchia3636.airngreen.service.alerts.AlertLogObserver;
 import dev.melvinchia3636.airngreen.ui.AlertsPanel;
 import dev.melvinchia3636.airngreen.ui.StatusBar;

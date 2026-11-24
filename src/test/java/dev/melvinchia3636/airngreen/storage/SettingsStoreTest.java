@@ -1,4 +1,4 @@
-package dev.melvinchia3636.airngreen.service;
+package dev.melvinchia3636.airngreen.storage;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

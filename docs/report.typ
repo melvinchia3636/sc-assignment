@@ -45,7 +45,7 @@
   caption: [Layered architecture of the application.],
 )
 
-The system utilizes a four layer structure as shown in the diagram in Figure 1 above. The direction of dependencies is from top to bottom, and the implementation domain model does not rely on any Java framework.
+The system utilizes a five layer structure as shown in the diagram in Figure 1 above. The direction of dependencies is from top to bottom, and the implementation domain model does not rely on any Java framework.
 
 #report-table(
   3,
@@ -61,8 +61,12 @@ The system utilizes a four layer structure as shown in the diagram in Figure 1 a
   [Event processing, backend task coordination, updating view.],
 
   [Service Layer],
-  [`AirQualityService`、`ParksService`、`ReportService`、`LocalStore`、`SettingsStore`、`PollutionAlertService`],
-  [Business logics, caching, data persistence, alert mechanism.],
+  [`AirQualityService`、`ParksService`、`ReportService`、`PollutionAlertService`],
+  [Business logics, caching, and alert mechanism.],
+
+  [Storage Layer],
+  [`LocalStore`、`SettingsStore`],
+  [JSON and properties persistence, typed user preferences.],
 
   [API Layer],
   [`AqiApiClient`、`JdkHttpTransport`、`AqiJsonParser`、`ApiException`],
@@ -73,7 +77,7 @@ The system utilizes a four layer structure as shown in the diagram in Figure 1 a
   [Immutable constant and categorization strategies.],
 )
 
-Out of the above layers, the view layer, controller layer. and model layer forms an MVC triangle, while the service layer and API layer take charge of the business logics and aggregation responsibilities outside the MVC, allowing the model layer to be decoupled from Swing as well as the Internet.
+Out of the above layers, the view layer, controller layer. and model layer forms an MVC triangle, while the service layer, storage layer, and API layer take charge of the business logics, persistence, and aggregation responsibilities outside the MVC, allowing the model layer to be decoupled from Swing as well as the Internet.
 
 The data flow of a refresh operation is shown in the sequence diagram below. Due to the limits of the report size, the diagram might be a little bit too small. If you need the full picture, it is available in the GitHub repository under the `docs/diagrams` folder.
 
@@ -93,10 +97,10 @@ As shown in the diagram above, When the user clicks the refresh button, `Dashboa
 
 #figure(
   image("diagrams/class-diagram-services.png", width: 100%),
-  caption: [Service and API layer class diagram.],
+  caption: [Service, storage, and API layer class diagram.],
 )
 
-Figure 2 above shows the core diagram covering the domain model and the two design patterns implemented, while figure 3 presents the relationship between the service layer and the API layer. The core diagram includes `District`、`AqiLevel`、`StationReading`、`Park`、`CitizenReport`、`AlertThreshold`、`AdviceStrategy` and its three implementations、`AlertObserver` and its three implementations, `PollutionAlertService`, as well as `AqiAlert`. Field types, method signatures including parameters and return types, as well as their visibilities are annotated in the diagram. Standard UML class diagram notation is adopted.
+Figure 2 above shows the core diagram covering the domain model and the two design patterns implemented, while figure 3 presents the relationship between the service, storage, and API layers. The core diagram includes `District`、`AqiLevel`、`StationReading`、`Park`、`CitizenReport`、`AlertThreshold`、`AdviceStrategy` and its three implementations、`AlertObserver` and its three implementations, `PollutionAlertService`, as well as `AqiAlert`. Field types, method signatures including parameters and return types, as well as their visibilities are annotated in the diagram. Standard UML class diagram notation is adopted.
 
 Some examples of the key relationships between classes is as follows:
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.melvinchia3636.airngreen.model.AqiAlert;
-import dev.melvinchia3636.airngreen.service.LocalStore;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
 
 /**
  * Observer that archives alerts so the history survives a restart.

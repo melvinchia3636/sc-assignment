@@ -7,7 +7,7 @@ import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
 import dev.melvinchia3636.airngreen.service.ParksService;
-import dev.melvinchia3636.airngreen.service.SettingsStore;
+import dev.melvinchia3636.airngreen.storage.SettingsStore;
 import dev.melvinchia3636.airngreen.service.advice.AdviceStrategy;
 import dev.melvinchia3636.airngreen.service.alerts.PollutionAlertService;
 import dev.melvinchia3636.airngreen.ui.DashboardPanel;
