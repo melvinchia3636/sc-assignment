@@ -1,0 +1,43 @@
+---
+config:
+  theme: default
+  sequence:
+    mirrorActors: false
+    messageAlign: left
+    wrap: true
+---
+sequenceDiagram
+    autonumber
+    actor User
+    participant C as DashboardController
+    participant A as Async
+    participant S as AirQualityService
+    participant API as AqiApiClient
+    participant T as JdkHttpTransport
+    participant P as AqiJsonParser
+    participant L as LocalStore
+    participant V as DashboardPanel
+    participant Al as PollutionAlertService
+    participant O as AlertObserver
+
+    User->>C: Refresh (selected district)
+    C->>A: submit background task
+    activate A
+    A->>S: nearest(district)
+    S->>API: build request
+    API->>T: GET /nearest-station
+    T-->>API: HTTP response
+    API->>P: parse JSON
+    P-->>API: StationReading
+    API-->>S: StationReading
+    S->>L: save(reading)
+    S-->>A: StationReading
+    deactivate A
+    A-->>C: done(reading)
+    C->>V: showReading(reading)
+    C->>Al: evaluate(reading)
+    alt reading exceeds threshold
+        Al-->>O: notify(alert)
+    else within threshold
+        Al-->>C: no alert
+    end

@@ -79,9 +79,24 @@
         ]
         #it.body
       ]
-    } else {
-      block(above: 1.3em, below: 0.6em)[
+    } else if it.level == 3 {
+      block(above: 1.2em, below: 1.2em, width: 100%)[
         #set text(font: sans, size: 10.5pt, weight: "bold", fill: ink)
+        #set par(justify: false, leading: 0.6em)
+        #if it.numbering != none [
+          #context counter(heading).display(it.numbering)
+          #h(0.4em)
+        ]
+        #it.body
+      ]
+    } else {
+      block(above: 1.1em, below: 0.5em, width: 100%)[
+        #set text(font: sans, size: 10pt, weight: "bold", fill: ink)
+        #set par(justify: false, leading: 0.6em)
+        #if it.numbering != none [
+          #context counter(heading).display(it.numbering)
+          #h(0.4em)
+        ]
         #it.body
       ]
     }
@@ -93,4 +108,34 @@
   show link: it => text(fill: rgb("#0563C1"), it)
 
   body
+}
+
+// ---------------------------------------------------------------------------
+// Reusable components
+// ---------------------------------------------------------------------------
+
+// Rounded, light-gray container for code listings.
+#let code-block(body) = block(
+  body,
+  width: 100%,
+  fill: luma(245),
+  radius: 6pt,
+  inset: (x: 1em, y: 0.8em),
+)
+
+// Bordered, left-aligned table with shared report styling.
+// The first row is treated as a header and rendered bold automatically.
+#let report-table(columns, ..cells) = {
+  let cells = cells.pos()
+  let header = cells.slice(0, columns).map(cell => strong(cell))
+  let body = cells.slice(columns)
+  set par(justify: false)
+  table(
+    columns: columns,
+    stroke: 0.5pt,
+    align: left,
+    inset: (x: 0.55em, y: 0.45em),
+    ..header,
+    ..body,
+  )
 }

@@ -111,6 +111,6 @@ classDiagram
     AqiApiClient ..> ApiException : throws
     SettingsStore "1" --> "1" LocalStore : persists
     ReportService "1" --> "1" LocalStore : persists
-    ParksService "1" --> "0..*" Park : loads
+    ParksService "1" o-- "0..*" Park : loads
     ParksService ..> NearbyPark : returns
     NearbyPark "1" --> "1" Park : ranks
