@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 
 import java.util.List;
 
@@ -41,7 +39,7 @@ class AqiJsonParserTest {
 
     @Test
     void parseStation_readsEveryField() {
-        StationReading reading = parser.parseStation(object(STATION_JSON));
+        StationReading reading = parser.parseStation(STATION_JSON);
 
         assertAll(
                 () -> assertEquals("2609", reading.idx()),
@@ -61,7 +59,7 @@ class AqiJsonParserTest {
                   {"t":1,"v":10},{"t":2,"v":null},{"t":3,"v":12}]}}}
                 """;
 
-        StationReading reading = parser.parseStation(object(json));
+        StationReading reading = parser.parseStation(json);
 
         assertAll(
                 () -> assertEquals(2, reading.series().size()),
@@ -70,8 +68,8 @@ class AqiJsonParserTest {
 
     @Test
     void parseStation_toleratesMissingOptionalFields() {
-        StationReading reading = parser.parseStation(object(
-                "{\"station\":{\"idx\":\"1\"}}"));
+        StationReading reading = parser.parseStation(
+                "{\"station\":{\"idx\":\"1\"}}");
 
         assertAll(
                 () -> assertEquals("", reading.name()),
@@ -83,7 +81,7 @@ class AqiJsonParserTest {
     @Test
     void parseStation_rejectsResponseWithoutStation() {
         assertThrows(JsonParseException.class,
-                () -> parser.parseStation(new JsonObject()));
+                () -> parser.parseStation("{}"));
     }
 
     @Test
@@ -97,7 +95,7 @@ class AqiJsonParserTest {
                 ]}
                 """;
 
-        List<StationSummary> stations = parser.parseStations(object(json));
+        List<StationSummary> stations = parser.parseStations(json);
 
         assertAll(
                 () -> assertEquals(2, stations.size()),
@@ -109,7 +107,7 @@ class AqiJsonParserTest {
     @Test
     void parseStations_rejectsResponseWithoutArray() {
         assertThrows(JsonParseException.class,
-                () -> parser.parseStations(new JsonObject()));
+                () -> parser.parseStations("{}"));
     }
 
     @Test
@@ -127,9 +125,5 @@ class AqiJsonParserTest {
                 () -> assertNull(parser.errorMessage("{}")),
                 () -> assertNull(parser.errorMessage(
                         "{\"error\":\"text\"}")));
-    }
-
-    private JsonObject object(String json) {
-        return JsonParser.parseString(json).getAsJsonObject();
     }
 }

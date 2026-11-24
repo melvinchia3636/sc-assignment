@@ -1,8 +1,5 @@
 package dev.melvinchia3636.airngreen.api;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -122,29 +119,23 @@ public final class AqiApiClient {
         }
     }
 
-    private <T> T fetch(String url, Function<JsonObject, T> reader)
+    private <T> T fetch(String url, Function<String, T> reader)
             throws ApiException {
-        JsonObject root = read(url);
+        String body = read(url);
 
         try {
-            return reader.apply(root);
+            return reader.apply(body);
         } catch (RuntimeException malformed) {
             throw new ApiException(200, "The service returned an unexpected response.");
         }
     }
 
-    private JsonObject read(String url) throws ApiException {
+    private String read(String url) throws ApiException {
         HttpTransport.Response response = send(url);
         if (response.statusCode() / 100 != 2) {
             throw failure(response);
         }
-
-        try {
-            return JsonParser.parseString(response.body()).getAsJsonObject();
-        } catch (RuntimeException malformed) {
-            throw new ApiException(response.statusCode(),
-                    "The service returned an unreadable response.");
-        }
+        return response.body();
     }
 
     private HttpTransport.Response send(String url) throws ApiException {

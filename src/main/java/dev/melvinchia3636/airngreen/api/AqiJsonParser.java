@@ -1,10 +1,7 @@
 package dev.melvinchia3636.airngreen.api;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,51 +15,46 @@ import dev.melvinchia3636.airngreen.model.StationSummary;
 /**
  * Converts the API's JSON documents into domain objects.
  *
- * <p>Parsing is kept separate from transport so it can be unit-tested with
- * literal JSON fixtures.</p>
+ * <p>Gson binds the response into small DTOs, which are then mapped to the
+ * immutable model. Parsing stays separate from transport so it can be tested
+ * with literal JSON fixtures.</p>
  */
 public final class AqiJsonParser {
 
-    private static final String STATION = "station";
-    private static final String STATIONS = "stations";
+    private final Gson gson = new Gson();
 
     /**
      * Parses a {@code /nearest-station} or {@code /station/:idx} body.
      *
-     * @param root response document
+     * @param body response document
      * @return the parsed reading
      * @throws JsonParseException when the document has no station object
      */
-    public StationReading parseStation(JsonObject root) {
-        JsonObject station = requireObject(root, STATION);
-
-        return new StationReading(
-                text(station, "idx"),
-                text(station, "name"),
-                number(station, "aqi", Double.NaN),
-                (long) number(station, "updatedAt", 0),
-                parseCurrent(station),
-                parseAqiSeries(station));
+    public StationReading parseStation(String body) {
+        StationEnvelope envelope = gson.fromJson(body, StationEnvelope.class);
+        if (envelope == null || envelope.station() == null) {
+            throw new JsonParseException("Response has no station object");
+        }
+        return toReading(envelope.station());
     }
 
     /**
      * Parses a {@code /stations} body.
      *
-     * @param root response document
+     * @param body response document
      * @return every listed station, in upstream order
      * @throws JsonParseException when the document has no station array
      */
-    public List<StationSummary> parseStations(JsonObject root) {
-        JsonElement element = root.get(STATIONS);
-        if (element == null || !element.isJsonArray()) {
+    public List<StationSummary> parseStations(String body) {
+        StationsEnvelope envelope = gson.fromJson(body, StationsEnvelope.class);
+        if (envelope == null || envelope.stations() == null) {
             throw new JsonParseException("Response has no stations array");
         }
 
-        JsonArray array = element.getAsJsonArray();
-        List<StationSummary> stations = new ArrayList<>(array.size());
-        for (JsonElement entry : array) {
-            if (entry.isJsonObject()) {
-                stations.add(parseSummary(entry.getAsJsonObject()));
+        List<StationSummary> stations = new ArrayList<>();
+        for (StationDto dto : envelope.stations()) {
+            if (dto != null) {
+                stations.add(toSummary(dto));
             }
         }
         return List.copyOf(stations);
@@ -76,98 +68,106 @@ public final class AqiJsonParser {
      */
     public String errorMessage(String body) {
         try {
-            JsonElement error = JsonParser.parseString(body)
-                    .getAsJsonObject()
-                    .get("error");
-            if (error != null && error.isJsonObject()) {
-                return text(error.getAsJsonObject(), "message");
-            }
+            ErrorEnvelope envelope = gson.fromJson(body, ErrorEnvelope.class);
+            return envelope == null || envelope.error() == null
+                    ? null
+                    : envelope.error().message();
         } catch (RuntimeException malformed) {
             return null;
         }
-        return null;
     }
 
-    private StationSummary parseSummary(JsonObject station) {
-        Double aqi = station.has("aqi") && !station.get("aqi").isJsonNull()
-                ? station.get("aqi").getAsDouble()
-                : null;
+    private StationReading toReading(Station station) {
+        return new StationReading(
+                text(station.idx()),
+                text(station.name()),
+                station.aqi() == null ? Double.NaN : station.aqi(),
+                station.updatedAt() == null ? 0 : station.updatedAt(),
+                currentValues(station.current()),
+                aqiSeries(station.series()));
+    }
 
+    private StationSummary toSummary(StationDto station) {
         return new StationSummary(
-                text(station, "idx"),
-                text(station, "name").trim(),
-                number(station, "latitude", 0),
-                number(station, "longitude", 0),
-                aqi);
+                text(station.idx()),
+                text(station.name()).trim(),
+                station.latitude() == null ? 0 : station.latitude(),
+                station.longitude() == null ? 0 : station.longitude(),
+                station.aqi());
     }
 
-    private Map<String, Double> parseCurrent(JsonObject station) {
-        JsonObject current = object(station, "current");
-        Map<String, Double> values = new LinkedHashMap<>();
+    private Map<String, Double> currentValues(Map<String, Double> current) {
+        if (current == null) {
+            return Map.of();
+        }
 
-        for (Map.Entry<String, JsonElement> entry : current.entrySet()) {
-            JsonElement value = entry.getValue();
-            if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber()) {
-                values.put(entry.getKey(), value.getAsDouble());
+        Map<String, Double> values = new LinkedHashMap<>();
+        for (Map.Entry<String, Double> entry : current.entrySet()) {
+            Double value = entry.getValue();
+            if (value != null && Double.isFinite(value)) {
+                values.put(entry.getKey(), value);
             }
         }
-        return values;
+        return Map.copyOf(values);
     }
 
-    private List<SeriesPoint> parseAqiSeries(JsonObject station) {
-        JsonElement element = object(station, "series").get("aqi");
-        if (element == null || !element.isJsonArray()) {
+    private List<SeriesPoint> aqiSeries(Series series) {
+        if (series == null || series.aqi() == null) {
             return List.of();
         }
 
         List<SeriesPoint> points = new ArrayList<>();
-        for (JsonElement entry : element.getAsJsonArray()) {
-            addPoint(points, entry);
+        for (Point point : series.aqi()) {
+            if (point != null && point.t() != null && point.v() != null) {
+                points.add(new SeriesPoint(point.t(), point.v()));
+            }
         }
         return List.copyOf(points);
     }
 
-    private void addPoint(List<SeriesPoint> points, JsonElement entry) {
-        if (!entry.isJsonObject()) {
-            return;
-        }
-
-        JsonObject point = entry.getAsJsonObject();
-        JsonElement value = point.get("v");
-        if (value == null || value.isJsonNull() || !value.isJsonPrimitive()) {
-            return;
-        }
-        points.add(new SeriesPoint((long) number(point, "t", 0), value.getAsDouble()));
+    private String text(String value) {
+        return value == null ? "" : value;
     }
 
-    private JsonObject requireObject(JsonObject parent, String name) {
-        JsonElement element = parent.get(name);
-        if (element == null || !element.isJsonObject()) {
-            throw new JsonParseException("Response has no " + name + " object");
-        }
-        return element.getAsJsonObject();
+    /** {@code { "station": { ... } }}. */
+    private record StationEnvelope(Station station) {
     }
 
-    private JsonObject object(JsonObject parent, String name) {
-        JsonElement element = parent.get(name);
-        return element != null && element.isJsonObject()
-                ? element.getAsJsonObject()
-                : new JsonObject();
+    /** One station detail object. */
+    private record Station(
+            String idx,
+            String name,
+            Double aqi,
+            Long updatedAt,
+            Map<String, Double> current,
+            Series series) {
     }
 
-    private String text(JsonObject parent, String name) {
-        JsonElement element = parent.get(name);
-        return element != null && element.isJsonPrimitive()
-                ? element.getAsString()
-                : "";
+    /** The {@code series} object; only the AQI series is used. */
+    private record Series(List<Point> aqi) {
     }
 
-    private double number(JsonObject parent, String name, double fallback) {
-        JsonElement element = parent.get(name);
-        if (element == null || !element.isJsonPrimitive()
-                || !element.getAsJsonPrimitive().isNumber()) {
-            return fallback;
-        }
-        return element.getAsDouble();
+    /** One {@code { "t": ..., "v": ... }} sample. */
+    private record Point(Long t, Double v) {
+    }
+
+    /** {@code { "stations": [ ... ] }}. */
+    private record StationsEnvelope(List<StationDto> stations) {
+    }
+
+    /** One entry in the station directory. */
+    private record StationDto(
+            String idx,
+            String name,
+            Double latitude,
+            Double longitude,
+            Double aqi) {
+    }
+
+    /** {@code { "error": { "message": ... } }}. */
+    private record ErrorEnvelope(ErrorDto error) {
+    }
+
+    private record ErrorDto(String message) {
     }
 }
