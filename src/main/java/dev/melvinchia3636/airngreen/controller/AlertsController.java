@@ -51,7 +51,7 @@ public final class AlertsController {
     }
 
     private void changeThreshold(AlertThreshold threshold) {
-        settings.threshold(threshold);
+        settings.setThreshold(threshold);
         status.show(threshold.isEnabled()
                 ? "Alerts enabled from " + threshold + "."
                 : "Alerts disabled.");

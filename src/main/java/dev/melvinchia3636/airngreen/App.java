@@ -59,16 +59,16 @@ public final class App {
         AlertLogObserver alertHistory =
                 new AlertLogObserver(localStore.loadAlerts());
         PollutionAlertService alertService =
-                new PollutionAlertService(settingsStore::threshold);
+                new PollutionAlertService(settingsStore::getThreshold);
         alertService.register(alertHistory);
         alertService.register(new AlertArchiveObserver(localStore));
         alertService.register(new BannerObserver(statusBar::showAlert));
 
         DashboardPanel dashboardPanel = new DashboardPanel(
-                settingsStore.district(), settingsStore.advice());
+                settingsStore.getDistrict(), settingsStore.getAudienceStrategy());
         StationsPanel stationsPanel = new StationsPanel();
         ReportsPanel reportsPanel = new ReportsPanel();
-        AlertsPanel alertsPanel = new AlertsPanel(settingsStore.threshold());
+        AlertsPanel alertsPanel = new AlertsPanel(settingsStore.getThreshold());
 
         new DashboardController(dashboardPanel, airQualityService,
                 parksService, settingsStore, alertService, statusBar).start();

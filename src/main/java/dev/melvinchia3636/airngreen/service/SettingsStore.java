@@ -13,7 +13,7 @@ import dev.melvinchia3636.airngreen.service.advice.AdviceStrategy;
 public final class SettingsStore {
 
     private static final String DISTRICT_KEY = "district";
-    private static final String ADVICE_KEY = "advice";
+    private static final String AUDIENCE_KEY = "audience";
     private static final String THRESHOLD_KEY = "alertThreshold";
 
     private final LocalStore store;
@@ -34,7 +34,7 @@ public final class SettingsStore {
      *
      * @return the saved district, defaulting to Kuala Lumpur
      */
-    public District district() {
+    public District getDistrict() {
         return District.fromName(properties.getProperty(DISTRICT_KEY));
     }
 
@@ -43,27 +43,27 @@ public final class SettingsStore {
      *
      * @param district district to remember
      */
-    public void district(District district) {
+    public void setDistrict(District district) {
         properties.setProperty(DISTRICT_KEY, district.name());
         save();
     }
 
     /**
-     * Advice audience selected on the dashboard.
+     * Audience strategy selected on the dashboard.
      *
      * @return the saved strategy, defaulting to general advice
      */
-    public AdviceStrategy advice() {
-        return AdviceStrategies.byKey(properties.getProperty(ADVICE_KEY));
+    public AdviceStrategy getAudienceStrategy() {
+        return AdviceStrategies.byKey(properties.getProperty(AUDIENCE_KEY));
     }
 
     /**
-     * Saves the selected advice audience.
+     * Saves the selected audience strategy.
      *
-     * @param advice strategy to remember
+     * @param strategy strategy to remember
      */
-    public void advice(AdviceStrategy advice) {
-        properties.setProperty(ADVICE_KEY, advice.key());
+    public void setAudienceStrategy(AdviceStrategy strategy) {
+        properties.setProperty(AUDIENCE_KEY, strategy.key());
         save();
     }
 
@@ -72,7 +72,7 @@ public final class SettingsStore {
      *
      * @return the saved threshold, defaulting to off
      */
-    public AlertThreshold threshold() {
+    public AlertThreshold getThreshold() {
         return AlertThreshold.fromName(properties.getProperty(THRESHOLD_KEY));
     }
 
@@ -81,7 +81,7 @@ public final class SettingsStore {
      *
      * @param threshold threshold to remember
      */
-    public void threshold(AlertThreshold threshold) {
+    public void setThreshold(AlertThreshold threshold) {
         properties.setProperty(THRESHOLD_KEY, threshold.name());
         save();
     }

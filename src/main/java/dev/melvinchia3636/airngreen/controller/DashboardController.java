@@ -60,12 +60,12 @@ public final class DashboardController {
     }
 
     private void changeDistrict(District district) {
-        settings.district(district);
+        settings.setDistrict(district);
         refresh();
     }
 
-    private void changeAudience(AdviceStrategy advice) {
-        settings.advice(advice);
+    private void changeAudience(AdviceStrategy strategy) {
+        settings.setAudienceStrategy(strategy);
         if (current != null) {
             render(current);
         }
@@ -114,10 +114,10 @@ public final class DashboardController {
     }
 
     private void render(StationReading reading) {
-        AdviceStrategy advice = settings.advice();
+        AdviceStrategy strategy = settings.getAudienceStrategy();
         view.showReading(reading,
-                advice.advice(reading.level()),
-                advice.outdoorMinutes(reading.level()));
+                strategy.advice(reading.level()),
+                strategy.outdoorMinutes(reading.level()));
         view.showParks(parks.nearest(view.selectedDistrict()));
     }
 }

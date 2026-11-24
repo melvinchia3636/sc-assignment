@@ -41,12 +41,12 @@ public final class StationsController {
     public void start() {
         view.onReload(this::loadAll);
         view.onLoadSelected(this::open);
-        view.setDistrict(settings.district());
+        view.setDistrict(settings.getDistrict());
         loadAll();
     }
 
     private void loadAll() {
-        District district = settings.district();
+        District district = settings.getDistrict();
         view.setLoading(true);
         view.showMessage("Loading stations...", false);
         status.show("Loading stations including " + district.label() + "...");
@@ -65,7 +65,7 @@ public final class StationsController {
                     view.setLoading(false);
                     List<StationSummary> cached = airQuality.cachedStations();
                     if (!cached.isEmpty()) {
-                        view.setDistrict(settings.district());
+                        view.setDistrict(settings.getDistrict());
                         view.setStations(cached);
                         view.showMessage("Offline: showing cached stations. "
                                 + failure.getMessage(), true);
