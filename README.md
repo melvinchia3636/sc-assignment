@@ -60,7 +60,12 @@ mvn verify
 java -jar target/airngreen.jar
 ```
 
-For development, `mvn exec:java` runs the application directly.
+For development, `mvn exec:java` runs the application directly. To point the
+client at a stub service, pass a system property:
+
+```bash
+java -Dairngreen.apiBase=http://127.0.0.1:8080 -jar target/airngreen.jar
+```
 
 ## Tests
 
