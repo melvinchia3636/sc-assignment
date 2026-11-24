@@ -1,5 +1,9 @@
 package dev.melvinchia3636.airngreen.ui;
 
+import dev.melvinchia3636.airngreen.model.AqiLevel;
+import dev.melvinchia3636.airngreen.model.CitizenReport;
+import dev.melvinchia3636.airngreen.model.District;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.time.Instant;
@@ -20,34 +24,26 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
-import dev.melvinchia3636.airngreen.model.AqiLevel;
-import dev.melvinchia3636.airngreen.model.CitizenReport;
-import dev.melvinchia3636.airngreen.model.District;
-
-/**
- * Citizen report view: a validated form plus the stored report list.
- */
+/** Citizen report view: a validated form plus the stored report list. */
 public final class ReportsPanel extends JPanel {
 
-    private static final String[] CATEGORIES = {
-            "Open burning",
-            "Construction dust",
-            "Vehicle smoke",
-            "Industrial emission",
-            "Other"
-    };
+    private static final String[] CATEGORIES = {"Open burning",
+        "Construction dust", "Vehicle smoke", "Industrial emission", "Other"};
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter
-            .ofPattern("d MMM, HH:mm", Locale.ENGLISH)
-            .withZone(ZoneId.systemDefault());
+        .ofPattern("d MMM, HH:mm", Locale.ENGLISH)
+        .withZone(ZoneId.systemDefault());
 
-    private final JComboBox<District> districtBox =
-            new JComboBox<>(District.values());
+    private final JComboBox<District> districtBox = new JComboBox<>(
+        District.values()
+    );
     private final JComboBox<String> categoryBox = new JComboBox<>(CATEGORIES);
     private final JTextArea noteArea = new JTextArea(4, 40);
     private final JButton submitButton = new JButton("Submit report");
     private final JLabel message = new JLabel(" ");
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[] { "Time", "District", "Category", "Description" }, 0) {
+        new Object[]{"Time", "District", "Category", "Description"},
+        0
+    ) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -55,9 +51,7 @@ public final class ReportsPanel extends JPanel {
     };
     private final JTable table = new JTable(model);
 
-    /**
-     * Creates the report view.
-     */
+    /** Creates the report view. */
     public ReportsPanel() {
         super(new BorderLayout(12, 12));
         setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
@@ -109,9 +103,7 @@ public final class ReportsPanel extends JPanel {
         return noteArea.getText();
     }
 
-    /**
-     * Clears the description after a successful submit.
-     */
+    /** Clears the description after a successful submit. */
     public void clearNote() {
         noteArea.setText("");
     }
@@ -124,25 +116,26 @@ public final class ReportsPanel extends JPanel {
     public void showReports(List<CitizenReport> reports) {
         model.setRowCount(0);
         for (CitizenReport report : reports) {
-            model.addRow(new Object[] {
-                    TIME_FORMAT.format(Instant.ofEpochSecond(report.createdAt())),
-                    report.district().label(),
-                    report.category(),
-                    report.note()
-            });
+            model.addRow(
+                new Object[]{
+                    TIME_FORMAT
+                        .format(Instant.ofEpochSecond(report.createdAt())),
+                    report.district().label(), report.category(), report.note()}
+            );
         }
     }
 
     /**
      * Shows validation feedback under the form.
      *
-     * @param text    message to display
+     * @param text message to display
      * @param warning true for a validation failure
      */
     public void showMessage(String text, boolean warning) {
         message.setText(text);
-        message.setForeground(AqiColors.forLevel(
-                warning ? AqiLevel.SENSITIVE : AqiLevel.GOOD));
+        message.setForeground(
+            AqiColors.forLevel(warning ? AqiLevel.SENSITIVE : AqiLevel.GOOD)
+        );
         message.setVisible(true);
     }
 
@@ -164,9 +157,12 @@ public final class ReportsPanel extends JPanel {
         body.add(actions(), BorderLayout.SOUTH);
 
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createCompoundBorder(
+        card.setBorder(
+            BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Report a pollution problem"),
-                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)
+            )
+        );
         card.add(body, BorderLayout.CENTER);
         card.setPreferredSize(new Dimension(700, 190));
 
@@ -185,8 +181,12 @@ public final class ReportsPanel extends JPanel {
 
     private JPanel hint() {
         JPanel hint = new JPanel(new BorderLayout());
-        hint.add(new JLabel("Reports are stored locally in ~/.airngreen/reports.json."),
-                BorderLayout.WEST);
+        hint.add(
+            new JLabel(
+                "Reports are stored locally in ~/.airngreen/reports.json."
+            ),
+            BorderLayout.WEST
+        );
 
         return hint;
     }

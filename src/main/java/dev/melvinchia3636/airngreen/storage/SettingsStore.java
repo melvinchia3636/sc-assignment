@@ -1,17 +1,15 @@
 package dev.melvinchia3636.airngreen.storage;
 
-import java.util.Properties;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
-
 import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.service.advice.AdviceStrategies;
 import dev.melvinchia3636.airngreen.service.advice.AdviceStrategy;
 
-/**
- * Typed access to the user's saved preferences.
- */
+import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
+
+/** Typed access to the user's saved preferences. */
 public final class SettingsStore {
 
     private static final String DISTRICT_KEY = "district";
@@ -20,8 +18,7 @@ public final class SettingsStore {
 
     private final LocalStore store;
     private final Properties properties;
-    private final CopyOnWriteArrayList<Consumer<District>> districtListeners =
-            new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Consumer<District>> districtListeners = new CopyOnWriteArrayList<>();
 
     /**
      * Loads settings from the given store.

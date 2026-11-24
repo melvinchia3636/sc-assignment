@@ -1,26 +1,24 @@
 package dev.melvinchia3636.airngreen.service.alerts;
 
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-import dev.melvinchia3636.airngreen.model.AqiAlert;
-
 /**
  * Observer that keeps the alerts shown on the Alerts screen.
  *
- * <p>The view cannot observe a plain list, so the log also exposes a change
- * callback. Listeners run on the thread that delivers the alert.</p>
+ * <p>
+ * The view cannot observe a plain list, so the log also exposes a change
+ * callback. Listeners run on the thread that delivers the alert.
  */
 public final class AlertLogObserver implements AlertObserver {
 
     private final List<AqiAlert> alerts = new CopyOnWriteArrayList<>();
-    private final CopyOnWriteArrayList<Consumer<AqiAlert>> listeners =
-            new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Consumer<AqiAlert>> listeners = new CopyOnWriteArrayList<>();
 
-    /**
-     * Creates an empty log.
-     */
+    /** Creates an empty log. */
     public AlertLogObserver() {
     }
 

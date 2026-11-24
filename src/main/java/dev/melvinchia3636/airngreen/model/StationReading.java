@@ -7,24 +7,23 @@ import java.util.OptionalDouble;
 /**
  * A station's current reading plus its recent AQI history.
  *
- * @param idx         upstream station identifier
- * @param name        station or district name
- * @param aqi         current Air Quality Index, possibly NaN when absent
- * @param updatedAt   time of the reading, in seconds since the Unix epoch
- * @param pollutants  current pollutant values keyed by upstream name
- * @param series      recent AQI samples in ascending time order
+ * @param idx upstream station identifier
+ * @param name station or district name
+ * @param aqi current Air Quality Index, possibly NaN when absent
+ * @param updatedAt time of the reading, in seconds since the Unix epoch
+ * @param pollutants current pollutant values keyed by upstream name
+ * @param series recent AQI samples in ascending time order
  */
 public record StationReading(
-        String idx,
-        String name,
-        double aqi,
-        long updatedAt,
-        Map<String, Double> pollutants,
-        List<SeriesPoint> series) {
+    String idx,
+    String name,
+    double aqi,
+    long updatedAt,
+    Map<String, Double> pollutants,
+    List<SeriesPoint> series
+) {
 
-    /**
-     * Defensively copies the collections so a reading cannot be mutated.
-     */
+    /** Defensively copies the collections so a reading cannot be mutated. */
     public StationReading {
         pollutants = Map.copyOf(pollutants);
         series = List.copyOf(series);
@@ -48,6 +47,8 @@ public record StationReading(
     public OptionalDouble pollutant(String key) {
         Double value = pollutants.get(key);
 
-        return value == null ? OptionalDouble.empty() : OptionalDouble.of(value);
+        return value == null
+            ? OptionalDouble.empty()
+            : OptionalDouble.of(value);
     }
 }

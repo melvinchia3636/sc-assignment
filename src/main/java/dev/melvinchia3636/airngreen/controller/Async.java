@@ -7,8 +7,8 @@ import java.util.function.Consumer;
 import javax.swing.SwingWorker;
 
 /**
- * Runs blocking work off the event-dispatch thread and delivers the result
- * back on it.
+ * Runs blocking work off the event-dispatch thread and delivers the result back
+ * on it.
  */
 public final class Async {
 
@@ -18,13 +18,16 @@ public final class Async {
     /**
      * Starts background work.
      *
-     * @param work    operation that may block or throw
+     * @param work operation that may block or throw
      * @param success consumer called on the event-dispatch thread
      * @param failure consumer called when the work throws
-     * @param <T>     result type
+     * @param <T> result type
      */
-    public static <T> void run(Callable<T> work, Consumer<T> success,
-                               Consumer<Exception> failure) {
+    public static <T> void run(
+        Callable<T> work,
+        Consumer<T> success,
+        Consumer<Exception> failure
+    ) {
         new SwingWorker<T, Void>() {
             @Override
             protected T doInBackground() throws Exception {

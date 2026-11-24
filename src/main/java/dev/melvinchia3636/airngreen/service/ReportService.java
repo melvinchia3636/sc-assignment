@@ -1,18 +1,16 @@
 package dev.melvinchia3636.airngreen.service;
 
+import dev.melvinchia3636.airngreen.model.CitizenReport;
+import dev.melvinchia3636.airngreen.model.District;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import dev.melvinchia3636.airngreen.model.CitizenReport;
-import dev.melvinchia3636.airngreen.model.District;
-import dev.melvinchia3636.airngreen.storage.LocalStore;
-
-/**
- * Validates and stores citizen pollution reports.
- */
+/** Validates and stores citizen pollution reports. */
 public final class ReportService {
 
     /** Maximum accepted description length. */
@@ -43,19 +41,25 @@ public final class ReportService {
             throw new IllegalArgumentException("Choose a district.");
         }
 
-        String cleanCategory = requireText(category, "Choose a report category.");
+        String cleanCategory = requireText(
+            category,
+            "Choose a report category."
+        );
         String cleanNote = requireText(note, "Describe what you observed.");
         if (cleanNote.length() > MAX_NOTE_LENGTH) {
             throw new IllegalArgumentException(
-                    "Keep the description under " + MAX_NOTE_LENGTH + " characters.");
+                "Keep the description under " + MAX_NOTE_LENGTH + " characters."
+            );
         }
 
         CitizenReport report = new CitizenReport(
-                UUID.randomUUID().toString(),
-                district,
-                cleanCategory,
-                cleanNote,
-                Instant.now().getEpochSecond());
+            UUID.randomUUID().toString(),
+            district,
+            cleanCategory,
+            cleanNote,
+            Instant.now().getEpochSecond()
+        );
+
         List<CitizenReport> reports = new ArrayList<>(store.loadReports());
         reports.add(report);
         store.saveReports(reports);
@@ -70,8 +74,9 @@ public final class ReportService {
      */
     public List<CitizenReport> getAll() {
         return store.loadReports().stream()
-                .sorted(Comparator.comparingLong(CitizenReport::createdAt).reversed())
-                .toList();
+            .sorted(
+                Comparator.comparingLong(CitizenReport::createdAt).reversed()
+            ).toList();
     }
 
     private String requireText(String value, String message) {

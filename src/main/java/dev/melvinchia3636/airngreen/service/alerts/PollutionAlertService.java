@@ -1,24 +1,24 @@
 package dev.melvinchia3636.airngreen.service.alerts;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Supplier;
-
+import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.model.AqiAlert;
 import dev.melvinchia3636.airngreen.model.AqiLevel;
-import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.model.StationReading;
+
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
 
 /**
  * Subject of the pollution-alert observer pattern.
  *
- * <p>A reading is announced when it reaches the selected band and is worse than
+ * <p>
+ * A reading is announced when it reaches the selected band and is worse than
  * the last announced band. Repeated refreshes inside the same band therefore
- * fire once, while a drop below the threshold re-arms the subject.</p>
+ * fire once, while a drop below the threshold re-arms the subject.
  */
 public final class PollutionAlertService {
 
-    private final CopyOnWriteArrayList<AlertObserver> observers =
-            new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<AlertObserver> observers = new CopyOnWriteArrayList<>();
     private final Supplier<AlertThreshold> threshold;
 
     private AqiLevel lastAnnounced;
@@ -75,8 +75,14 @@ public final class PollutionAlertService {
         }
 
         lastAnnounced = level;
-        announce(new AqiAlert(level, reading.aqi(), reading.name(),
-                System.currentTimeMillis()));
+        announce(
+            new AqiAlert(
+                level,
+                reading.aqi(),
+                reading.name(),
+                System.currentTimeMillis()
+            )
+        );
     }
 
     private void announce(AqiAlert alert) {

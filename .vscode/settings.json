@@ -1,0 +1,9 @@
+{
+    "java.format.enabled": true,
+    "java.format.settings.url": "${workspaceFolder}/config/airngreen-formatter.xml",
+    "java.format.settings.profile": "AirGreen",
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java",
+        "editor.formatOnSave": true
+    }
+}

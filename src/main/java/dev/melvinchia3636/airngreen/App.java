@@ -1,9 +1,5 @@
 package dev.melvinchia3636.airngreen;
 
-import java.util.List;
-
-import javax.swing.SwingUtilities;
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 import dev.melvinchia3636.airngreen.api.AqiApiClient;
@@ -27,6 +23,10 @@ import dev.melvinchia3636.airngreen.ui.MainFrame;
 import dev.melvinchia3636.airngreen.ui.ReportsPanel;
 import dev.melvinchia3636.airngreen.ui.StationsPanel;
 import dev.melvinchia3636.airngreen.ui.StatusBar;
+
+import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 /**
  * Composition root: builds services, views and controllers, then shows the
@@ -52,36 +52,62 @@ public final class App {
         SettingsStore settingsStore = new SettingsStore(localStore);
 
         AirQualityService airQualityService = new AirQualityService(
-                new AqiApiClient(), localStore);
+            new AqiApiClient(),
+            localStore
+        );
         ReportService reportService = new ReportService(localStore);
         ParksService parksService = ParksService.fromClasspath();
-        PollutionAlertService alertService =
-                new PollutionAlertService(settingsStore::getThreshold);
+        PollutionAlertService alertService = new PollutionAlertService(
+            settingsStore::getThreshold
+        );
 
         StatusBar statusBar = new StatusBar();
         DashboardPanel dashboardPanel = new DashboardPanel(
-                settingsStore.getDistrict(), settingsStore.getAudienceStrategy());
+            settingsStore.getDistrict(),
+            settingsStore.getAudienceStrategy()
+        );
         StationsPanel stationsPanel = new StationsPanel();
         ReportsPanel reportsPanel = new ReportsPanel();
         AlertsPanel alertsPanel = new AlertsPanel(settingsStore.getThreshold());
 
-        AlertLogObserver alertHistoryObserver =
-                new AlertLogObserver(localStore.loadAlerts());
+        AlertLogObserver alertHistoryObserver = new AlertLogObserver(
+            localStore.loadAlerts()
+        );
         List<AlertObserver> alertObservers = List.of(
-                alertHistoryObserver,
-                new AlertArchiveObserver(localStore),
-                new BannerObserver(statusBar::showAlert));
+            alertHistoryObserver,
+            new AlertArchiveObserver(localStore),
+            new BannerObserver(statusBar::showAlert)
+        );
         alertObservers.forEach(alertService::register);
 
-        new DashboardController(dashboardPanel, airQualityService,
-                parksService, settingsStore, alertService, statusBar).start();
-        new StationsController(stationsPanel, airQualityService,
-                settingsStore, statusBar).start();
+        new DashboardController(
+            dashboardPanel,
+            airQualityService,
+            parksService,
+            settingsStore,
+            alertService,
+            statusBar
+        ).start();
+        new StationsController(
+            stationsPanel,
+            airQualityService,
+            settingsStore,
+            statusBar
+        ).start();
         new ReportsController(reportsPanel, reportService, statusBar).start();
-        new AlertsController(alertsPanel, settingsStore,
-                alertHistoryObserver, statusBar).start();
+        new AlertsController(
+            alertsPanel,
+            settingsStore,
+            alertHistoryObserver,
+            statusBar
+        ).start();
 
-        new MainFrame(dashboardPanel, stationsPanel, reportsPanel, alertsPanel,
-                statusBar).setVisible(true);
+        new MainFrame(
+            dashboardPanel,
+            stationsPanel,
+            reportsPanel,
+            alertsPanel,
+            statusBar
+        ).setVisible(true);
     }
 }

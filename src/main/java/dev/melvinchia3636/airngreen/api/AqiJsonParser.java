@@ -3,21 +3,22 @@ package dev.melvinchia3636.airngreen.api;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
+import dev.melvinchia3636.airngreen.model.SeriesPoint;
+import dev.melvinchia3636.airngreen.model.StationReading;
+import dev.melvinchia3636.airngreen.model.StationSummary;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import dev.melvinchia3636.airngreen.model.SeriesPoint;
-import dev.melvinchia3636.airngreen.model.StationReading;
-import dev.melvinchia3636.airngreen.model.StationSummary;
-
 /**
  * Converts the API's JSON documents into domain objects.
  *
- * <p>Gson binds the response into small DTOs, which are then mapped to the
+ * <p>
+ * Gson binds the response into small DTOs, which are then mapped to the
  * immutable model. Parsing stays separate from transport so it can be tested
- * with literal JSON fixtures.</p>
+ * with literal JSON fixtures.
  */
 public final class AqiJsonParser {
 
@@ -73,8 +74,8 @@ public final class AqiJsonParser {
             ErrorEnvelope envelope = gson.fromJson(body, ErrorEnvelope.class);
 
             return envelope == null || envelope.error() == null
-                    ? null
-                    : envelope.error().message();
+                ? null
+                : envelope.error().message();
         } catch (RuntimeException malformed) {
             return null;
         }
@@ -82,21 +83,23 @@ public final class AqiJsonParser {
 
     private StationReading toReading(Station station) {
         return new StationReading(
-                text(station.idx()),
-                text(station.name()),
-                station.aqi() == null ? Double.NaN : station.aqi(),
-                station.updatedAt() == null ? 0 : station.updatedAt(),
-                currentValues(station.current()),
-                aqiSeries(station.series()));
+            text(station.idx()),
+            text(station.name()),
+            station.aqi() == null ? Double.NaN : station.aqi(),
+            station.updatedAt() == null ? 0 : station.updatedAt(),
+            currentValues(station.current()),
+            aqiSeries(station.series())
+        );
     }
 
     private StationSummary toSummary(StationDto station) {
         return new StationSummary(
-                text(station.idx()),
-                text(station.name()).trim(),
-                station.latitude() == null ? 0 : station.latitude(),
-                station.longitude() == null ? 0 : station.longitude(),
-                station.aqi());
+            text(station.idx()),
+            text(station.name()).trim(),
+            station.latitude() == null ? 0 : station.latitude(),
+            station.longitude() == null ? 0 : station.longitude(),
+            station.aqi()
+        );
     }
 
     private Map<String, Double> currentValues(Map<String, Double> current) {
@@ -140,12 +143,13 @@ public final class AqiJsonParser {
 
     /** One station detail object. */
     private record Station(
-            String idx,
-            String name,
-            Double aqi,
-            Long updatedAt,
-            Map<String, Double> current,
-            Series series) {
+        String idx,
+        String name,
+        Double aqi,
+        Long updatedAt,
+        Map<String, Double> current,
+        Series series
+    ) {
     }
 
     /** The {@code series} object; only the AQI series is used. */
@@ -162,11 +166,12 @@ public final class AqiJsonParser {
 
     /** One entry in the station directory. */
     private record StationDto(
-            String idx,
-            String name,
-            Double latitude,
-            Double longitude,
-            Double aqi) {
+        String idx,
+        String name,
+        Double latitude,
+        Double longitude,
+        Double aqi
+    ) {
     }
 
     /** {@code { "error": { "message": ... } }}. */

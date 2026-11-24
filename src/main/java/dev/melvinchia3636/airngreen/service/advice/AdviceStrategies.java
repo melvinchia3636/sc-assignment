@@ -2,15 +2,11 @@ package dev.melvinchia3636.airngreen.service.advice;
 
 import java.util.List;
 
-/**
- * Registry of the available advice strategies.
- */
+/** Registry of the available advice strategies. */
 public final class AdviceStrategies {
 
-    private static final List<AdviceStrategy> ALL = List.of(
-            new GeneralAdvice(),
-            new ChildrenAdvice(),
-            new ElderlyAdvice());
+    private static final List<AdviceStrategy> ALL = List
+        .of(new GeneralAdvice(), new ChildrenAdvice(), new ElderlyAdvice());
 
     private AdviceStrategies() {
     }
@@ -32,8 +28,7 @@ public final class AdviceStrategies {
      */
     public static AdviceStrategy byKey(String key) {
         return ALL.stream()
-                .filter(strategy -> strategy.key().equalsIgnoreCase(key))
-                .findFirst()
-                .orElseGet(GeneralAdvice::new);
+            .filter(strategy -> strategy.key().equalsIgnoreCase(key))
+            .findFirst().orElseGet(GeneralAdvice::new);
     }
 }

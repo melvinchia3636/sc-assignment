@@ -3,8 +3,9 @@ package dev.melvinchia3636.airngreen.model;
 /**
  * A city district the monitor can report on.
  *
- * <p>Each district carries the coordinates used for the nearest-station query
- * and for ranking nearby parks.</p>
+ * <p>
+ * Each district carries the coordinates used for the nearest-station query and
+ * for ranking nearby parks.
  */
 public enum District {
 

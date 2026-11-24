@@ -2,9 +2,7 @@ package dev.melvinchia3636.airngreen.service.advice;
 
 import dev.melvinchia3636.airngreen.model.AqiLevel;
 
-/**
- * Advice for children, whose airways are more sensitive to pollution.
- */
+/** Advice for children, whose airways are more sensitive to pollution. */
 public final class ChildrenAdvice implements AdviceStrategy {
 
     @Override
@@ -21,11 +19,15 @@ public final class ChildrenAdvice implements AdviceStrategy {
     public String advice(AqiLevel level) {
         return switch (level) {
             case GOOD -> "Good air for play. Outdoor games are fine.";
-            case MODERATE -> "Outdoor play is fine, but watch children with asthma.";
-            case SENSITIVE -> "Move vigorous play indoors or shorten outdoor sessions.";
+            case MODERATE ->
+                "Outdoor play is fine, but watch children with asthma.";
+            case SENSITIVE ->
+                "Move vigorous play indoors or shorten outdoor sessions.";
             case UNHEALTHY -> "Keep children indoors and avoid outdoor sport.";
-            case VERY_UNHEALTHY, HAZARDOUS -> "Keep children indoors with windows closed.";
-            case UNKNOWN -> "No current reading. Refresh before planning outdoor play.";
+            case VERY_UNHEALTHY, HAZARDOUS ->
+                "Keep children indoors with windows closed.";
+            case UNKNOWN ->
+                "No current reading. Refresh before planning outdoor play.";
         };
     }
 

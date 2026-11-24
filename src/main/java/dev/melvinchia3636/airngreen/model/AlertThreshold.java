@@ -5,8 +5,9 @@ import java.util.Optional;
 /**
  * The AQI band at which the user wants to be alerted.
  *
- * <p>{@link #OFF} disables alerts; every other constant alerts when a reading
- * reaches its band or worse.</p>
+ * <p>
+ * {@link #OFF} disables alerts; every other constant alerts when a reading
+ * reaches its band or worse.
  */
 public enum AlertThreshold {
 

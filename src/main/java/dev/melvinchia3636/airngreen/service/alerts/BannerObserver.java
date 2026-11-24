@@ -1,12 +1,10 @@
 package dev.melvinchia3636.airngreen.service.alerts;
 
-import java.util.function.Consumer;
-
 import dev.melvinchia3636.airngreen.model.AqiAlert;
 
-/**
- * Observer that forwards an alert to the window's status banner.
- */
+import java.util.function.Consumer;
+
+/** Observer that forwards an alert to the window's status banner. */
 public final class BannerObserver implements AlertObserver {
 
     private final Consumer<AqiAlert> banner;

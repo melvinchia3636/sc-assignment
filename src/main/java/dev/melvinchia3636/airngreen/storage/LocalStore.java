@@ -5,6 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+import dev.melvinchia3636.airngreen.model.CitizenReport;
+import dev.melvinchia3636.airngreen.model.StationReading;
+import dev.melvinchia3636.airngreen.model.StationSummary;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -16,17 +21,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-import dev.melvinchia3636.airngreen.model.AqiAlert;
-import dev.melvinchia3636.airngreen.model.CitizenReport;
-import dev.melvinchia3636.airngreen.model.StationReading;
-import dev.melvinchia3636.airngreen.model.StationSummary;
-
 /**
  * Small JSON and properties store under {@code ~/.airngreen}.
  *
- * <p>It keeps the last reading for offline use, citizen reports, the cached
+ * <p>
+ * It keeps the last reading for offline use, citizen reports, the cached
  * station directory and user settings. A corrupt or missing file is treated as
- * empty data rather than an error.</p>
+ * empty data rather than an error.
  */
 public final class LocalStore {
 
@@ -36,19 +37,17 @@ public final class LocalStore {
     private static final String STATIONS_FILE = "stations.json";
     private static final String ALERTS_FILE = "alerts.json";
 
-    private static final Type REPORT_LIST =
-            new TypeToken<List<CitizenReport>>() { }.getType();
-    private static final Type STATION_LIST =
-            new TypeToken<List<StationSummary>>() { }.getType();
-    private static final Type ALERT_LIST =
-            new TypeToken<List<AqiAlert>>() { }.getType();
+    private static final Type REPORT_LIST = new TypeToken<List<CitizenReport>>() {
+    }.getType();
+    private static final Type STATION_LIST = new TypeToken<List<StationSummary>>() {
+    }.getType();
+    private static final Type ALERT_LIST = new TypeToken<List<AqiAlert>>() {
+    }.getType();
 
     private final Path directory;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    /**
-     * Creates a store in the current user's home directory.
-     */
+    /** Creates a store in the current user's home directory. */
     public LocalStore() {
         this(Path.of(System.getProperty("user.home"), ".airngreen"));
     }

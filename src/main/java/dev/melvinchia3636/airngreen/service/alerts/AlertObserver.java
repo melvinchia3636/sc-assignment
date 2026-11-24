@@ -2,9 +2,7 @@ package dev.melvinchia3636.airngreen.service.alerts;
 
 import dev.melvinchia3636.airngreen.model.AqiAlert;
 
-/**
- * Observer contract for pollution alerts.
- */
+/** Observer contract for pollution alerts. */
 public interface AlertObserver {
 
     /**

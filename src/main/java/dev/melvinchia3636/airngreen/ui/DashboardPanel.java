@@ -1,5 +1,12 @@
 package dev.melvinchia3636.airngreen.ui;
 
+import dev.melvinchia3636.airngreen.model.AqiLevel;
+import dev.melvinchia3636.airngreen.model.District;
+import dev.melvinchia3636.airngreen.model.NearbyPark;
+import dev.melvinchia3636.airngreen.model.StationReading;
+import dev.melvinchia3636.airngreen.service.advice.AdviceStrategies;
+import dev.melvinchia3636.airngreen.service.advice.AdviceStrategy;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -26,30 +33,26 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
-import dev.melvinchia3636.airngreen.model.AqiLevel;
-import dev.melvinchia3636.airngreen.model.District;
-import dev.melvinchia3636.airngreen.model.NearbyPark;
-import dev.melvinchia3636.airngreen.model.StationReading;
-import dev.melvinchia3636.airngreen.service.advice.AdviceStrategies;
-import dev.melvinchia3636.airngreen.service.advice.AdviceStrategy;
-
 /**
  * Dashboard view: current reading, audience advice and nearby parks.
  *
- * <p>The panel renders state only; controllers perform the network calls.</p>
+ * <p>
+ * The panel renders state only; controllers perform the network calls.
  */
 public final class DashboardPanel extends JPanel {
 
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter
-            .ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)
-            .withZone(ZoneId.systemDefault());
-    private static final List<String> POLLUTANT_KEYS =
-            List.of("pm25", "pm10", "o3", "no2", "so2", "co");
+        .ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)
+        .withZone(ZoneId.systemDefault());
+    private static final List<String> POLLUTANT_KEYS = List
+        .of("pm25", "pm10", "o3", "no2", "so2", "co");
 
-    private final JComboBox<District> districtBox =
-            new JComboBox<>(District.values());
-    private final JComboBox<AdviceStrategy> audienceBox =
-            new JComboBox<>(AdviceStrategies.getAll().toArray(new AdviceStrategy[0]));
+    private final JComboBox<District> districtBox = new JComboBox<>(
+        District.values()
+    );
+    private final JComboBox<AdviceStrategy> audienceBox = new JComboBox<>(
+        AdviceStrategies.getAll().toArray(new AdviceStrategy[0])
+    );
     private final JButton refreshButton = new JButton("Refresh");
 
     private final JLabel aqiValue = new JLabel("--");
@@ -104,7 +107,8 @@ public final class DashboardPanel extends JPanel {
      */
     public void onDistrictChange(Consumer<District> action) {
         districtBox.addActionListener(
-                event -> action.accept((District) districtBox.getSelectedItem()));
+            event -> action.accept((District) districtBox.getSelectedItem())
+        );
     }
 
     /**
@@ -114,7 +118,9 @@ public final class DashboardPanel extends JPanel {
      */
     public void onAudienceChange(Consumer<AdviceStrategy> action) {
         audienceBox.addActionListener(
-                event -> action.accept((AdviceStrategy) audienceBox.getSelectedItem()));
+            event -> action
+                .accept((AdviceStrategy) audienceBox.getSelectedItem())
+        );
     }
 
     /**
@@ -139,24 +145,31 @@ public final class DashboardPanel extends JPanel {
     /**
      * Renders a reading and its advice.
      *
-     * @param reading         station reading
-     * @param advice          audience-specific guidance
-     * @param outdoorMinutes  suggested safe time outdoors
+     * @param reading station reading
+     * @param advice audience-specific guidance
+     * @param outdoorMinutes suggested safe time outdoors
      */
-    public void showReading(StationReading reading, String advice,
-                            int outdoorMinutes) {
+    public void showReading(
+        StationReading reading,
+        String advice,
+        int outdoorMinutes
+    ) {
         aqiValue.setText(formatAqi(reading.aqi()));
         aqiValue.setForeground(AqiColors.forLevel(reading.level()));
         levelLabel.setText(reading.level().label());
         levelLabel.setForeground(AqiColors.forLevel(reading.level()));
         stationLabel.setText(reading.name() + " (" + reading.idx() + ")");
-        updatedLabel.setText("Updated "
-                + TIME_FORMAT.format(Instant.ofEpochSecond(reading.updatedAt())));
+        updatedLabel.setText(
+            "Updated "
+                + TIME_FORMAT.format(Instant.ofEpochSecond(reading.updatedAt()))
+        );
         pollutantLabel.setText(pollutants(reading));
         adviceArea.setText(advice);
-        outdoorLabel.setText(outdoorMinutes > 0
+        outdoorLabel.setText(
+            outdoorMinutes > 0
                 ? "Suggested outdoor time: " + outdoorMinutes + " minutes."
-                : "Suggested outdoor time: avoid outdoor activity.");
+                : "Suggested outdoor time: avoid outdoor activity."
+        );
     }
 
     /**
@@ -167,9 +180,15 @@ public final class DashboardPanel extends JPanel {
     public void showParks(List<NearbyPark> parks) {
         parkModel.clear();
         for (NearbyPark nearby : parks) {
-            parkModel.addElement(String.format(Locale.ENGLISH, "%s - %.1f km (%s)",
-                    nearby.park().name(), nearby.distanceKm(),
-                    nearby.park().facilities()));
+            parkModel.addElement(
+                String.format(
+                    Locale.ENGLISH,
+                    "%s - %.1f km (%s)",
+                    nearby.park().name(),
+                    nearby.distanceKm(),
+                    nearby.park().facilities()
+                )
+            );
         }
     }
 
@@ -181,15 +200,15 @@ public final class DashboardPanel extends JPanel {
      */
     public void showMessage(String message, boolean warning) {
         notice.setText(message);
-        notice.setForeground(warning
+        notice.setForeground(
+            warning
                 ? AqiColors.forLevel(AqiLevel.SENSITIVE)
-                : AqiColors.forLevel(AqiLevel.GOOD));
+                : AqiColors.forLevel(AqiLevel.GOOD)
+        );
         notice.setVisible(true);
     }
 
-    /**
-     * Hides the notice line.
-     */
+    /** Hides the notice line. */
     public void clearMessage() {
         notice.setVisible(false);
     }
@@ -265,9 +284,12 @@ public final class DashboardPanel extends JPanel {
 
     private JPanel card(String title, Component body) {
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createCompoundBorder(
+        card.setBorder(
+            BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(title),
-                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)
+            )
+        );
         card.add(body, BorderLayout.CENTER);
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -277,13 +299,16 @@ public final class DashboardPanel extends JPanel {
     private String pollutants(StationReading reading) {
         List<String> parts = new ArrayList<>();
         for (String key : POLLUTANT_KEYS) {
-            reading.pollutant(key).ifPresent(value -> parts.add(
-                    key.toUpperCase(Locale.ROOT) + " " + formatNumber(value)));
+            reading.pollutant(key).ifPresent(
+                value -> parts.add(
+                    key.toUpperCase(Locale.ROOT) + " " + formatNumber(value)
+                )
+            );
         }
 
         return parts.isEmpty()
-                ? "No pollutant breakdown reported."
-                : String.join("   ", parts);
+            ? "No pollutant breakdown reported."
+            : String.join("   ", parts);
     }
 
     private String formatAqi(double aqi) {
@@ -295,12 +320,25 @@ public final class DashboardPanel extends JPanel {
     }
 
     /** Renders advice strategies by their display name. */
-    private static final class AudienceRenderer extends DefaultListCellRenderer {
+    private static final class AudienceRenderer
+        extends
+            DefaultListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value,
-                int index, boolean selected, boolean focused) {
-            super.getListCellRendererComponent(list, value, index, selected, focused);
+        public Component getListCellRendererComponent(
+            JList<?> list,
+            Object value,
+            int index,
+            boolean selected,
+            boolean focused
+        ) {
+            super.getListCellRendererComponent(
+                list,
+                value,
+                index,
+                selected,
+                focused
+            );
             if (value instanceof AdviceStrategy strategy) {
                 setText(strategy.name());
             }

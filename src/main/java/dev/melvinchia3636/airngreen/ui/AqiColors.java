@@ -1,12 +1,10 @@
 package dev.melvinchia3636.airngreen.ui;
 
-import java.awt.Color;
-
 import dev.melvinchia3636.airngreen.model.AqiLevel;
 
-/**
- * Colours used to make AQI bands recognisable.
- */
+import java.awt.Color;
+
+/** Colours used to make AQI bands recognisable. */
 public final class AqiColors {
 
     private static final Color GOOD_COLOR = new Color(0x2E7D32);

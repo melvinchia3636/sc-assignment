@@ -3,9 +3,10 @@ package dev.melvinchia3636.airngreen.model;
 /**
  * Air Quality Index bands, from best to worst.
  *
- * <p>The bands follow the United States Environmental Protection Agency scale
- * used by the upstream service: 0-50, 51-100, 101-150, 151-200, 201-300 and
- * above 300.</p>
+ * <p>
+ * The bands follow the United States Environmental Protection Agency scale used
+ * by the upstream service: 0-50, 51-100, 101-150, 151-200, 201-300 and above
+ * 300.
  */
 public enum AqiLevel {
 
@@ -30,9 +31,8 @@ public enum AqiLevel {
     /** Emergency conditions. */
     HAZARDOUS("Hazardous", 301);
 
-    private static final AqiLevel[] ORDERED = {
-            GOOD, MODERATE, SENSITIVE, UNHEALTHY, VERY_UNHEALTHY, HAZARDOUS
-    };
+    private static final AqiLevel[] ORDERED = {GOOD, MODERATE, SENSITIVE,
+        UNHEALTHY, VERY_UNHEALTHY, HAZARDOUS};
 
     private final String label;
     private final int floor;

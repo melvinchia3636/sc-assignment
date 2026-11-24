@@ -8,22 +8,25 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 
-/**
- * Main window: four tabs and a shared status line.
- */
+/** Main window: four tabs and a shared status line. */
 public final class MainFrame extends JFrame {
 
     /**
      * Creates the window.
      *
      * @param dashboard air-quality tab
-     * @param stations  station directory tab
-     * @param reports   citizen reports tab
-     * @param alerts    alert settings tab
-     * @param status    shared status line
+     * @param stations station directory tab
+     * @param reports citizen reports tab
+     * @param alerts alert settings tab
+     * @param status shared status line
      */
-    public MainFrame(JPanel dashboard, JPanel stations, JPanel reports,
-                     JPanel alerts, StatusBar status) {
+    public MainFrame(
+        JPanel dashboard,
+        JPanel stations,
+        JPanel reports,
+        JPanel alerts,
+        StatusBar status
+    ) {
         super("Air & Green | Urban Air Quality Monitor");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(900, 620));

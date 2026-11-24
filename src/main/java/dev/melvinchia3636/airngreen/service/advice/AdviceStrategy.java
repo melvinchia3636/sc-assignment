@@ -5,8 +5,9 @@ import dev.melvinchia3636.airngreen.model.AqiLevel;
 /**
  * Strategy for turning an AQI band into advice for one audience group.
  *
- * <p>Each audience supplies its own thresholds and wording, so a new group can
- * be added without editing the advice screen.</p>
+ * <p>
+ * Each audience supplies its own thresholds and wording, so a new group can be
+ * added without editing the advice screen.
  */
 public interface AdviceStrategy {
 

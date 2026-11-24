@@ -1,22 +1,23 @@
 package dev.melvinchia3636.airngreen.service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
-import dev.melvinchia3636.airngreen.api.AqiApiClient;
 import dev.melvinchia3636.airngreen.api.ApiException;
+import dev.melvinchia3636.airngreen.api.AqiApiClient;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
 import dev.melvinchia3636.airngreen.storage.LocalStore;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Loads air-quality data and keeps the last good result for offline use.
  *
- * <p>Every successful call updates the local cache, so a later failure can
- * still be shown to the user.</p>
+ * <p>
+ * Every successful call updates the local cache, so a later failure can still
+ * be shown to the user.
  */
 public final class AirQualityService {
 
@@ -29,7 +30,7 @@ public final class AirQualityService {
      * Creates the service.
      *
      * @param client API client
-     * @param store  local cache
+     * @param store local cache
      */
     public AirQualityService(AqiApiClient client, LocalStore store) {
         this.client = client;
@@ -44,8 +45,8 @@ public final class AirQualityService {
      * @throws ApiException when the service cannot answer
      */
     public StationReading nearest(District district) throws ApiException {
-        StationReading reading =
-                client.nearestStation(district.latitude(), district.longitude());
+        StationReading reading = client
+            .nearestStation(district.latitude(), district.longitude());
         store.saveReading(reading);
 
         return reading;
@@ -72,16 +73,27 @@ public final class AirQualityService {
      * @return stations nearest first
      * @throws ApiException when the service cannot answer
      */
-    public List<StationSummary> stations(District district) throws ApiException {
+    public List<StationSummary> stations(District district)
+        throws ApiException {
         double radius = STATION_RADIUS_DEGREES;
-        List<StationSummary> stations = new ArrayList<>(client.stations(
+        List<StationSummary> stations = new ArrayList<>(
+            client.stations(
                 district.latitude() - radius,
                 district.longitude() - radius,
                 district.latitude() + radius,
-                district.longitude() + radius));
-        stations.sort(Comparator.comparingDouble(station ->
-                GeoDistance.kmBetween(district.latitude(), district.longitude(),
-                        station.latitude(), station.longitude())));
+                district.longitude() + radius
+            )
+        );
+        stations.sort(
+            Comparator.comparingDouble(
+                station -> GeoDistance.kmBetween(
+                    district.latitude(),
+                    district.longitude(),
+                    station.latitude(),
+                    station.longitude()
+                )
+            )
+        );
         store.saveStations(stations);
 
         return stations;

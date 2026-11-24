@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+import dev.melvinchia3636.airngreen.model.AqiLevel;
 
 import org.junit.jupiter.api.Test;
 
-import dev.melvinchia3636.airngreen.model.AqiAlert;
-import dev.melvinchia3636.airngreen.model.AqiLevel;
+import java.util.ArrayList;
+import java.util.List;
 
 class AlertLogObserverTest {
 
@@ -25,9 +25,10 @@ class AlertLogObserverTest {
         List<AqiAlert> alerts = observer.getAlerts();
 
         assertAll(
-                () -> assertEquals(2, alerts.size()),
-                () -> assertEquals(130, alerts.get(0).aqi()),
-                () -> assertEquals(90, alerts.get(1).aqi()));
+            () -> assertEquals(2, alerts.size()),
+            () -> assertEquals(130, alerts.get(0).aqi()),
+            () -> assertEquals(90, alerts.get(1).aqi())
+        );
     }
 
     @Test
@@ -52,8 +53,9 @@ class AlertLogObserverTest {
         observer.onThresholdExceeded(alert(90, 1));
 
         assertAll(
-                () -> assertEquals(1, first.size()),
-                () -> assertEquals(1, second.size()));
+            () -> assertEquals(1, first.size()),
+            () -> assertEquals(1, second.size())
+        );
     }
 
     @Test
@@ -75,8 +77,9 @@ class AlertLogObserverTest {
         AlertLogObserver seeded = new AlertLogObserver(List.of(alert(90, 1)));
 
         assertAll(
-                () -> assertEquals(1, seeded.getAlerts().size()),
-                () -> assertEquals(90, seeded.getAlerts().get(0).aqi()));
+            () -> assertEquals(1, seeded.getAlerts().size()),
+            () -> assertEquals(90, seeded.getAlerts().get(0).aqi())
+        );
     }
 
     private static AqiAlert alert(double aqi, long createdAt) {

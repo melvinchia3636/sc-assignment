@@ -1,8 +1,6 @@
 package dev.melvinchia3636.airngreen.service;
 
-/**
- * Great-circle distance helper shared by parks and station ordering.
- */
+/** Great-circle distance helper shared by parks and station ordering. */
 public final class GeoDistance {
 
     private static final double EARTH_RADIUS_KM = 6371.0088;
@@ -20,13 +18,16 @@ public final class GeoDistance {
      * @param lon2 second longitude in degrees
      * @return distance in kilometres
      */
-    public static double kmBetween(double lat1, double lon1,
-                                   double lat2, double lon2) {
+    public static double kmBetween(
+        double lat1,
+        double lon1,
+        double lat2,
+        double lon2
+    ) {
         double deltaLat = Math.toRadians(lat2 - lat1);
         double deltaLon = Math.toRadians(lon2 - lon1);
         double a = Math.pow(Math.sin(deltaLat * HALF), 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2))
+            + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.pow(Math.sin(deltaLon * HALF), 2);
         return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
     }

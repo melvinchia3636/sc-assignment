@@ -3,8 +3,9 @@ package dev.melvinchia3636.airngreen.api;
 /**
  * Failure raised when the air-quality service cannot provide usable data.
  *
- * <p>The message is safe to show to a user: it never contains a stack trace or
- * an upstream payload.</p>
+ * <p>
+ * The message is safe to show to a user: it never contains a stack trace or an
+ * upstream payload.
  */
 public class ApiException extends Exception {
 
@@ -17,7 +18,7 @@ public class ApiException extends Exception {
      * Creates a failure with a user-facing message.
      *
      * @param statusCode HTTP status, or {@link #NETWORK_FAILURE} when offline
-     * @param message    short explanation for the user
+     * @param message short explanation for the user
      */
     public ApiException(int statusCode, String message) {
         super(message);
@@ -39,7 +40,8 @@ public class ApiException extends Exception {
      * @return true for 5xx responses or a network failure
      */
     public boolean isServiceFailure() {
-        return statusCode == NETWORK_FAILURE || statusCode >= SERVER_ERROR_FLOOR;
+        return statusCode == NETWORK_FAILURE
+            || statusCode >= SERVER_ERROR_FLOOR;
     }
 
     /**
@@ -60,10 +62,10 @@ public class ApiException extends Exception {
         }
         if (statusCode >= SERVER_ERROR_FLOOR) {
             return "The air-quality service is unavailable. "
-                    + "Showing the last saved reading.";
+                + "Showing the last saved reading.";
         }
 
         return "Unexpected response from the air-quality service (HTTP "
-                + statusCode + ").";
+            + statusCode + ").";
     }
 }

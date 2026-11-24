@@ -24,7 +24,8 @@ public final class ElderlyAdvice implements AdviceStrategy {
             case MODERATE -> "Light outdoor activity is fine; rest often.";
             case SENSITIVE -> "Shorten outdoor walks and avoid busy roads.";
             case UNHEALTHY -> "Stay indoors and keep medication nearby.";
-            case VERY_UNHEALTHY, HAZARDOUS -> "Remain indoors and close windows.";
+            case VERY_UNHEALTHY, HAZARDOUS ->
+                "Remain indoors and close windows.";
             case UNKNOWN -> "No current reading. Refresh before going out.";
         };
     }

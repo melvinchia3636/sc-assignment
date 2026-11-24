@@ -1,5 +1,11 @@
 package dev.melvinchia3636.airngreen.ui;
 
+import dev.melvinchia3636.airngreen.model.AqiLevel;
+import dev.melvinchia3636.airngreen.model.District;
+import dev.melvinchia3636.airngreen.model.StationReading;
+import dev.melvinchia3636.airngreen.model.StationSummary;
+import dev.melvinchia3636.airngreen.service.GeoDistance;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -32,41 +38,35 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import dev.melvinchia3636.airngreen.model.AqiLevel;
-import dev.melvinchia3636.airngreen.model.District;
-import dev.melvinchia3636.airngreen.model.StationReading;
-import dev.melvinchia3636.airngreen.model.StationSummary;
-import dev.melvinchia3636.airngreen.service.GeoDistance;
-
-/**
- * Station directory view: filter the public list and open one station.
- */
+/** Station directory view: filter the public list and open one station. */
 public final class StationsPanel extends JPanel {
 
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter
-            .ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)
-            .withZone(ZoneId.systemDefault());
+        .ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)
+        .withZone(ZoneId.systemDefault());
 
     private final JTextField search = new JTextField();
     private final JButton reloadButton = new JButton("Load station list");
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[] { "ID", "Station", "AQI", "Distance" }, 0) {
+        new Object[]{"ID", "Station", "AQI", "Distance"},
+        0
+    ) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     };
     private final JTable table = new JTable(model);
-    private final TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+    private final TableRowSorter<TableModel> sorter = new TableRowSorter<>(
+        model
+    );
     private final JTextArea detail = new JTextArea(6, 40);
     private final JButton loadButton = new JButton("Open selected station");
     private final JLabel notice = new JLabel(" ");
     private boolean detailLoading;
     private District district = District.KUALA_LUMPUR;
 
-    /**
-     * Creates the station directory view.
-     */
+    /** Creates the station directory view. */
     public StationsPanel() {
         super(new BorderLayout(12, 12));
         setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
@@ -84,12 +84,11 @@ public final class StationsPanel extends JPanel {
         add(actions(), BorderLayout.SOUTH);
 
         search.getDocument().addDocumentListener(new SearchListener());
-        table.getSelectionModel().addListSelectionListener(
-                event -> {
-                    if (!event.getValueIsAdjusting()) {
-                        updateLoadButton();
-                    }
-                });
+        table.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                updateLoadButton();
+            }
+        });
     }
 
     /**
@@ -141,12 +140,10 @@ public final class StationsPanel extends JPanel {
     public void setStations(List<StationSummary> stations) {
         model.setRowCount(0);
         for (StationSummary station : stations) {
-            model.addRow(new Object[] {
-                    station.idx(),
-                    station.name(),
-                    formatAqi(station.aqi()),
-                    formatDistance(station)
-            });
+            model.addRow(
+                new Object[]{station.idx(), station.name(),
+                    formatAqi(station.aqi()), formatDistance(station)}
+            );
         }
     }
 
@@ -161,7 +158,8 @@ public final class StationsPanel extends JPanel {
             return null;
         }
 
-        return String.valueOf(model.getValueAt(table.convertRowIndexToModel(row), 0));
+        return String
+            .valueOf(model.getValueAt(table.convertRowIndexToModel(row), 0));
     }
 
     /**
@@ -170,20 +168,25 @@ public final class StationsPanel extends JPanel {
      * @param reading loaded station report
      */
     public void showDetail(StationReading reading) {
-        detail.setText("""
-                %s (%s)
-                AQI %s - %s
-                Updated %s
-                %s
-                %s
-                """.formatted(
-                reading.name(),
-                reading.idx(),
-                formatAqi(reading.aqi()),
-                reading.level().label(),
-                TIME_FORMAT.format(Instant.ofEpochSecond(reading.updatedAt())),
-                pollutants(reading),
-                seriesSummary(reading)));
+        detail
+            .setText(
+                """
+                    %s (%s)
+                    AQI %s - %s
+                    Updated %s
+                    %s
+                    %s
+                    """.formatted(
+                    reading.name(),
+                    reading.idx(),
+                    formatAqi(reading.aqi()),
+                    reading.level().label(),
+                    TIME_FORMAT
+                        .format(Instant.ofEpochSecond(reading.updatedAt())),
+                    pollutants(reading),
+                    seriesSummary(reading)
+                )
+            );
         detail.setCaretPosition(0);
     }
 
@@ -236,8 +239,9 @@ public final class StationsPanel extends JPanel {
      */
     public void showMessage(String message, boolean warning) {
         notice.setText(message);
-        notice.setForeground(AqiColors.forLevel(
-                warning ? AqiLevel.SENSITIVE : AqiLevel.GOOD));
+        notice.setForeground(
+            AqiColors.forLevel(warning ? AqiLevel.SENSITIVE : AqiLevel.GOOD)
+        );
         notice.setVisible(true);
     }
 
@@ -259,8 +263,11 @@ public final class StationsPanel extends JPanel {
         JScrollPane detailScroll = new JScrollPane(detail);
         detailScroll.setPreferredSize(new Dimension(600, 120));
 
-        JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                tableScroll, detailScroll);
+        JSplitPane split = new JSplitPane(
+            JSplitPane.VERTICAL_SPLIT,
+            tableScroll,
+            detailScroll
+        );
         split.setResizeWeight(0.8);
         split.setBorder(null);
 
@@ -278,13 +285,18 @@ public final class StationsPanel extends JPanel {
     }
 
     private String formatAqi(Double aqi) {
-        return aqi == null || aqi.isNaN() ? "-" : String.valueOf(Math.round(aqi));
+        return aqi == null || aqi.isNaN()
+            ? "-"
+            : String.valueOf(Math.round(aqi));
     }
 
     private String formatDistance(StationSummary station) {
         double km = GeoDistance.kmBetween(
-                district.latitude(), district.longitude(),
-                station.latitude(), station.longitude());
+            district.latitude(),
+            district.longitude(),
+            station.latitude(),
+            station.longitude()
+        );
 
         return String.format(Locale.ENGLISH, "%.1f km", km);
     }
@@ -292,14 +304,17 @@ public final class StationsPanel extends JPanel {
     private String pollutants(StationReading reading) {
         List<String> parts = new ArrayList<>();
         for (String key : List.of("pm25", "pm10", "o3", "no2", "so2", "co")) {
-            reading.pollutant(key).ifPresent(value -> parts.add(
+            reading.pollutant(key).ifPresent(
+                value -> parts.add(
                     key.toUpperCase(Locale.ROOT) + " "
-                            + String.format(Locale.ENGLISH, "%.1f", value)));
+                        + String.format(Locale.ENGLISH, "%.1f", value)
+                )
+            );
         }
 
         return parts.isEmpty()
-                ? "No pollutant breakdown reported."
-                : String.join("   ", parts);
+            ? "No pollutant breakdown reported."
+            : String.join("   ", parts);
     }
 
     private String seriesSummary(StationReading reading) {
@@ -308,13 +323,16 @@ public final class StationsPanel extends JPanel {
         }
 
         DoubleSummaryStatistics stats = reading.series().stream()
-                .mapToDouble(point -> point.value())
-                .summaryStatistics();
+            .mapToDouble(point -> point.value()).summaryStatistics();
 
-        return String.format(Locale.ENGLISH,
-                "Recent AQI: %d samples, min %.0f, max %.0f, average %.0f",
-                stats.getCount(), stats.getMin(), stats.getMax(),
-                stats.getAverage());
+        return String.format(
+            Locale.ENGLISH,
+            "Recent AQI: %d samples, min %.0f, max %.0f, average %.0f",
+            stats.getCount(),
+            stats.getMin(),
+            stats.getMax(),
+            stats.getAverage()
+        );
     }
 
     private void updateLoadButton() {
@@ -323,9 +341,11 @@ public final class StationsPanel extends JPanel {
 
     private void applyFilter() {
         String text = search.getText().trim();
-        sorter.setRowFilter(text.isEmpty()
+        sorter.setRowFilter(
+            text.isEmpty()
                 ? null
-                : RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
+                : RowFilter.regexFilter("(?i)" + Pattern.quote(text))
+        );
     }
 
     /** Re-filters whenever the search box changes. */

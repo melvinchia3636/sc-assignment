@@ -2,9 +2,7 @@ package dev.melvinchia3636.airngreen.service.advice;
 
 import dev.melvinchia3636.airngreen.model.AqiLevel;
 
-/**
- * Advice for the general public.
- */
+/** Advice for the general public. */
 public final class GeneralAdvice implements AdviceStrategy {
 
     @Override
@@ -20,12 +18,17 @@ public final class GeneralAdvice implements AdviceStrategy {
     @Override
     public String advice(AqiLevel level) {
         return switch (level) {
-            case GOOD -> "Air quality is good. Outdoor activity is safe for everyone.";
-            case MODERATE -> "Air quality is acceptable. Unusually sensitive people "
+            case GOOD ->
+                "Air quality is good. Outdoor activity is safe for everyone.";
+            case MODERATE ->
+                "Air quality is acceptable. Unusually sensitive people "
                     + "should consider reducing long outdoor exertion.";
-            case SENSITIVE -> "Sensitive groups should reduce prolonged outdoor exertion.";
-            case UNHEALTHY -> "Everyone should reduce prolonged outdoor exertion.";
-            case VERY_UNHEALTHY -> "Avoid outdoor exertion and stay indoors where possible.";
+            case SENSITIVE ->
+                "Sensitive groups should reduce prolonged outdoor exertion.";
+            case UNHEALTHY ->
+                "Everyone should reduce prolonged outdoor exertion.";
+            case VERY_UNHEALTHY ->
+                "Avoid outdoor exertion and stay indoors where possible.";
             case HAZARDOUS -> "Stay indoors and keep windows closed.";
             case UNKNOWN -> "No current reading. Refresh to try again.";
         };

@@ -3,26 +3,28 @@ package dev.melvinchia3636.airngreen.service.alerts;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import dev.melvinchia3636.airngreen.model.AlertThreshold;
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+import dev.melvinchia3636.airngreen.model.AqiLevel;
+import dev.melvinchia3636.airngreen.model.StationReading;
+
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.jupiter.api.Test;
-
-import dev.melvinchia3636.airngreen.model.AqiAlert;
-import dev.melvinchia3636.airngreen.model.AqiLevel;
-import dev.melvinchia3636.airngreen.model.AlertThreshold;
-import dev.melvinchia3636.airngreen.model.StationReading;
-
 class PollutionAlertServiceTest {
 
     private final List<AqiAlert> received = new ArrayList<>();
     private final AlertObserver observer = received::add;
-    private final AtomicReference<AlertThreshold> threshold =
-            new AtomicReference<>(AlertThreshold.MODERATE);
-    private final PollutionAlertService service =
-            new PollutionAlertService(threshold::get);
+    private final AtomicReference<AlertThreshold> threshold = new AtomicReference<>(
+        AlertThreshold.MODERATE
+    );
+    private final PollutionAlertService service = new PollutionAlertService(
+        threshold::get
+    );
 
     @Test
     void registeredObservers_receiveCrossings() {
@@ -109,7 +111,13 @@ class PollutionAlertServiceTest {
     }
 
     private static StationReading station(double aqi) {
-        return new StationReading("2609", "Kapit", aqi, 0,
-                Map.of("pm25", aqi), List.of());
+        return new StationReading(
+            "2609",
+            "Kapit",
+            aqi,
+            0,
+            Map.of("pm25", aqi),
+            List.of()
+        );
     }
 }

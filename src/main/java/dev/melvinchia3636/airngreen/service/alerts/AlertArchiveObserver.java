@@ -1,16 +1,17 @@
 package dev.melvinchia3636.airngreen.service.alerts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dev.melvinchia3636.airngreen.model.AqiAlert;
 import dev.melvinchia3636.airngreen.storage.LocalStore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Observer that archives alerts so the history survives a restart.
  *
- * <p>The newest alert is stored first and the archive is capped so the file
- * cannot grow without bound.</p>
+ * <p>
+ * The newest alert is stored first and the archive is capped so the file cannot
+ * grow without bound.
  */
 public final class AlertArchiveObserver implements AlertObserver {
 
@@ -31,8 +32,6 @@ public final class AlertArchiveObserver implements AlertObserver {
     public void onThresholdExceeded(AqiAlert alert) {
         List<AqiAlert> archive = new ArrayList<>(store.loadAlerts());
         archive.add(0, alert);
-        store.saveAlerts(archive.stream()
-                .limit(MAX_ARCHIVED_ALERTS)
-                .toList());
+        store.saveAlerts(archive.stream().limit(MAX_ARCHIVED_ALERTS).toList());
     }
 }

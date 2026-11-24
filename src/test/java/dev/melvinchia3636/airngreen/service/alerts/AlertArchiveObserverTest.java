@@ -3,15 +3,15 @@ package dev.melvinchia3636.airngreen.service.alerts;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.nio.file.Path;
-import java.util.List;
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+import dev.melvinchia3636.airngreen.model.AqiLevel;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import dev.melvinchia3636.airngreen.model.AqiAlert;
-import dev.melvinchia3636.airngreen.model.AqiLevel;
-import dev.melvinchia3636.airngreen.storage.LocalStore;
+import java.nio.file.Path;
+import java.util.List;
 
 class AlertArchiveObserverTest {
 
@@ -29,9 +29,10 @@ class AlertArchiveObserverTest {
         List<AqiAlert> archived = store.loadAlerts();
 
         assertAll(
-                () -> assertEquals(2, archived.size()),
-                () -> assertEquals(130, archived.get(0).aqi()),
-                () -> assertEquals(90, archived.get(1).aqi()));
+            () -> assertEquals(2, archived.size()),
+            () -> assertEquals(130, archived.get(0).aqi()),
+            () -> assertEquals(90, archived.get(1).aqi())
+        );
     }
 
     @Test
@@ -46,8 +47,9 @@ class AlertArchiveObserverTest {
         List<AqiAlert> archived = store.loadAlerts();
 
         assertAll(
-                () -> assertEquals(50, archived.size()),
-                () -> assertEquals(144, archived.get(0).aqi()));
+            () -> assertEquals(50, archived.size()),
+            () -> assertEquals(144, archived.get(0).aqi())
+        );
     }
 
     @Test

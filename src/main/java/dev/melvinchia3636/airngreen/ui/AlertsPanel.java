@@ -1,5 +1,8 @@
 package dev.melvinchia3636.airngreen.ui;
 
+import dev.melvinchia3636.airngreen.model.AlertThreshold;
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.time.Instant;
@@ -21,20 +24,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import dev.melvinchia3636.airngreen.model.AlertThreshold;
-import dev.melvinchia3636.airngreen.model.AqiAlert;
-
-/**
- * Alert settings view: threshold and history.
- */
+/** Alert settings view: threshold and history. */
 public final class AlertsPanel extends JPanel {
 
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter
-            .ofPattern("d MMM, HH:mm:ss", Locale.ENGLISH)
-            .withZone(ZoneId.systemDefault());
+        .ofPattern("d MMM, HH:mm:ss", Locale.ENGLISH)
+        .withZone(ZoneId.systemDefault());
 
-    private final JComboBox<AlertThreshold> thresholdBox =
-            new JComboBox<>(AlertThreshold.values());
+    private final JComboBox<AlertThreshold> thresholdBox = new JComboBox<>(
+        AlertThreshold.values()
+    );
     private final DefaultListModel<String> historyModel = new DefaultListModel<>();
     private final JList<String> historyList = new JList<>(historyModel);
 
@@ -59,14 +58,17 @@ public final class AlertsPanel extends JPanel {
      */
     public void onThresholdChange(Consumer<AlertThreshold> action) {
         thresholdBox.addActionListener(
-                event -> action.accept((AlertThreshold) thresholdBox.getSelectedItem()));
+            event -> action
+                .accept((AlertThreshold) thresholdBox.getSelectedItem())
+        );
     }
 
     /**
      * Replaces the alert history list.
      *
-     * <p>Safe to call from any thread; the model is updated on the
-     * event-dispatch thread.</p>
+     * <p>
+     * Safe to call from any thread; the model is updated on the event-dispatch
+     * thread.
      *
      * @param alerts alerts ordered newest first
      */
@@ -79,13 +81,23 @@ public final class AlertsPanel extends JPanel {
 
         historyModel.clear();
         for (AqiAlert alert : alerts) {
-            historyModel.addElement(String.format(Locale.ENGLISH,
-                    "%s  %s  AQI %.0f  %s",
-                    TIME_FORMAT.format(Instant.ofEpochMilli(alert.createdAt())),
-                    alert.level().label(), alert.aqi(), alert.stationName()));
+            historyModel
+                .addElement(
+                    String.format(
+                        Locale.ENGLISH,
+                        "%s  %s  AQI %.0f  %s",
+                        TIME_FORMAT
+                            .format(Instant.ofEpochMilli(alert.createdAt())),
+                        alert.level().label(),
+                        alert.aqi(),
+                        alert.stationName()
+                    )
+                );
         }
         if (alerts.isEmpty()) {
-            historyModel.addElement("No alerts yet. Raise a reading above the threshold.");
+            historyModel.addElement(
+                "No alerts yet. Raise a reading above the threshold."
+            );
         }
     }
 
@@ -98,9 +110,10 @@ public final class AlertsPanel extends JPanel {
         row.add(Box.createHorizontalGlue());
 
         JTextArea explanation = new JTextArea("""
-                Alerts fire when a fresh reading reaches the selected band and is
-                worse than the last announced reading. Repeated refreshes in the
-                same band stay quiet; cleaner air re-arms the alert.""");
+            Alerts fire when a fresh reading reaches the selected band and is
+            worse than the last announced reading. Repeated refreshes in the
+            same band stay quiet; cleaner air re-arms the alert.\
+            """);
         explanation.setEditable(false);
         explanation.setOpaque(false);
         explanation.setLineWrap(true);
@@ -122,9 +135,12 @@ public final class AlertsPanel extends JPanel {
 
     private JPanel card(String title, java.awt.Component body) {
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createCompoundBorder(
+        card.setBorder(
+            BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(title),
-                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)
+            )
+        );
         card.add(body, BorderLayout.CENTER);
 
         return card;

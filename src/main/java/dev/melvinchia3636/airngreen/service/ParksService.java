@@ -2,6 +2,10 @@ package dev.melvinchia3636.airngreen.service;
 
 import com.google.gson.Gson;
 
+import dev.melvinchia3636.airngreen.model.District;
+import dev.melvinchia3636.airngreen.model.NearbyPark;
+import dev.melvinchia3636.airngreen.model.Park;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,20 +16,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import dev.melvinchia3636.airngreen.model.District;
-import dev.melvinchia3636.airngreen.model.NearbyPark;
-import dev.melvinchia3636.airngreen.model.Park;
-
 /**
  * Recommends green spaces near a district.
  *
- * <p>Parks come from an OpenStreetMap-derived dataset bundled with the
- * application, so the recommendation works without a second network service.</p>
+ * <p>
+ * Parks come from an OpenStreetMap-derived dataset bundled with the
+ * application, so the recommendation works without a second network service.
  */
 public final class ParksService {
 
-    private static final Logger LOGGER =
-            Logger.getLogger(ParksService.class.getName());
+    private static final Logger LOGGER = Logger
+        .getLogger(ParksService.class.getName());
     private static final String RESOURCE = "/parks.json";
     private static final int MAX_NEARBY_PARKS = 10;
 
@@ -48,8 +49,12 @@ public final class ParksService {
      */
     public static ParksService fromClasspath() {
         try (InputStream input = openResource();
-             Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-            ParkEntry[] entries = new Gson().fromJson(reader, ParkEntry[].class);
+            Reader reader = new InputStreamReader(
+                input,
+                StandardCharsets.UTF_8
+            )) {
+            ParkEntry[] entries = new Gson()
+                .fromJson(reader, ParkEntry[].class);
 
             return new ParksService(toParks(entries));
         } catch (IOException missing) {
@@ -67,12 +72,18 @@ public final class ParksService {
      */
     public List<NearbyPark> nearest(District district) {
         return parks.stream()
-                .map(park -> new NearbyPark(park, GeoDistance.kmBetween(
-                        district.latitude(), district.longitude(),
-                        park.latitude(), park.longitude())))
-                .sorted(Comparator.comparingDouble(NearbyPark::distanceKm))
-                .limit(MAX_NEARBY_PARKS)
-                .toList();
+            .map(
+                park -> new NearbyPark(
+                    park,
+                    GeoDistance.kmBetween(
+                        district.latitude(),
+                        district.longitude(),
+                        park.latitude(),
+                        park.longitude()
+                    )
+                )
+            ).sorted(Comparator.comparingDouble(NearbyPark::distanceKm))
+            .limit(MAX_NEARBY_PARKS).toList();
     }
 
     private static InputStream openResource() throws IOException {
@@ -106,8 +117,13 @@ public final class ParksService {
         }
 
         try {
-            return new Park(entry.name, District.valueOf(entry.district),
-                    entry.latitude, entry.longitude, entry.facilities);
+            return new Park(
+                entry.name,
+                District.valueOf(entry.district),
+                entry.latitude,
+                entry.longitude,
+                entry.facilities
+            );
         } catch (IllegalArgumentException unknownDistrict) {
             return null;
         }

@@ -1,5 +1,7 @@
 package dev.melvinchia3636.airngreen.ui;
 
+import dev.melvinchia3636.airngreen.model.AqiAlert;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -7,11 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import dev.melvinchia3636.airngreen.model.AqiAlert;
-
-/**
- * Window-wide status line and alert banner.
- */
+/** Window-wide status line and alert banner. */
 public final class StatusBar extends JPanel {
 
     private static final Color WARNING = new Color(0xB45309);
@@ -19,9 +17,7 @@ public final class StatusBar extends JPanel {
     private final JLabel message = new JLabel("Ready.");
     private final JLabel alert = new JLabel();
 
-    /**
-     * Creates an empty status bar.
-     */
+    /** Creates an empty status bar. */
     public StatusBar() {
         super(new BorderLayout(12, 0));
         setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
@@ -45,8 +41,9 @@ public final class StatusBar extends JPanel {
      */
     public void showAlert(AqiAlert event) {
         alert.setForeground(WARNING);
-        alert.setText("ALERT: " + event.level().label()
-                + " (AQI " + Math.round(event.aqi()) + ") - "
-                + event.stationName());
+        alert.setText(
+            "ALERT: " + event.level().label() + " (AQI "
+                + Math.round(event.aqi()) + ") - " + event.stationName()
+        );
     }
 }

@@ -1,17 +1,17 @@
 package dev.melvinchia3636.airngreen.controller;
 
-import java.util.Optional;
-
 import dev.melvinchia3636.airngreen.api.ApiException;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.service.AirQualityService;
 import dev.melvinchia3636.airngreen.service.ParksService;
-import dev.melvinchia3636.airngreen.storage.SettingsStore;
 import dev.melvinchia3636.airngreen.service.advice.AdviceStrategy;
 import dev.melvinchia3636.airngreen.service.alerts.PollutionAlertService;
+import dev.melvinchia3636.airngreen.storage.SettingsStore;
 import dev.melvinchia3636.airngreen.ui.DashboardPanel;
 import dev.melvinchia3636.airngreen.ui.StatusBar;
+
+import java.util.Optional;
 
 /**
  * Controller for the dashboard: loads readings and feeds them to the alert
@@ -31,19 +31,21 @@ public final class DashboardController {
     /**
      * Creates the controller.
      *
-     * @param dashboardPanel       dashboard view
-     * @param airQualityService    reading source
-     * @param parksService         park recommendations
-     * @param settingsStore        saved preferences
+     * @param dashboardPanel dashboard view
+     * @param airQualityService reading source
+     * @param parksService park recommendations
+     * @param settingsStore saved preferences
      * @param pollutionAlertService observer subject
-     * @param statusBar            window status line
+     * @param statusBar window status line
      */
-    public DashboardController(DashboardPanel dashboardPanel,
-                               AirQualityService airQualityService,
-                               ParksService parksService,
-                               SettingsStore settingsStore,
-                               PollutionAlertService pollutionAlertService,
-                               StatusBar statusBar) {
+    public DashboardController(
+        DashboardPanel dashboardPanel,
+        AirQualityService airQualityService,
+        ParksService parksService,
+        SettingsStore settingsStore,
+        PollutionAlertService pollutionAlertService,
+        StatusBar statusBar
+    ) {
         this.dashboardPanel = dashboardPanel;
         this.airQualityService = airQualityService;
         this.parksService = parksService;
@@ -52,9 +54,7 @@ public final class DashboardController {
         this.statusBar = statusBar;
     }
 
-    /**
-     * Wires the view and performs the first load.
-     */
+    /** Wires the view and performs the first load. */
     public void start() {
         dashboardPanel.onRefresh(this::loadReading);
         dashboardPanel.onDistrictChange(this::changeDistrict);
@@ -80,9 +80,11 @@ public final class DashboardController {
         dashboardPanel.clearMessage();
         statusBar.show("Loading air quality for " + district.label() + "...");
 
-        Async.run(() -> airQualityService.nearest(district),
-                reading -> onReadingLoaded(district, reading),
-                failure -> onReadingFailed(district, failure));
+        Async.run(
+            () -> airQualityService.nearest(district),
+            reading -> onReadingLoaded(district, reading),
+            failure -> onReadingFailed(district, failure)
+        );
     }
 
     private void onReadingLoaded(District district, StationReading reading) {
@@ -90,8 +92,10 @@ public final class DashboardController {
         currentReading = reading;
         render(reading);
         pollutionAlertService.evaluate(reading);
-        statusBar.show("Loaded " + district.label() + " at "
-                + reading.level().label() + ".");
+        statusBar.show(
+            "Loaded " + district.label() + " at " + reading.level().label()
+                + "."
+        );
     }
 
     private void onReadingFailed(District district, Exception failure) {
@@ -101,15 +105,18 @@ public final class DashboardController {
         // A client error (for example an unknown station) should not be hidden
         // behind stale data; only a service or network failure falls back.
         Optional<StationReading> cached = failure instanceof ApiException api
-                && !api.isServiceFailure()
+            && !api.isServiceFailure()
                 ? Optional.empty()
                 : airQualityService.getCachedReading();
 
         if (cached.isPresent()) {
             currentReading = cached.get();
             render(currentReading);
-            dashboardPanel.showMessage("Offline: showing the last saved reading. "
-                    + failure.getMessage(), true);
+            dashboardPanel.showMessage(
+                "Offline: showing the last saved reading. "
+                    + failure.getMessage(),
+                true
+            );
         } else {
             dashboardPanel.showMessage(failure.getMessage(), true);
         }
@@ -118,10 +125,13 @@ public final class DashboardController {
 
     private void render(StationReading reading) {
         AdviceStrategy strategy = settingsStore.getAudienceStrategy();
-        dashboardPanel.showReading(reading,
-                strategy.advice(reading.level()),
-                strategy.outdoorMinutes(reading.level()));
+        dashboardPanel.showReading(
+            reading,
+            strategy.advice(reading.level()),
+            strategy.outdoorMinutes(reading.level())
+        );
         dashboardPanel.showParks(
-                parksService.nearest(dashboardPanel.getSelectedDistrict()));
+            parksService.nearest(dashboardPanel.getSelectedDistrict())
+        );
     }
 }
