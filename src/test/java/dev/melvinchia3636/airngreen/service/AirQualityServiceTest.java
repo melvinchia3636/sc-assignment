@@ -34,8 +34,10 @@ class AirQualityServiceTest {
          "current":{"pm25":13},"series":{"aqi":[{"t":1,"v":25}]}}}
         """;
     private static final String LOCAL_STATIONS_JSON = """
-        {"stations":[{"idx":"local","name":"Nearby","latitude":3.14,
-         "longitude":101.69,"aqi":10}]}
+        {"stations":[
+         {"idx":"far","name":"Far","latitude":3.30,"longitude":101.80,"aqi":20},
+         {"idx":"local","name":"Nearby","latitude":3.14,"longitude":101.69,"aqi":10},
+         {"idx":"middle","name":"Middle","latitude":3.20,"longitude":101.72,"aqi":15}]}
         """;
 
     @TempDir
@@ -112,13 +114,20 @@ class AirQualityServiceTest {
     }
 
     @Test
-    void stations_areCached() throws ApiException {
+    void stations_areSortedByDistanceAndCached() throws ApiException {
         List<StationSummary> stations = service.stations(District.KUALA_LUMPUR);
 
         assertAll(
-            () -> assertEquals(1, stations.size()),
-            () -> assertEquals("local", stations.get(0).idx()),
-            () -> assertEquals(1, service.getCachedStations().size())
+            () -> assertEquals(3, stations.size()),
+            () -> assertEquals(
+                List.of("local", "middle", "far"),
+                stations.stream().map(StationSummary::idx).toList()
+            ),
+            () -> assertEquals(
+                List.of("local", "middle", "far"),
+                service.getCachedStations().stream().map(StationSummary::idx)
+                    .toList()
+            )
         );
     }
 

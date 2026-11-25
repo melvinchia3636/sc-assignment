@@ -24,12 +24,37 @@ class AdviceStrategiesTest {
     @ParameterizedTest
     @MethodSource("strategies")
     void advice_isNotEmptyForEveryBand(AdviceStrategy strategy) {
+        assertFalse(strategy.name().isBlank());
         for (AqiLevel level : AqiLevel.values()) {
             assertFalse(
                 strategy.advice(level).isBlank(),
                 () -> strategy.name() + " has no advice for " + level
             );
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("strategies")
+    void outdoorMinutes_stayNonNegativeAndNonIncreasing(
+        AdviceStrategy strategy
+    ) {
+        int previous = Integer.MAX_VALUE;
+        for (AqiLevel level : AqiLevel.values()) {
+            if (level == AqiLevel.UNKNOWN) {
+                continue;
+            }
+
+            int minutes = strategy.outdoorMinutes(level);
+            int ceiling = previous;
+
+            assertAll(
+                () -> assertTrue(minutes >= 0),
+                () -> assertTrue(minutes <= ceiling)
+            );
+            previous = minutes;
+        }
+
+        assertEquals(0, strategy.outdoorMinutes(AqiLevel.UNKNOWN));
     }
 
     @ParameterizedTest
