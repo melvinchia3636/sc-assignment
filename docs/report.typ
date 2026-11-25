@@ -41,7 +41,7 @@
 == Architecture Overview
 
 #figure(
-  image("diagrams/architecture.png", width: 100%),
+  image("diagrams/architecture.png", width: 80%),
   caption: [Layered architecture of the application.],
 )
 
@@ -165,6 +165,8 @@ Organized into strategies, method calling only requires the interface.
 
 Meanwhile, the *Single Responsibility Principle (SRP)* is also satisfied, where each class only describes the advice given to a specific user-group. In comparison to the if-else chain, the strategy pattern isolates "points of variation" at class boundaries, allowing the unit test to perform validation for each and every user group without having the need to construct a massive combination of conditional clauses.
 
+#pagebreak()
+
 === Observer Pattern: Threshold Alerting
 
 *Before Refactoring*
@@ -249,7 +251,131 @@ Meanwhile, the *SRP* is also retained, where the subject is only responsible for
 
 == Core Logic and Clean Code
 
+- *Naming and Code Structure: * Classes are domain driven (e.g., `StationReading`, `NearbyPark`, etc.), method names are verbs (e.g., `nearest`, `evaluate`, `register`, etc.), boolean methods are prefixed with `is` (e.g., `isEnabled`, `isWorseThan`, etc.). All public APIs includes Javadoc that describes the method usage, input parameters and output value.
+
+- *Method Length and Complexity: * Most methods in the service layer and API layer are having their length controlled within 20 lines. Conditional branches are broken up using early returns to prevent deep nesting. For example, `AqiJsonParser.currentValues` returns early for `null`, filters missing or non-finite pollutant values, and returns an immutable copy; `PollutionAlertService.evaluate` handles disabled and unknown readings first, then de-duplication, and only then broadcasts.
+
+- *Magic Number Elimination: * The lower bound of the AQI levels are defined in the constructor parameters (e.g., `MODERATE("Moderate", 51)`, etc.). Other fixed values are all defined as named constants (e.g., `EARTH_RADIUS_KM`、`MAX_NEARBY_PARKS`、`MAX_NOTE_LENGTH`、`REQUEST_TIMEOUT`, etc.).
+
+- *Single Responsibility Principle Example: * `AqiLevel` only handles the mapping between the value and the corresponding levels as well as the comparison between levels, and it isn't responsible for the colors, the text, nor the networking. Colors are located in `ui/AqiColors`, text contents are in each strategy classes, data are stored as `StationReading`. Hence, `AqiLevelText` is able to cover all the boundary values within milliseconds.
+
+- *Open-Closed Principle: * `AdviceStrategies` is the only place that knows all the strategies, and `DashboardController` uses them through the `AdviceStrategy` interface. When new strategy is added, only the newly created strategy class has to be added into the register table, no modification to controllers and views are needed.
+
+- *Code Excerpts: * The registration and announcement mechanism of of observers is located in `PollutionAlertService`, where the core mechanisms are less than 30 lines (excluding blank lines).
+
+  #code-block[
+    ```java
+    public void register(AlertObserver observer) {
+        observers.addIfAbsent(observer);
+    }
+
+    public void evaluate(StationReading reading) {
+        AlertThreshold current = threshold.get();
+
+        if (!current.isEnabled()) {
+            lastAnnounced = null;
+            return;
+        }
+
+        AqiLevel level = reading.level();
+        AqiLevel required = current.level().orElseThrow();
+
+        if (level == AqiLevel.UNKNOWN || !level.isAtLeast(required)) {
+            lastAnnounced = null;
+            return;
+        }
+
+        if (lastAnnounced != null && !level.isWorseThan(lastAnnounced)) {
+            return;
+        }
+
+        lastAnnounced = level;
+
+        announce(
+            new AqiAlert(
+                level,
+                reading.aqi(),
+                reading.name(),
+                System.currentTimeMillis()
+            )
+        );
+    }
+    ```
+  ]
+
 == Unit Test Suite
+
+The test suite contains *79 test methods* (excluding the two live API tests). The default build executes 96 test cases after parameterized tests are expanded. It covers every top-level package (`model`, `api`, `service`, `storage`, and `ui`) plus the `advice` and `alerts` subpackages:
+
+#report-table(
+  3,
+  [Test Class],
+  [Methods],
+  [Focus],
+  [`AqiLevelTest`],
+  [4],
+  [12 boundary values, invalid input, level comparison],
+
+  [`AdviceStrategiesTest`],
+  [7],
+  [Full coverage of all three strategies, fallback, outdoor-time monotonicity],
+
+  [`AqiJsonParserTest`],
+  [8],
+  [Valid response, missing fields, empty series, error envelope],
+
+  [`AqiApiClientTest`],
+  [10],
+  [2xx, 404, 500, unreadable response, I/O failure, URL and bounding-box construction],
+
+  [`AirQualityServiceTest`],
+  [5],
+  [Successful caching, failed fetch retaining the old cache, nearby stations and distance sorting],
+
+  [`PollutionAlertServiceTest`],
+  [8],
+  [Register/unregister, multiple observers, de-duplication within the same band, re-alert on worsening, disabled state],
+
+  [`AlertLogObserverTest`],
+  [6],
+  [Newest first, listener callback, read-only snapshot, history restoration],
+
+  [`AlertArchiveObserverTest`],
+  [3],
+  [Persistence order, 50-entry cap, restoration after restart],
+
+  [`BannerObserverTest`],
+  [1],
+  [Alert forwarded to the status bar callback],
+
+  [`SettingsStoreTest`],
+  [4],
+  [Defaults, audience and threshold persistence, district change notification],
+
+  [`ParksServiceTest`],
+  [4],
+  [Distance sorting, distance calculation, dataset integrity],
+
+  [`ReportServiceTest`],
+  [8],
+  [Add and list, blank validation, over-length validation, persistence],
+
+  [`LocalStoreTest`],
+  [7],
+  [Reading/report/station/settings/alert round-trips, corrupt-file fallback],
+
+  [`AqiColorsTest`],
+  [4],
+  [Palette integrity, null fallback, notice colours, shared instances],
+)
+
+The test suites adopted three assertion types:
+
+- 4 `@ParameterizedTest` (AQI boundaries, full coverage of strategies, outdoor duration, strategy key resolving);
+- 14 `assertThrows`;
+- 34 `assertAll`.
+
+All the test cases are uniformly named as `methodName_scenario_expectedBehaviour` (e.g, `disabledThreshold_neverAlerts`、`unknownStation_reportsNotFound`, etc.).
 
 == Coverage and Known Limitations
 

@@ -56,9 +56,6 @@
   set heading(numbering: "1.1")
   show heading: it => {
     if it.level == 1 {
-      if it.numbering != none {
-        pagebreak(weak: true)
-      }
       block(above: 1.6em, below: 1.1em, width: 100%)[
         #set text(font: sans, size: 15pt, weight: "bold", fill: ink)
         #set par(justify: false, leading: 0.65em)
