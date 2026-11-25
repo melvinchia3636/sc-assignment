@@ -32,7 +32,7 @@ public final class ReportService {
      *
      * @param district district the report applies to
      * @param category short category label
-     * @param note     free-text description
+     * @param note free-text description
      * @return the stored report
      * @throws IllegalArgumentException when a field is missing or too long
      */
