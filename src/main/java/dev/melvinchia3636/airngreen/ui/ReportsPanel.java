@@ -1,6 +1,5 @@
 package dev.melvinchia3636.airngreen.ui;
 
-import dev.melvinchia3636.airngreen.model.AqiLevel;
 import dev.melvinchia3636.airngreen.model.CitizenReport;
 import dev.melvinchia3636.airngreen.model.District;
 
@@ -133,9 +132,7 @@ public final class ReportsPanel extends JPanel {
      */
     public void showMessage(String text, boolean warning) {
         message.setText(text);
-        message.setForeground(
-            AqiColors.forLevel(warning ? AqiLevel.SENSITIVE : AqiLevel.GOOD)
-        );
+        message.setForeground(AqiColors.forMessage(warning));
         message.setVisible(true);
     }
 

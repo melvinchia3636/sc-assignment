@@ -1,6 +1,5 @@
 package dev.melvinchia3636.airngreen.ui;
 
-import dev.melvinchia3636.airngreen.model.AqiLevel;
 import dev.melvinchia3636.airngreen.model.District;
 import dev.melvinchia3636.airngreen.model.StationReading;
 import dev.melvinchia3636.airngreen.model.StationSummary;
@@ -239,9 +238,7 @@ public final class StationsPanel extends JPanel {
      */
     public void showMessage(String message, boolean warning) {
         notice.setText(message);
-        notice.setForeground(
-            AqiColors.forLevel(warning ? AqiLevel.SENSITIVE : AqiLevel.GOOD)
-        );
+        notice.setForeground(AqiColors.forMessage(warning));
         notice.setVisible(true);
     }
 
