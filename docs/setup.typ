@@ -133,7 +133,7 @@
     stroke: 0.5pt,
     align: left,
     inset: (x: 0.55em, y: 0.45em),
-    ..header,
+    table.header(..header),
     ..body,
   )
 }
