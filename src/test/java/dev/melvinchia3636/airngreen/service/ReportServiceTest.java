@@ -91,6 +91,18 @@ class ReportServiceTest {
     }
 
     @Test
+    void add_rejectsNullCategoryAndNote() {
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> service.add(District.KUALA_LUMPUR, null, "Smoke.")
+        );
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> service.add(District.KUALA_LUMPUR, "Other", null)
+        );
+    }
+
+    @Test
     void all_returnsNewestFirst() {
         store.saveReports(
             List.of(

@@ -2,6 +2,7 @@ package dev.melvinchia3636.airngreen.api;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,6 +70,46 @@ class AqiJsonParserTest {
     }
 
     @Test
+    void parseStation_skipsNullAndIncompleteSeriesPoints() {
+        String json = """
+            {"station":{"idx":"1","series":{"aqi":[null,{"t":null,"v":1},
+              {"t":2,"v":null},{"t":3,"v":4}]}}}
+            """;
+
+        StationReading reading = parser.parseStation(json);
+
+        assertAll(
+            () -> assertEquals(1, reading.series().size()),
+            () -> assertEquals(3, reading.series().get(0).epochSeconds()),
+            () -> assertEquals(4, reading.series().get(0).value())
+        );
+    }
+
+    @Test
+    void parseStation_filtersMissingAndNonFinitePollutants() {
+        String json = """
+            {"station":{"idx":"1","current":
+              {"pm25":null,"pm10":12,"o3":1e999}}}
+            """;
+
+        StationReading reading = parser.parseStation(json);
+
+        assertAll(
+            () -> assertTrue(reading.pollutants().containsKey("pm10")),
+            () -> assertFalse(reading.pollutants().containsKey("pm25")),
+            () -> assertFalse(reading.pollutants().containsKey("o3"))
+        );
+    }
+
+    @Test
+    void parseStation_toleratesSeriesWithoutSamples() {
+        StationReading reading = parser
+            .parseStation("{\"station\":{\"idx\":\"1\",\"series\":{}}}");
+
+        assertTrue(reading.series().isEmpty());
+    }
+
+    @Test
     void parseStation_toleratesMissingOptionalFields() {
         StationReading reading = parser
             .parseStation("{\"station\":{\"idx\":\"1\"}}");
@@ -77,7 +118,16 @@ class AqiJsonParserTest {
             () -> assertEquals("", reading.name()),
             () -> assertTrue(Double.isNaN(reading.aqi())),
             () -> assertTrue(reading.pollutants().isEmpty()),
-            () -> assertTrue(reading.series().isEmpty())
+            () -> assertTrue(reading.series().isEmpty()),
+            () -> assertTrue(reading.pollutant("pm25").isEmpty())
+        );
+    }
+
+    @Test
+    void parseStation_rejectsNullEnvelope() {
+        assertThrows(
+            JsonParseException.class,
+            () -> parser.parseStation("null")
         );
     }
 
@@ -112,6 +162,37 @@ class AqiJsonParserTest {
         assertThrows(
             JsonParseException.class,
             () -> parser.parseStations("{}")
+        );
+    }
+
+    @Test
+    void parseStations_rejectsNullEnvelope() {
+        assertThrows(
+            JsonParseException.class,
+            () -> parser.parseStations("null")
+        );
+    }
+
+    @Test
+    void parseStations_skipsNullEntries() {
+        List<StationSummary> stations = parser
+            .parseStations("{\"stations\":[null,{\"idx\":\"1\"}]}");
+
+        assertAll(
+            () -> assertEquals(1, stations.size()),
+            () -> assertEquals("1", stations.get(0).idx())
+        );
+    }
+
+    @Test
+    void parseStations_toleratesMissingCoordinates() {
+        List<StationSummary> stations = parser
+            .parseStations("{\"stations\":[{\"idx\":\"1\"}]}");
+
+        assertAll(
+            () -> assertEquals(1, stations.size()),
+            () -> assertEquals(0, stations.get(0).latitude()),
+            () -> assertEquals(0, stations.get(0).longitude())
         );
     }
 

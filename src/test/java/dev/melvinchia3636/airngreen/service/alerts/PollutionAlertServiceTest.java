@@ -7,9 +7,13 @@ import dev.melvinchia3636.airngreen.model.AlertThreshold;
 import dev.melvinchia3636.airngreen.model.AqiAlert;
 import dev.melvinchia3636.airngreen.model.AqiLevel;
 import dev.melvinchia3636.airngreen.model.StationReading;
+import dev.melvinchia3636.airngreen.storage.LocalStore;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +112,39 @@ class PollutionAlertServiceTest {
         service.evaluate(station(Double.NaN));
 
         assertTrue(received.isEmpty());
+    }
+
+    /**
+     * Known limitation: only the alert archive is persisted, not the band that
+     * was last announced. Restarting the application therefore announces the
+     * same band again, duplicating the alert in the history.
+     *
+     * <p>
+     * Tagged {@code limitation} and excluded from the default build; run it
+     * with {@code mvn test -Plimitation-tests} to see the expected failure.
+     */
+    @Test
+    @Tag("limitation")
+    void restart_sameBand_isNotAnnouncedAgain(@TempDir Path directory) {
+        LocalStore store = new LocalStore(directory);
+
+        PollutionAlertService beforeRestart = new PollutionAlertService(
+            () -> AlertThreshold.MODERATE
+        );
+        beforeRestart.register(new AlertArchiveObserver(store));
+        beforeRestart.evaluate(station(90));
+
+        List<AqiAlert> afterRestart = new ArrayList<>();
+        PollutionAlertService restarted = new PollutionAlertService(
+            () -> AlertThreshold.MODERATE
+        );
+        restarted.register(afterRestart::add);
+        restarted.evaluate(station(90));
+
+        assertTrue(
+            afterRestart.isEmpty(),
+            "the same band should stay suppressed after a restart"
+        );
     }
 
     private static StationReading station(double aqi) {
