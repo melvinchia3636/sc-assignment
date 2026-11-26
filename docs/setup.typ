@@ -124,8 +124,9 @@
 // The first row is treated as a header and rendered bold automatically.
 #let report-table(columns, ..cells) = {
   let cells = cells.pos()
-  let header = cells.slice(0, columns).map(cell => strong(cell))
-  let body = cells.slice(columns)
+  let count = if type(columns) == int { columns } else { columns.len() }
+  let header = cells.slice(0, count).map(cell => strong(cell))
+  let body = cells.slice(count)
   set par(justify: false)
   table(
     columns: columns,

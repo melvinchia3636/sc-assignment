@@ -1,0 +1,50 @@
+---
+config:
+  theme: default
+  sequence:
+    mirrorActors: false
+    messageAlign: left
+    wrap: true
+---
+sequenceDiagram
+    autonumber
+    actor User
+    participant V as DashboardPanel
+    participant C as DashboardController
+    participant A as Async
+    participant S as AirQualityService
+    participant API as AqiApiClient
+    participant H as OkHttpClient
+    participant P as AqiJsonParser
+    participant L as LocalStore
+    participant PS as ParksService
+    participant AS as PollutionAlertService
+    participant B as BannerObserver
+    participant AL as AlertLogObserver
+
+    User->>V: select district, click Refresh
+    V->>C: loadReading()
+    C->>A: run(background task)
+    activate A
+    A->>S: nearest(district)
+    S->>API: nearestStation(lat, lon)
+    API->>H: GET /nearest-station
+    H-->>API: 200 + JSON
+    API->>P: parseStation(body)
+    P-->>API: StationReading
+    API-->>S: StationReading
+    S->>L: saveReading(reading)
+    S-->>A: StationReading
+    deactivate A
+    A-->>C: onReadingLoaded(reading)
+    C->>V: showReading(reading)
+    C->>PS: nearest(district)
+    PS-->>C: nearby parks
+    C->>V: showParks(parks)
+    C->>AS: evaluate(reading)
+    alt band at or above threshold, worse than last announced
+        AS->>B: onThresholdExceeded(alert)
+        AS->>AL: onThresholdExceeded(alert)
+    else below threshold or same band
+        AS-->>C: no notification
+    end

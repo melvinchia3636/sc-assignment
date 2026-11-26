@@ -45,7 +45,7 @@
   caption: [Layered architecture of the application.],
 )
 
-The system utilizes a five layer structure as shown in the diagram in Figure 1 above. The direction of dependencies is from top to bottom, and the implementation domain model does not rely on any Java framework.
+The system utilizes a five-layer structure as shown in the diagram in Figure 1 above. The direction of dependencies is from top to bottom, and the implementation domain model does not rely on any Java framework.
 
 #report-table(
   3,
@@ -58,15 +58,15 @@ The system utilizes a five layer structure as shown in the diagram in Figure 1 a
 
   [Controller Layer],
   [`DashboardController`、`StationsController`、`ReportsController`、`AlertsController`、`Async`],
-  [Event processing, backend task coordination, updating view.],
+  [Event processing, backend task coordination, updating the view.],
 
   [Service Layer],
   [`AirQualityService`、`ParksService`、`ReportService`、`PollutionAlertService`],
-  [Business logics, caching, and alert mechanism.],
+  [Business logic, caching, and alert mechanism.],
 
   [Storage Layer],
   [`LocalStore`、`SettingsStore`],
-  [JSON and properties persistence, typed user preferences.],
+  [JSON and properties persistence, typed user preferences],
 
   [API Layer],
   [`AqiApiClient`、`AqiJsonParser`、`ApiException`],
@@ -77,7 +77,7 @@ The system utilizes a five layer structure as shown in the diagram in Figure 1 a
   [Immutable constant and categorization strategies.],
 )
 
-Out of the above layers, the view layer, controller layer. and model layer forms an MVC triangle, while the service layer, storage layer, and API layer take charge of the business logics, persistence, and aggregation responsibilities outside the MVC, allowing the model layer to be decoupled from Swing as well as the Internet.
+Out of the above layers, the view layer and controller layer. and the model layer form an MVC triangle, while the service layer, storage layer, and API layer take charge of the business logic, persistence, and aggregation responsibilities outside the MVC, allowing the model layer to be decoupled from Swing as well as the Internet.
 
 The data flow of a refresh operation is shown in the sequence diagram below. Due to the limits of the report size, the diagram might be a little bit too small. If you need the full picture, it is available in the GitHub repository under the `docs/diagrams` folder.
 
@@ -86,9 +86,7 @@ The data flow of a refresh operation is shown in the sequence diagram below. Due
   caption: [Refresh data flow across the layers.],
 )
 
-As shown in the diagram above, When the user clicks the refresh button, `DashboardController` will reads the selected district, then `AirQualityService.nearest` will be called as a backend thread by `Async`. The `AqiApiClient` will then assemble the URL and perform the GET request with OkHttp. The result JSON will be converted in to `StationReading` by `AqiJsonParser` and written into `LocalStore` cache. The controller will then go back to the event delegation thread and call `DashboardPanel.showReading` while providing the AQI reading to `PollutionAlertService.evaluate`, where the subject notifies the observers only when the reading exceeds the threshold.
-
-== UML Class Diagram
+As shown in the diagram above, when the user clicks the refresh button, `DashboardController` will read the selected district, then `AirQualityService.nearest` will be called as a backend thread by `Async`. The `AqiApiClient` will then assemble the URL and perform the GET request with OkHttp. The result JSON will be converted into `StationReading` by `AqiJsonParser` and written into `LocalStore` cache. The controller will then go back to the event delegation thread and call `DashboardPanel.showReading` while providing the AQI reading to `PollutionAlertService.evaluate`, where the subject notifies the observers only when the reading exceeds the threshold.
 
 #figure(
   image("diagrams/class-diagram-core.png", width: 100%),
@@ -100,24 +98,24 @@ As shown in the diagram above, When the user clicks the refresh button, `Dashboa
   caption: [Service, storage, and API layer class diagram.],
 )
 
-Figure 2 above shows the core diagram covering the domain model and the two design patterns implemented, while figure 3 presents the relationship between the service, storage, and API layers. The core diagram includes `District`、`AqiLevel`、`StationReading`、`Park`、`CitizenReport`、`AlertThreshold`、`AdviceStrategy` and its three implementations、`AlertObserver` and its three implementations, `PollutionAlertService`, as well as `AqiAlert`. Field types, method signatures including parameters and return types, as well as their visibilities are annotated in the diagram. Standard UML class diagram notation is adopted.
+Figure 2 above shows the core diagram covering the domain model and the two design patterns implemented, while Figure 3 presents the relationship between the service, storage, and API layers. The core diagram includes `District`、`AqiLevel`、`StationReading`、`Park`、`CitizenReport`、`AlertThreshold`、`AdviceStrategy` and its three implementations、`AlertObserver` and its three implementations, `PollutionAlertService`, as well as `AqiAlert`. Field types, method signatures including parameters and return types, as well as their visibilities are annotated in the diagram. Standard UML class diagram notation is adopted.
 
-Some examples of the key relationships between classes is as follows:
+Some examples of the key relationships between classes are as follows:
 
-1. The three advice classes implement `AdviceStrategy` being an IS-A relationship;
-2. `PollutionAlertService` holds zero to many `AlertObserver` being a HAS-A relationship;
+1. The three advice classes implement `AdviceStrategy`, which is an IS-A relationship;
+2. `PollutionAlertService` holds zero to many `AlertObserver` objects, being a HAS-A relationship;
 3. `StationReading` depends on `AqiLevel` to perform the categorization;
-4. `Park` and `CitizenReport` each associates with a `District`;
-5. `AirQualityService` aggregates `AqiApiClient` and `LocalStore` with the latter persisting the readings into the disk;
-6. `DashboardController` depends on `AirQualityService`, `ParksService`, and `PollutionAlertService` in runtime.
+4. `Park` and `CitizenReport` each associate with a `District`;
+5. `AirQualityService` aggregates `AqiApiClient` and `LocalStore`, with the latter persisting the readings to disk;
+6. `DashboardController` depends on `AirQualityService`, `ParksService`, and `PollutionAlertService` at runtime.
 
 == Design Pattern Justification
 
-=== Strategy Pattern: Switching Advises According to User Group
+=== Strategy Pattern: Switching Advice According to User Group
 
 *Before Refactoring*
 
-If-else chain, method must be modified when a new user group is added.
+If-else chain; method must be modified when a new user group is added.
 
 #code-block[
   ```java
@@ -161,9 +159,9 @@ Organized into strategies, method calling only requires the interface.
 
 *SOLID Principle Demonstrated*
 
-*Open-Closed Principle (OCP)*. Adding new user group can be completed through adding a new class, and there is no need to make any changes to `DashboardPanel` and `DashboardController`.
+*Open-Closed Principle (OCP)*. Adding a new user group can be completed by adding a new class, and there is no need to make any changes to `DashboardPanel` and `DashboardController`.
 
-Meanwhile, the *Single Responsibility Principle (SRP)* is also satisfied, where each class only describes the advice given to a specific user-group. In comparison to the if-else chain, the strategy pattern isolates "points of variation" at class boundaries, allowing the unit test to perform validation for each and every user group without having the need to construct a massive combination of conditional clauses.
+Meanwhile, the *Single Responsibility Principle (SRP)* is also satisfied, where each class only describes the advice given to a specific user group. In comparison to the if-else chain, the strategy pattern isolates "points of variation" at class boundaries, allowing the unit test to perform validation for each and every user group without having the need to construct a massive combination of conditional clauses.
 
 #pagebreak()
 
@@ -171,7 +169,7 @@ Meanwhile, the *Single Responsibility Principle (SRP)* is also satisfied, where 
 
 *Before Refactoring*
 
-Direct invocation of GUI components etc. from the subject.
+Direct invocation of GUI components, etc., from the subject.
 
 #code-block[
   ```java
@@ -210,9 +208,9 @@ The subject only knows about the observer interface.
 
 *SOLID Principle Demonstrated*
 
-*Dependency Inversion Principle (DIP)* and *OCP*. The subject depends on abstract `AlertObserver` while having no dependency on Swing. For example, `AlertArchiveObserver` demonstrates this by persisting every alert to `alerts.json` without changing `PollutionAlertService`, and a future observer (e.g., sending email, etc.) can be added the same way.
+*Dependency Inversion Principle (DIP)* and *OCP*. The subject depends on the abstract `AlertObserver` while having no dependency on Swing. For example, `AlertArchiveObserver` demonstrates this by persisting every alert to `alerts.json` without changing `PollutionAlertService`, and a future observer (e.g., sending email, etc.) can be added the same way.
 
-Meanwhile, the *SRP* is also retained, where the subject is only responsible for checking whether the threshold is exceeded, while the three observers take charge of displaying, recording, and archiving respectively.
+Meanwhile, the *SRP* is also retained, where the subject is only responsible for checking whether the threshold is exceeded, while the three observers take charge of displaying, recording, and archiving, respectively.
 
 
 == CRC Cards
@@ -239,7 +237,7 @@ Meanwhile, the *SRP* is also retained, where the subject is only responsible for
   [`AqiApiClient`、`LocalStore`、`DashboardController`],
 
   [`AqiApiClient`],
-  [Http requires construction; Status code checking; Response parsing.],
+  [HTTP requires construction; Status code checking; Response parsing.],
   [`OkHttpClient`、`AqiJsonParser`、`ApiException`],
 
   [`AlertArchiveObserver`],
@@ -251,17 +249,17 @@ Meanwhile, the *SRP* is also retained, where the subject is only responsible for
 
 == Core Logic and Clean Code
 
-- *Naming and Code Structure: * Classes are domain driven (e.g., `StationReading`, `NearbyPark`, etc.), method names are verbs (e.g., `nearest`, `evaluate`, `register`, etc.), boolean methods are prefixed with `is` (e.g., `isEnabled`, `isWorseThan`, etc.). All public APIs includes Javadoc that describes the method usage, input parameters and output value.
+- *Naming and Code Structure: * Classes are domain-driven (e.g., `StationReading`, `NearbyPark`, etc.), method names are verbs (e.g., `nearest`, `evaluate`, `register`, etc.), boolean methods are prefixed with `is` (e.g., `isEnabled`, `isWorseThan`, etc.). All public APIs include Javadoc that describes the method usage, input parameters, and output value.
 
-- *Method Length and Complexity: * Most methods in the service layer and API layer are having their length controlled within 20 lines. Conditional branches are broken up using early returns to prevent deep nesting. For example, `AqiJsonParser.currentValues` returns early for `null`, filters missing or non-finite pollutant values, and returns an immutable copy; `PollutionAlertService.evaluate` handles disabled and unknown readings first, then de-duplication, and only then broadcasts.
+- *Method Length and Complexity: * Most methods in the service layer and API layer have their length controlled within 20 lines. Conditional branches are broken up using early returns to prevent deep nesting. For example, `AqiJsonParser.currentValues` returns early for `null`, filters missing or non-finite pollutant values, and returns an immutable copy; `PollutionAlertService.evaluate` handles disabled and unknown readings first, then de-duplication, and only then broadcasts.
 
-- *Magic Number Elimination: * The lower bound of the AQI levels are defined in the constructor parameters (e.g., `MODERATE("Moderate", 51)`, etc.). Other fixed values are all defined as named constants (e.g., `EARTH_RADIUS_KM`、`MAX_NEARBY_PARKS`、`MAX_NOTE_LENGTH`、`REQUEST_TIMEOUT`, etc.).
+- *Magic Number Elimination: * The lower bounds of the AQI levels are defined in the constructor parameters (e.g., `MODERATE("Moderate", 51)`, etc.). Other fixed values are all defined as named constants (e.g., `EARTH_RADIUS_KM`、`MAX_NEARBY_PARKS`、`MAX_NOTE_LENGTH`、`REQUEST_TIMEOUT`, etc.).
 
-- *Single Responsibility Principle Example: * `AqiLevel` only handles the mapping between the value and the corresponding levels as well as the comparison between levels, and it isn't responsible for the colors, the text, nor the networking. Colors are located in `ui/AqiColors`, text contents are in each strategy classes, data are stored as `StationReading`. Hence, `AqiLevelText` is able to cover all the boundary values within milliseconds.
+- *Single Responsibility Principle Example: * `AqiLevel` only handles the mapping between the value and the corresponding levels, as well as the comparison between levels, and it isn't responsible for the colors, the text, or the networking. Colors are located in `ui/AqiColors`; text content is in each strategy class; data are stored as `StationReading`. Hence, `AqiLevelText` is able to cover all the boundary values within milliseconds.
 
-- *Open-Closed Principle: * `AdviceStrategies` is the only place that knows all the strategies, and `DashboardController` uses them through the `AdviceStrategy` interface. When new strategy is added, only the newly created strategy class has to be added into the register table, no modification to controllers and views are needed.
+- *Open-Closed Principle: * `AdviceStrategies` is the only place that knows all the strategies, and `DashboardController` uses them through the `AdviceStrategy` interface. When a new strategy is added, only the newly created strategy class has to be added to the register table; no modification to controllers and views is needed.
 
-- *Code Excerpts: * The registration and announcement mechanism of of observers is located in `PollutionAlertService`, where the core mechanisms are less than 30 lines (excluding blank lines).
+- *Code Excerpts: * The registration and announcement mechanism of observers is located in `PollutionAlertService`, where the core mechanisms are less than 30 lines (excluding blank lines).
 
   #code-block[
     ```java
@@ -305,7 +303,7 @@ Meanwhile, the *SRP* is also retained, where the subject is only responsible for
 
 == Unit Test Suite
 
-The test suite contains *79 test methods* (excluding the two live API tests). The default build executes 96 test cases after parameterized tests are expanded. It covers every top-level package (`model`, `api`, `service`, `storage`, and `ui`) plus the `advice` and `alerts` subpackages:
+The test suite contains *88 test methods* (excluding the two live API tests). The default build executes 105 test cases after parameterized tests are expanded. It covers every top-level package (`model`, `api`, `service`, `storage`, and `ui`) plus the `advice` and `alerts` subpackages:
 
 #report-table(
   3,
@@ -321,12 +319,16 @@ The test suite contains *79 test methods* (excluding the two live API tests). Th
   [Full coverage of all three strategies, fallback, outdoor-time monotonicity],
 
   [`AqiJsonParserTest`],
-  [8],
-  [Valid response, missing fields, empty series, error envelope],
+  [15],
+  [Valid and partial responses, missing fields, empty series, error envelope],
 
   [`AqiApiClientTest`],
   [10],
   [2xx, 404, 500, unreadable response, I/O failure, URL and bounding-box construction],
+
+  [`ApiExceptionTest`],
+  [1],
+  [User-facing messages for 404, 429, 5xx, and unexpected statuses],
 
   [`AirQualityServiceTest`],
   [5],
@@ -357,8 +359,8 @@ The test suite contains *79 test methods* (excluding the two live API tests). Th
   [Distance sorting, distance calculation, dataset integrity],
 
   [`ReportServiceTest`],
-  [8],
-  [Add and list, blank validation, over-length validation, persistence],
+  [9],
+  [Add and list, blank/null validation, over-length validation, persistence],
 
   [`LocalStoreTest`],
   [7],
@@ -372,20 +374,161 @@ The test suite contains *79 test methods* (excluding the two live API tests). Th
 The test suites adopted three assertion types:
 
 - 4 `@ParameterizedTest` (AQI boundaries, full coverage of strategies, outdoor duration, strategy key resolving);
-- 14 `assertThrows`;
-- 34 `assertAll`.
+- 18 `assertThrows`;
+- 38 `assertAll`.
 
-All the test cases are uniformly named as `methodName_scenario_expectedBehaviour` (e.g, `disabledThreshold_neverAlerts`、`unknownStation_reportsNotFound`, etc.).
+All the test cases are uniformly named as `methodName_scenario_expectedBehaviour` (e.g., `disabledThreshold_neverAlerts`、`unknownStation_reportsNotFound`, etc.).
 
-== Coverage and Known Limitations
+== Coverage and Known Limitation
+
+#figure(
+  image("assets/jacoco.png", width: 100%),
+  caption: [JaCoCo test coverage report generated by `mvn verify`.],
+)
+
+As shown in the figure above, the JaCoCo report shows a line coverage of 96% (Instructions 96%, Branches 95%). `ui`, `controller`, and `App` are excluded from the statistics, since these classes mainly focus on layout, color mapping, and event forwarding, out of which `AqiColors` has a dedicated unit test written. The remainder is covered in system integration testing in Section 5.3. Hence, the coverage in the business logic layer better reflects the quality of the testing.
+
+The behaviour of the alert where "only one alert is announced for one AQI band" is only valid within a single process. The `AlertArchiveObserver` will persist the alert history into `alerts.json`, but the `lastAnnounced` field that is used to suppress repeated alerts only exists in memory. When the application is restarted and the data is refetched, the same AQI band will be determined as a new threshold excess, and hence a repeated record is produced in the alert history list. This is an intentional decision, since not persisting the suppression state prevents the user from missing out on the air quality that has deteriorated once again when reopening the app after a long time, with the cost being a repeated alert on every restart of the application.
+
+The limitation is recreated in `PollutionAlertServiceTest.restart_sameBand_isNotAnnouncedAgain`. The test first make a service instance send out a Moderate alert and persist into the log, then a second instance is created to simulate the service restart. For the same reading value, an assertion is made that no alert is made again, but since the suppression status is not recovered in a new instance, the assertion fails.
+
+The test case is marked with `@Tag("limitation")`, excluded through the `excludedGroups` in the `pom.xml` in the default build, allowing `mvn test` and `mvn verify` to still remain passing. To inspect the expected failure case, run:
+
+#code-block[
+  ```bash
+  mvn test -Plimitation-tests
+  ```
+]
+
+Failure output is as follows:
+
+#code-block[
+  ```text
+  PollutionAlertServiceTest.restart_sameBand_isNotAnnouncedAgain:144
+  The same band should stay suppressed after a restart
+  ==> expected: <true> but was: <false>
+  ```
+]
 
 = Integration and Application
 
 == GUI and MVC
 
+Three distinct roles are clearly separated in the system:
+
+#report-table(
+  3,
+  [Role],
+  [Classes],
+  [Responsibility],
+  [*Model*],
+  [`StationReading`、`AqiLevel`、`District`、`Park`、`CitizenReport`、`AqiAlert`、`AlertThreshold`],
+  [Doesn't import Swing or make any network requests],
+
+  [*View*],
+  [`MainFrame` (Four Panels + Status Bar) 、`DashboardPanel`、`StationsPanel`、`ReportsPanel`、`AlertsPanel`],
+  [Only exposes methods like `showReading`、`showParks`、`showReports`; doesn't contain a business decision mechanism],
+
+  [*Controller*],
+  [`DashboardController`、`StationsController`、`ReportsController`、`AlertsController`],
+  [Read input from view, invoke services, and write output back to view; Time-consuming operations are delegated to a separate thread through `Async` (a small wrapper of `SwingWorker`)],
+)
+
+Note that the `DefaultTableModel` and `DefaultListModel` from Swing are the inner state of the view despite a `Model` suffix; hence, they don't belong to the domain-specific model. All the models mentioned above are placed under the `model` package.
+
+*Input Validation: * `ReportService.add` serves as the only validation entry point, where checks are made to ensure that the district, category, and description field cannot be empty, description payload cannot exceed 500 characters. If there is any violation found, an `IllegalArgumentException` will be thrown carrying human-readable message that will then be caught by `ReportsController` and displayed in the view through `reportsPanel.showMessage`. No stack trace message will be displayed in the user interface. `AqiApiClient` performs similar normalization for HTTP status codes and JSON structures.
+
+The following sequence diagram traces a main use case from input to output.
+
+#figure(
+  image("diagrams/main-use-case.png", width: 98%),
+  caption: [Sequence diagram of the main use case: refreshing the dashboard from user input to rendered reading and alert evaluation.],
+)
+
+#pagebreak()
+
+Shown below are the dashboard, reports, and alerts screens. The stations screen (`StationsPanel` with `StationsController`, using `StationSummary` and `StationReading`) is not pictured since it's additional out-of-scope functionality.
+
+#figure(
+  image("assets/screenshot1.png", width: 85%),
+  caption: [Dashboard view (`DashboardPanel`, driven by `DashboardController`, using `StationReading`, `AqiLevel`, `District`, and `NearbyPark`): the current AQI reading, audience-specific outdoor advice, and nearby green spaces ordered by distance.],
+)
+
+#figure(
+  image("assets/screenshot2.png", width: 85%),
+  caption: [Citizen reports view (`ReportsPanel`, driven by `ReportsController`, using `CitizenReport` and `District`): submit a pollution observation for a district and browse the locally stored report history.],
+)
+
+#figure(
+  image("assets/screenshot3.png", width: 85%),
+  caption: [Pollution alerts view (`AlertsPanel`, driven by `AlertsController`, using `AlertThreshold`, `AqiAlert`, `AqiLevel`, and `StationReading`): choose the threshold band and review the alert history recorded when a reading crosses it.],
+)
+
 == External API Integration
 
+#report-table(
+  (1fr, 3fr),
+  [Item],
+  [Details],
+  [API name],
+  [AQI API, a read-only wrapper around WAQI data],
+  [Base URL],
+  [`https://aqi-api-melvin.fly.dev`],
+  [Endpoints],
+  [`/nearest-station`, `/stations`, `/station/:idx`],
+  [Success response],
+  [200 + JSON],
+  [Error response],
+  [`{"error":{"code":"...", "message":"..."}}`],
+)
+
+*JSON Parsing: * The `AqiJsonParser` utilizes the `JsonObject` tree model provided by the Gson library to perform per-field reading instead of binding the entire response into a data transfer object (DTO). This allows default values to replace missing fields (e.g., empty name string, AQI reading being `NaN`, timestamp being 0), `null` time series points to be skipped, and prevents parsing failure if a new field is added in the upstream API.
+
+*HTTP Status Code Processing: * For a non-2xx API response that is detected by `AqiApiClient.read` through `status / 100 != 2`, the JSON response will be parsed, and `ApiException.messageFor` processes a human-readable message for 404, 429, 5xx, and network failure. The `error.message` will be prioritized if the response body carries one; otherwise, it will fall back to the local error message content. The user interface will only show the human-readable text returned by `failure.getMessage()` and never the class name of stack traces of the error.
+
+*Graceful Degradation: * Each successful request for the station reading will have the response persisted into `~/.airngreen/last-reading.json`. In the event of request failure, `DashboardController.onReadingFailed` will read and display from the cache while showing an orange-colored hint "Offline: showing the last saved reading" and the failure reason in the status bar. If the application fails to read from the cache, only the error message and park list will be shown. The station list is cached in the same way so that it can still be viewed when offline.
+
 == System Integration Testing
+
+#report-table(
+  (0.7fr, 2.2fr, 3fr, 1.8fr, 1.8fr, 0.8fr),
+  [Test ID],
+  [Input / Operation],
+  [Expected Output],
+  [Actual Result],
+  [Category],
+  [Status],
+  [TC-01],
+  [在 Dashboard 选择 Kuala Lumpur，点击 Refresh],
+  [AQI 卡片显示站点名、数值与等级；状态栏显示加载完成],
+  [与预期一致],
+  [正常 API 调用],
+  [PASS],
+  [TC-02],
+  [打开 Stations 页，加载目录，搜索 "Kapit"，双击该行],
+  [表格过滤为一条记录；下方详情显示 AQI 25、等级 Good、样本数],
+  [与预期一致],
+  [GUI 操作],
+  [PASS],
+  [TC-03],
+  [将客户端指向本地桩服务，桩服务对所有请求返回 500],
+  [顶部显示"The air-quality service is unavailable. Showing the last saved reading."；若有缓存则继续显示旧读数],
+  [与预期一致],
+  [失败 API 响应],
+  [PASS],
+  [TC-04],
+  [在 Alerts 页把阈值设为 Moderate or worse，返回 Dashboard 刷新至 AQI > 50 的分区],
+  [状态栏出现 "ALERT: Moderate (AQI …)"；Alerts 页历史新增一条；同一波段再次刷新不重复],
+  [与预期一致],
+  [端到端逻辑],
+  [PASS],
+  [TC-05],
+  [在 Reports 页不填描述直接提交；随后填写 501 字描述再次提交],
+  [第一次提示"Describe what you observed."；第二次提示"Keep the description under 500 characters."；均不写入表格],
+  [与预期一致],
+  [边界情况],
+  [PASS],
+)
 
 = Reflection and SDG 11 Alignment
 
@@ -402,5 +545,11 @@ All the test cases are uniformly named as `methodName_scenario_expectedBehaviour
 == References
 
 #heading(numbering: none)[Appendix A: Unit Test Report]
+
+== Live Test: Sparse WAQI Series
+
+WAQI guarantees a 72-hour window, not 72 values. Hours a station did not report are returned as `null`, and `AqiJsonParser` drops them before they reach the UI, so the application never plots a fabricated reading. A shorter series is therefore expected behaviour rather than a defect, and the number of samples is not evidence of data completeness.
+
+The live test asserts the contract the UI may rely on: the series is non-empty, contains at most one sample per hour, every timestamp falls inside the 72-hour window ending at the station's `updatedAt` (not the current time, since the last update may lag), and all parsed values are finite. Drawing a strict 72-hour trend would require backfilling missing intervals on the server and labelling the result as estimated; the client deliberately does not pretend the data is complete.
 
 #heading(numbering: none)[Appendix B: AI Use Declaration]
