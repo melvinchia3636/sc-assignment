@@ -493,43 +493,43 @@ Shown below are the dashboard, reports, and alerts screens. The stations screen 
 #{
   set text(size: 9pt)
   report-table(
-  (0.7fr, 2.2fr, 3fr, 1.8fr, 1.8fr, 0.8fr),
-  [Test ID],
-  [Input / Operation],
-  [Expected Output],
-  [Actual Result],
-  [Category],
-  [Status],
-  [TC-01],
-  [Select Kuala Lumpur in the dashboard and press Refresh],
-  [The station name, reading value and AQI level are shown in the AQI card; The status bar shows loading complete.],
-  [As Expected],
-  [Normal API calling],
-  [PASS],
-  [TC-02],
-  [Open stations page, load the station list, search Seremban, and double click the station row.],
-  [The list is filtered to a single row; Shown below in the detail box is AQI 43, level Good, and the sample amount.],
-  [As Expected],
-  [GUI operations],
-  [PASS],
-  [TC-03],
-  [Disconnect the device from the Internet and start the application.],
-  [The message "The air-quality service is unavailable. Showing the last saved reading." is shown at the top; If there exists cache data, then the old readings will be displayed.],
-  [As Expected],
-  [Failed API Response],
-  [PASS],
-  [TC-04],
-  [Set the threshold to "Moderate or worse" in the Alerts page; Go back to the dashboard page and select the district with AQI > 50.],
-  ["ALERT: Moderate (AQI …)" are shown in the status bar; A new entry is added in the history list in the Alerts page; No repeated alerts are recorded for the same AQI band when refreshing the data.],
-  [As Expected],
-  [End-to-end logic],
-  [PASS],
-  [TC-05],
-  [In the report page, submit the form without filling in the description; then submit the form with a 501 characters description.],
-  [An alert message showing "Describe what you observed." in the first submission; "Keep the description under 500 characters." in the second; Both attempts are not written into the table],
-  [As Expected],
-  [Boundary condition],
-  [PASS],
+    (0.7fr, 2.2fr, 3fr, 1.8fr, 1.8fr, 0.8fr),
+    [Test ID],
+    [Input / Operation],
+    [Expected Output],
+    [Actual Result],
+    [Category],
+    [Status],
+    [TC-01],
+    [Select Kuala Lumpur in the dashboard and press Refresh],
+    [The station name, reading value and AQI level are shown in the AQI card; The status bar shows loading complete.],
+    [As Expected],
+    [Normal API calling],
+    [PASS],
+    [TC-02],
+    [Open stations page, load the station list, search Seremban, and double click the station row.],
+    [The list is filtered to a single row; Shown below in the detail box is AQI 43, level Good, and the sample amount.],
+    [As Expected],
+    [GUI operations],
+    [PASS],
+    [TC-03],
+    [Disconnect the device from the Internet and start the application.],
+    [The message "The air-quality service is unavailable. Showing the last saved reading." is shown at the top; If there exists cache data, then the old readings will be displayed.],
+    [As Expected],
+    [Failed API Response],
+    [PASS],
+    [TC-04],
+    [Set the threshold to "Moderate or worse" in the Alerts page; Go back to the dashboard page and select the district with AQI > 50.],
+    ["ALERT: Moderate (AQI …)" are shown in the status bar; A new entry is added in the history list in the Alerts page; No repeated alerts are recorded for the same AQI band when refreshing the data.],
+    [As Expected],
+    [End-to-end logic],
+    [PASS],
+    [TC-05],
+    [In the report page, submit the form without filling in the description; then submit the form with a 501 characters description.],
+    [An alert message showing "Describe what you observed." in the first submission; "Keep the description under 500 characters." in the second; Both attempts are not written into the table],
+    [As Expected],
+    [Boundary condition],
+    [PASS],
   )
 }
 
@@ -543,8 +543,12 @@ Shown below are the dashboard, reports, and alerts screens. The stations screen 
 
 == Teamwork
 
+#pagebreak()
 
 = References
+
+#pagebreak()
+
 
 #heading(numbering: none)[Appendix A: Unit Test Report]
 
